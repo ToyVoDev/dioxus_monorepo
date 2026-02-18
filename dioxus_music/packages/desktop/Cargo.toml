@@ -1,0 +1,13 @@
+[package]
+name = "dioxus_music_desktop"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dioxus = { workspace = true, features = ["router", "fullstack"] }
+dioxus_music_ui = { workspace = true }
+
+[features]
+default = []
+desktop = ["dioxus/desktop"]
+server = ["dioxus/server", "dioxus_music_ui/server"]

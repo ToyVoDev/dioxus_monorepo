@@ -1,0 +1,24 @@
+[package]
+name = "dioxus_music_api"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = { workspace = true, optional = true }
+diesel = { workspace = true, optional = true, features = ["postgres", "uuid", "serde_json"] }
+diesel-async = { workspace = true, optional = true, features = ["postgres", "bb8"] }
+diesel_migrations = { workspace = true, optional = true, features = ["postgres"] }
+dioxus = { workspace = true, features = ["fullstack"] }
+dirs = { workspace = true, optional = true }
+dotenvy = { workspace = true, optional = true }
+lofty = { workspace = true, optional = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true, features = ["fs"], optional = true }
+tokio-util = { workspace = true, features = ["io"], optional = true }
+tracing = { workspace = true, optional = true }
+uuid = { workspace = true, features = ["serde"] }
+walkdir = { workspace = true, optional = true }
+
+[features]
+server = ["dioxus/server", "dep:lofty", "dep:walkdir", "dep:tokio", "dep:tokio-util", "dep:dirs", "dep:axum", "dep:tracing", "dep:diesel", "dep:diesel-async", "dep:diesel_migrations", "dep:dotenvy"]

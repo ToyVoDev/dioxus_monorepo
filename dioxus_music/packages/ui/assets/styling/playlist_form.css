@@ -1,0 +1,122 @@
+.playlist-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.playlist-form-card {
+  background: #1a1d28;
+  border-radius: 12px;
+  padding: 28px 32px;
+  width: 420px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.playlist-form-card__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.playlist-form-card__field {
+  margin-bottom: 16px;
+}
+
+.playlist-form-card__field label {
+  display: block;
+  font-size: 0.85rem;
+  color: #a0a4b8;
+  margin-bottom: 6px;
+}
+
+.playlist-form-card__field input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0f1116;
+  border: 1px solid #2a2d3a;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.playlist-form-card__field input[type="text"]:focus {
+  border-color: #5b6eae;
+}
+
+.playlist-form-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.genre-chip {
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1px solid #2a2d3a;
+  background: #0f1116;
+  color: #a0a4b8;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.genre-chip:hover {
+  border-color: #5b6eae;
+  color: #ffffff;
+}
+
+.genre-chip--active {
+  background: #2a3a5c;
+  border-color: #5b6eae;
+  color: #ffffff;
+}
+
+.genre-chip--exclude {
+  background: #4a2a2a;
+  border-color: #ae5b5b;
+  color: #ff9999;
+}
+
+.playlist-form-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.playlist-form-card__btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.playlist-form-card__btn--cancel {
+  background: #2a2d3a;
+  color: #a0a4b8;
+}
+
+.playlist-form-card__btn--cancel:hover {
+  background: #353847;
+}
+
+.playlist-form-card__btn--save {
+  background: #5b6eae;
+  color: #ffffff;
+}
+
+.playlist-form-card__btn--save:hover {
+  background: #6b7ebe;
+}

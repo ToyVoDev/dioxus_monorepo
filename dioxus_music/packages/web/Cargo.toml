@@ -1,0 +1,18 @@
+[package]
+name = "dioxus_music_web"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = { workspace = true, optional = true }
+dioxus = { workspace = true, features = ["router", "fullstack"] }
+dioxus_music_api = { workspace = true }
+dioxus_music_ui = { workspace = true }
+dotenvy = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+uuid = { workspace = true }
+
+[features]
+default = []
+web = ["dioxus/web"]
+server = ["dioxus/server", "dioxus_music_ui/server", "dioxus_music_api/server", "dep:dotenvy", "dep:axum", "dep:tokio"]

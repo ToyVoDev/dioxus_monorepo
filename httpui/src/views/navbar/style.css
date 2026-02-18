@@ -1,0 +1,6 @@
+#navbar {
+  display: flex;
+  flex-direction: column;
+  grid-area: navbar;
+  align-items: center;
+}

@@ -1,0 +1,42 @@
+#library {
+  grid-area: library;
+  display: grid;
+  grid-template:
+    "spaceselect add" auto
+    "collection collection" 1fr
+    / 1fr auto;
+}
+
+#library .select {
+  box-sizing: border-box;
+}
+
+#library .select #space-selector-trigger {
+  visibility: hidden;
+}
+
+#library .select #space-selector-trigger:hover {
+  visibility: visible;
+}
+
+#library .select:hover #space-selector-trigger {
+  visibility: visible;
+}
+
+.library-request-item {
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--secondary-color-5);
+  font-size: small;
+}
+
+.library-request-item:hover {
+  background-color: var(--primary-color-5);
+  color: var(--secondary-color-2);
+}
+
+.library-request-item.selected {
+  background-color: var(--primary-color-5);
+  color: var(--secondary-color-2);
+}

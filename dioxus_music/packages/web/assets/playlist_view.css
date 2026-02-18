@@ -1,0 +1,194 @@
+.playlist-view__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.playlist-view__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.playlist-view__badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.playlist-view__badge--manual {
+  background: #2a3a5c;
+  color: #8b9fd4;
+}
+
+.playlist-view__badge--smart {
+  background: #3a2a5c;
+  color: #b08bd4;
+}
+
+.playlist-view__actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.playlist-view__btn {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.playlist-view__btn--edit {
+  background: #2a2d3a;
+  color: #a0a4b8;
+}
+
+.playlist-view__btn--edit:hover {
+  background: #353847;
+  color: #ffffff;
+}
+
+.playlist-view__btn--delete {
+  background: #3a2020;
+  color: #d48b8b;
+}
+
+.playlist-view__btn--delete:hover {
+  background: #4a2828;
+  color: #ff9999;
+}
+
+.playlist-view__btn--add {
+  background: #1a3a2a;
+  color: #8bd4a0;
+}
+
+.playlist-view__btn--add:hover {
+  background: #2a4a3a;
+  color: #aaffcc;
+}
+
+.playlist-view__btn--confirm-yes {
+  background: #6a2020;
+  color: #ffffff;
+}
+
+.playlist-view__btn--confirm-no {
+  background: #2a2d3a;
+  color: #a0a4b8;
+}
+
+.playlist-view__delete-confirm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #d48b8b;
+}
+
+.playlist-view__empty {
+  color: #6b6f82;
+  font-size: 0.95rem;
+  padding: 24px 0;
+}
+
+/* Track picker overlay */
+.track-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.track-picker {
+  background: #1a1d28;
+  border-radius: 12px;
+  padding: 24px;
+  width: 500px;
+  max-width: 90vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.track-picker__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.track-picker__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.track-picker__row:hover {
+  background: #22252f;
+}
+
+.track-picker__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.track-picker__track-title {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.track-picker__track-artist {
+  font-size: 0.8rem;
+  color: #6b6f82;
+}
+
+.track-picker__add-btn {
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: none;
+  background: #2a3a5c;
+  color: #8b9fd4;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.track-picker__add-btn:hover {
+  background: #3a4a6c;
+  color: #ffffff;
+}
+
+.track-picker__close {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.track-picker__close-btn {
+  padding: 7px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #2a2d3a;
+  color: #a0a4b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.track-picker__close-btn:hover {
+  background: #353847;
+  color: #ffffff;
+}

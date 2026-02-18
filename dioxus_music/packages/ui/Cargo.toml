@@ -1,0 +1,13 @@
+[package]
+name = "dioxus_music_ui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dioxus = { workspace = true }
+dioxus_music_api = { workspace = true }
+fastrand = { workspace = true }
+serde = { workspace = true }
+
+[features]
+server = ["dioxus_music_api/server"]
