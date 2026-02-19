@@ -185,6 +185,10 @@
             overlays = [
               inputs.rust-overlay.overlays.default
             ];
+            config = {
+              allowUnfree = true;
+              android_sdk.accept_license = true;
+            };
           };
 
           treefmt = {
@@ -195,7 +199,7 @@
             };
           };
 
-          packages = rec {
+          packages = {
             discord_bot = pkgs.rustPlatform.buildRustPackage rec {
               pname = "discord_bot";
               version = "${(builtins.fromTOML (builtins.readFile ./discord_bot/Cargo.toml)).package.version}-${rev}";
