@@ -58,12 +58,12 @@ This is a Cargo workspace monorepo containing multiple independent Dioxus projec
 
 ### Projects
 
-| Package | Type | Description |
-|---------|------|-------------|
-| `discord_bot` | fullstack (web) | Discord bot with web UI — Poise/Serenity bot + Axum server + Dioxus frontend |
-| `game_manager` | fullstack (web) | Game server manager — Minecraft/Terraria status APIs + JWT auth |
-| `httpui` | desktop | HTTP client app (Postman-like) — the actively developed version |
-| `dioxus_music_*` | multi-platform | Music player — web (fullstack), desktop, and mobile (Android/iOS) |
+| Package          | Type            | Description                                                                  |
+| ---------------- | --------------- | ---------------------------------------------------------------------------- |
+| `discord_bot`    | fullstack (web) | Discord bot with web UI — Poise/Serenity bot + Axum server + Dioxus frontend |
+| `game_manager`   | fullstack (web) | Game server manager — Minecraft/Terraria status APIs + JWT auth              |
+| `httpui`         | desktop         | HTTP client app (Postman-like) — the actively developed version              |
+| `dioxus_music_*` | multi-platform  | Music player — web (fullstack), desktop, and mobile (Android/iOS)            |
 
 ### Fullstack Compilation Pattern
 
@@ -98,6 +98,7 @@ dioxus_music/packages/
 ### discord_bot — Server Architecture
 
 The server main runs three concurrent tasks via `tokio::select!`:
+
 1. **Axum** — serves the Dioxus fullstack app
 2. **Poise/Serenity bot** — Discord slash commands for game server management
 3. **Interval task** — periodic polling

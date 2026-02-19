@@ -206,6 +206,10 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              # dx build already compiles both server and client; cargo check would
+              # redundantly try to check the entire workspace (including desktop crates
+              # that need GTK/WebKit/glib which aren't in our buildInputs).
+              doCheck = false;
               buildPhase = ''
                 dx build --package discord_bot --release --verbose --trace
               '';
@@ -214,6 +218,9 @@
                 cp -r target/dx/$pname/release/web $out/bin
               '';
               meta.mainProgram = pname;
+              # Single-threaded wasm-opt avoids SIGABRT from multithreading
+              # race conditions in binaryen (github.com/WebAssembly/binaryen/issues/3006)
+              BINARYEN_CORES = 1;
               inherit cargoLock;
             };
             game_manager = pkgs.rustPlatform.buildRustPackage rec {
@@ -222,6 +229,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package game_manager --release --verbose --trace
               '';
@@ -230,6 +238,7 @@
                 cp -r target/dx/$pname/release/web $out/bin
               '';
               meta.mainProgram = pname;
+              BINARYEN_CORES = 1;
               inherit cargoLock;
             };
             httpui = pkgs.rustPlatform.buildRustPackage rec {
@@ -238,6 +247,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package httpui --release --verbose --trace
               '';
@@ -254,6 +264,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package dioxus_music_desktop --release --verbose --trace
               '';
@@ -270,6 +281,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package dioxus_music_web --release --verbose --trace
               '';
@@ -278,6 +290,7 @@
                 cp -r target/dx/$pname/release/web $out/bin
               '';
               meta.mainProgram = pname;
+              BINARYEN_CORES = 1;
               inherit cargoLock;
             };
             dioxus_music_android = pkgs.rustPlatform.buildRustPackage rec {
@@ -286,6 +299,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package dioxus_music_mobile --platform android --release --verbose --trace
               '';
@@ -294,6 +308,8 @@
                 cp -r target/dx/$pname/release/android $out/bin
               '';
               meta.mainProgram = pname;
+              ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
+              ANDROID_NDK_HOME = "${androidComposition.androidsdk}/libexec/android-sdk/ndk-bundle";
               inherit cargoLock;
             };
             dioxus_music_ios = pkgs.rustPlatform.buildRustPackage rec {
@@ -302,6 +318,7 @@
               src = ./.;
               strictDeps = true;
               inherit nativeBuildInputs buildInputs;
+              doCheck = false;
               buildPhase = ''
                 dx build --package dioxus_music_mobile --platform ios --release --verbose --trace
               '';
@@ -322,7 +339,9 @@
               export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
               export ANDROID_HOME="${androidComposition.androidsdk}/libexec/android-sdk"
               export ANDROID_NDK_HOME="${androidComposition.androidsdk}/libexec/android-sdk/ndk-bundle"
-            '' + lib.optionalString pkgs.stdenv.isDarwin ''
+              export BINARYEN_CORES=1
+            ''
+            + lib.optionalString pkgs.stdenv.isDarwin ''
               # Unset SDKROOT so xcrun can discover Xcode's iOS/tvOS/watchOS SDKs.
               # Nix sets this to its own macOS-only SDK which breaks iOS cross-compilation.
               # Requires Xcode to be installed on the host for iOS/Android builds.

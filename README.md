@@ -4,14 +4,14 @@ Monorepo of my various Dioxus projects.
 
 ## Projects
 
-| Package | Platform | Description |
-|---------|----------|-------------|
-| `discord_bot` | web (fullstack) | Discord bot with Dioxus web UI |
-| `game_manager` | web (fullstack) | Game server manager |
-| `httpui` | desktop | HTTP client (Postman-like) |
-| `dioxus_music_web` | web (fullstack) | Music player web app |
-| `dioxus_music_desktop` | desktop | Music player desktop app |
-| `dioxus_music_mobile` | android/ios | Music player mobile app |
+| Package                | Platform        | Description                    |
+| ---------------------- | --------------- | ------------------------------ |
+| `discord_bot`          | web (fullstack) | Discord bot with Dioxus web UI |
+| `game_manager`         | web (fullstack) | Game server manager            |
+| `httpui`               | desktop         | HTTP client (Postman-like)     |
+| `dioxus_music_web`     | web (fullstack) | Music player web app           |
+| `dioxus_music_desktop` | desktop         | Music player desktop app       |
+| `dioxus_music_mobile`  | android/ios     | Music player mobile app        |
 
 ## Prerequisites
 
@@ -48,6 +48,7 @@ iOS builds require Xcode installed on the host machine. The Nix devshell handles
 1. **Install Xcode** from the Mac App Store or [developer.apple.com](https://developer.apple.com/xcode/)
 
 2. **Accept the Xcode license:**
+
    ```bash
    sudo xcodebuild -license
    ```

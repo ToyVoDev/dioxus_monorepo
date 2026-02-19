@@ -99,9 +99,11 @@ pub async fn terraria_stop(ctx: crate::state::Context<'_>) -> Result<(), AppErro
 pub async fn game_roles(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     let pool = get_pool()?;
     if let Some(guild) = ctx.partial_guild().await {
-        let self_assignable_roles =
-            crate::queries::get_self_assignable_roles(pool.clone(), u64::from(guild.id).to_string())
-                .await?;
+        let self_assignable_roles = crate::queries::get_self_assignable_roles(
+            pool.clone(),
+            u64::from(guild.id).to_string(),
+        )
+        .await?;
         let message = self_assignable_roles
             .iter()
             .map(|sar| format!("{} = <@&{}>", sar.emoji, sar.role_id))
