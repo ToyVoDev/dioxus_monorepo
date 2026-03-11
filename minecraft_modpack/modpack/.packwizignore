@@ -1,0 +1,13 @@
+CNAME
+Cargo.lock
+Cargo.toml
+LICENSE
+README.md
+*.png
+favicon.ico
+flake.lock
+flake.nix
+index.html
+prism-*.zip
+site.webmanifest
+src

@@ -3952,6 +3952,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "minecraft_modpack"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "dioxus",
+ "regex",
+ "reqwest 0.13.2",
+ "serde",
+ "serde_json",
+ "tokio",
+ "toml 1.0.3+spec-1.1.0",
+]
+
+[[package]]
 name = "mini-moka"
 version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4724,6 +4738,16 @@ name = "pollster"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2f3a9f18d041e6d0e102a0a46750538147e5e8992d3b4873aaafee2520b00ce3"
+
+[[package]]
+name = "portfolio"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "reqwest 0.13.2",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "postgres-protocol"
@@ -5555,6 +5579,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "891d81b926048e76efe18581bf793546b4c0eaf8448d72be8de2bbee5fd166e1"
 dependencies = [
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "schedule1"
+version = "0.1.0"
+dependencies = [
+ "dioxus",
+ "dioxus-free-icons",
+ "web-sys",
 ]
 
 [[package]]
@@ -6615,6 +6648,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "toml"
+version = "1.0.3+spec-1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c7614eaf19ad818347db24addfa201729cf2a9b6fdfd9eb0ab870fcacc606c0c"
+dependencies = [
+ "indexmap",
+ "serde_core",
+ "serde_spanned 1.0.4",
+ "toml_datetime 1.0.0+spec-1.1.0",
+ "toml_parser",
+ "toml_writer",
+ "winnow 0.7.14",
+]
+
+[[package]]
 name = "toml_datetime"
 version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6628,6 +6676,15 @@ name = "toml_datetime"
 version = "0.7.5+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92e1cfed4a3038bc5a127e35a2d360f145e1f4b971b551a2ba5fd7aedf7e1347"
+dependencies = [
+ "serde_core",
+]
+
+[[package]]
+name = "toml_datetime"
+version = "1.0.0+spec-1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "32c2555c699578a4f59f0cc68e5116c8d7cabbd45e1409b989d4be085b53f13e"
 dependencies = [
  "serde_core",
 ]

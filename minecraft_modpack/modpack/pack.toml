@@ -1,0 +1,13 @@
+name = "toyvo_modded"
+author = "toyvo"
+version = "1.0.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "88e7c51d8619adae05d8a99281a5762234efbc147be9785901dee8271f6f013d"
+
+[versions]
+forge = "47.3.10"
+minecraft = "1.20.1"
