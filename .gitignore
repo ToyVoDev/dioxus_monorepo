@@ -27,3 +27,6 @@ template/flake.lock
 
 .claude/settings.local.json
 CLAUDE.local.md
+
+# Worktrees
+.worktrees
