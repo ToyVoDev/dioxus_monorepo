@@ -1,0 +1,25 @@
+.k-input {
+    width: 100%;
+    padding: 6px 10px;
+    background: var(--k-surface-lowest);
+    color: var(--k-on-surface);
+    border: 1px solid transparent;
+    border-radius: var(--k-radius-default);
+    font-family: var(--k-font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    outline: none;
+    transition: border-color 150ms ease;
+}
+
+.k-input::placeholder {
+    color: var(--k-on-surface-variant);
+}
+
+.k-input:focus {
+    border-color: rgba(91, 64, 62, 0.4);
+}
+
+.k-input--mono {
+    font-family: var(--k-font-mono);
+}
