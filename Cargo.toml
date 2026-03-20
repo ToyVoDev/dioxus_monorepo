@@ -8,6 +8,7 @@ members = [
     "discord_bot",
     "game_manager",
     "httpui",
+    "kinetic_ui",
     "minecraft_modpack",
     "portfolio",
     "schedule1",
@@ -73,3 +74,4 @@ web-sys = "0"
 # workspace packages
 dioxus_music_ui = { path = "dioxus_music/packages/ui" }
 dioxus_music_api = { path = "dioxus_music/packages/api" }
+kinetic_ui = { path = "kinetic_ui" }
