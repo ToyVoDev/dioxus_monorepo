@@ -1,3 +1,4 @@
+use crate::views::canvas::Canvas;
 use crate::views::explorer::Explorer;
 use crate::views::sidenav::SideNav;
 use crate::views::topbar::TopBar;
@@ -12,7 +13,7 @@ pub fn LayoutGrid(children: Element) -> Element {
             Explorer {}
             TopBar {}
             div { style: "grid-area: canvas;",
-                {children}
+                Canvas {}
             }
             div { style: "grid-area: statusbar; background: var(--k-surface-low); min-height: 24px;",
             }

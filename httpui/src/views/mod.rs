@@ -1,3 +1,4 @@
+pub mod canvas;
 pub mod collection;
 pub mod explorer;
 pub mod layout_grid;

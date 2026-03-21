@@ -1,7 +1,7 @@
 use crate::state::models::*;
 use dioxus::prelude::*;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct AppState {
     pub spaces: Signal<Vec<Space>>,
     pub collections: Signal<Vec<Collection>>,
@@ -12,6 +12,10 @@ pub struct AppState {
     pub open_requests: Signal<Vec<i32>>,
     pub selected_request: Signal<Option<i32>>,
     pub response: Signal<String>,
+    pub active_sidebar_nav: Signal<SideNavItem>,
+    pub active_topbar_nav: Signal<TopBarNav>,
+    pub active_editor_tab: Signal<EditorTab>,
+    pub http_response: Signal<Option<HttpResponse>>,
 }
 
 impl AppState {
@@ -25,6 +29,10 @@ impl AppState {
         open_requests: Signal<Vec<i32>>,
         selected_request: Signal<Option<i32>>,
         response: Signal<String>,
+        active_sidebar_nav: Signal<SideNavItem>,
+        active_topbar_nav: Signal<TopBarNav>,
+        active_editor_tab: Signal<EditorTab>,
+        http_response: Signal<Option<HttpResponse>>,
     ) -> Self {
         Self {
             spaces,
@@ -36,6 +44,10 @@ impl AppState {
             open_requests,
             selected_request,
             response,
+            active_sidebar_nav,
+            active_topbar_nav,
+            active_editor_tab,
+            http_response,
         }
     }
 
