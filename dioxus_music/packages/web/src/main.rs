@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
 use uuid::Uuid;
-use views::{Library, PlaylistSidebarSection, PlaylistView};
+use views::{AlbumDetail, Artists, Downloads, Library, PlaylistSidebarSection, PlaylistView, Playlists};
 
 mod views;
 
@@ -12,8 +12,16 @@ enum Route {
     #[layout(AppLayout)]
         #[route("/")]
         Library {},
+        #[route("/album/:name")]
+        AlbumDetail { name: String },
+        #[route("/artists")]
+        Artists {},
+        #[route("/playlists")]
+        Playlists {},
         #[route("/playlist/:id")]
         PlaylistView { id: Uuid },
+        #[route("/downloads")]
+        Downloads {},
 }
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
@@ -74,7 +82,10 @@ fn AppLayout() -> Element {
         AppShell {
             sidebar: rsx! {
                 Sidebar {
-                    Link { class: "sidebar__nav-item", to: Route::Library {}, "All Songs" }
+                    Link { class: "sidebar__nav-item", to: Route::Artists {}, "Artists" }
+                    Link { class: "sidebar__nav-item", to: Route::Library {}, "Albums" }
+                    Link { class: "sidebar__nav-item", to: Route::Playlists {}, "Playlists" }
+                    Link { class: "sidebar__nav-item", to: Route::Downloads {}, "Downloads" }
                     PlaylistSidebarSection {}
                 }
             },
