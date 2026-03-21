@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_primitives::tabs::{self, TabContentProps, TabListProps, TabTriggerProps, TabsProps};
 
 /// Standalone component that only loads the tabs CSS stylesheet.
-/// Use when consuming dioxus_primitives::tabs directly with k-tabs classes.
+/// Use when consuming `dioxus_primitives::tabs` directly with k-tabs classes.
 #[component]
 pub fn TabsStylesheet() -> Element {
     rsx! {
