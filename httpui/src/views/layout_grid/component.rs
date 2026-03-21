@@ -1,5 +1,6 @@
 use crate::views::explorer::Explorer;
 use crate::views::sidenav::SideNav;
+use crate::views::topbar::TopBar;
 use dioxus::prelude::*;
 
 #[component]
@@ -9,9 +10,7 @@ pub fn LayoutGrid(children: Element) -> Element {
         div { id: "layout-grid",
             SideNav {}
             Explorer {}
-            div { style: "grid-area: topbar; background: var(--k-surface-low);",
-                "TopBar placeholder"
-            }
+            TopBar {}
             div { style: "grid-area: canvas;",
                 {children}
             }

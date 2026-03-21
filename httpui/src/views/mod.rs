@@ -10,4 +10,5 @@ pub mod settings;
 pub mod sidenav;
 pub mod space;
 pub mod tabbar;
+pub mod topbar;
 pub mod urlbar;
