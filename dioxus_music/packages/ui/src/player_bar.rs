@@ -1,10 +1,10 @@
 use crate::player_state::{RepeatMode, use_player_state};
 use dioxus::prelude::*;
 
-const PLAYER_BAR_CSS: Asset = asset!("/assets/styling/player_bar.css");
+const PLAYER_BAR_CSS: Asset = asset!("/assets/styling/player-bar.css");
 
 #[component]
-pub fn PlayerBar() -> Element {
+pub fn PlayerBar(#[props(default)] compact: bool) -> Element {
     let mut player = use_player_state();
 
     let track_info = player.read().current_track.clone();
@@ -28,10 +28,19 @@ pub fn PlayerBar() -> Element {
     };
     let repeat_active = repeat_mode != RepeatMode::Off;
 
+    let bar_class = if compact {
+        "player-bar player-bar--compact"
+    } else {
+        "player-bar"
+    };
+
     rsx! {
         document::Link { rel: "stylesheet", href: PLAYER_BAR_CSS }
 
-        div { class: "player-bar",
+        div { class: "{bar_class}",
+            // Album art placeholder
+            div { class: "player-bar__art" }
+
             // Now playing info
             div { class: "player-bar__info",
                 if let Some(track) = &track_info {
@@ -42,30 +51,36 @@ pub fn PlayerBar() -> Element {
                 }
             }
 
+            // Spacer
+            div { class: "player-bar__spacer" }
+
             // Transport controls
             div { class: "player-bar__controls",
-                // Shuffle button
-                button {
-                    class: if is_shuffled { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
-                    disabled: !has_track,
-                    onclick: move |_| {
-                        player.with_mut(|p| p.toggle_shuffle());
-                    },
-                    "Sh"
+                if !compact {
+                    // Shuffle button
+                    button {
+                        class: if is_shuffled { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
+                        disabled: !has_track,
+                        onclick: move |_| {
+                            player.with_mut(|p| p.toggle_shuffle());
+                        },
+                        "Sh"
+                    }
+
+                    button {
+                        class: "player-bar__btn",
+                        disabled: !has_track,
+                        onclick: move |_| {
+                            player.with_mut(|p| p.prev_track());
+                            let _ = document::eval(r#"
+                                let a = document.getElementById('main-audio');
+                                if (a) { a.load(); a.play(); }
+                            "#);
+                        },
+                        "\u{23EE}"
+                    }
                 }
 
-                button {
-                    class: "player-bar__btn",
-                    disabled: !has_track,
-                    onclick: move |_| {
-                        player.with_mut(|p| p.prev_track());
-                        let _ = document::eval(r#"
-                            let a = document.getElementById('main-audio');
-                            if (a) { a.load(); a.play(); }
-                        "#);
-                    },
-                    "\u{23EE}"
-                }
                 button {
                     class: "player-bar__btn player-bar__btn--play",
                     disabled: !has_track,
@@ -81,6 +96,7 @@ pub fn PlayerBar() -> Element {
                     },
                     if is_playing { "\u{23F8}" } else { "\u{25B6}" }
                 }
+
                 button {
                     class: "player-bar__btn",
                     disabled: !has_track,
@@ -94,23 +110,36 @@ pub fn PlayerBar() -> Element {
                     "\u{23ED}"
                 }
 
-                // Repeat button
-                button {
-                    class: if repeat_active { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
-                    disabled: !has_track,
-                    onclick: move |_| {
-                        player.with_mut(|p| p.toggle_repeat());
-                    },
-                    "{repeat_label}"
-                }
+                if !compact {
+                    // Repeat button
+                    button {
+                        class: if repeat_active { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
+                        disabled: !has_track,
+                        onclick: move |_| {
+                            player.with_mut(|p| p.toggle_repeat());
+                        },
+                        "{repeat_label}"
+                    }
 
-                // Queue button
-                button {
-                    class: if show_queue { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
-                    onclick: move |_| {
-                        player.with_mut(|p| p.toggle_queue());
-                    },
-                    "Q"
+                    // Queue button
+                    button {
+                        class: if show_queue { "player-bar__btn player-bar__btn--secondary player-bar__btn--active" } else { "player-bar__btn player-bar__btn--secondary" },
+                        onclick: move |_| {
+                            player.with_mut(|p| p.toggle_queue());
+                        },
+                        "Q"
+                    }
+                }
+            }
+
+            // Placeholder progress bar
+            if !compact {
+                div { class: "player-bar__progress",
+                    span { "0:00" }
+                    div { class: "player-bar__progress-bar",
+                        div { class: "player-bar__progress-fill" }
+                    }
+                    span { "0:00" }
                 }
             }
 
