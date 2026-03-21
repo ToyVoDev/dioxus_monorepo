@@ -1,6 +1,6 @@
 #layout-grid {
     display: grid;
-    grid-template-columns: 80px 288px 1fr;
+    grid-template-columns: 74px 288px 1fr;
     grid-template-rows: 64px 1fr auto;
     grid-template-areas:
         "sidebar  explorer  topbar"
@@ -12,27 +12,43 @@
     background: var(--k-surface);
 }
 
-/* Invisible drag region across the top for macOS titlebar dragging */
-#layout-drag-region {
-    position: fixed;
+#layout-drag-top {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 28px;
-    -webkit-app-region: drag;
+    height: 31px;
     z-index: 100;
-    pointer-events: auto;
+    cursor: default;
 }
 
-/* Buttons and interactive elements must opt out of the drag region */
-#layout-drag-region ~ * button,
-#layout-drag-region ~ * a,
-#layout-drag-region ~ * input,
-#layout-drag-region ~ * select,
-#layout-drag-region ~ * [role="button"],
-#layout-drag-region ~ * .k-select__trigger,
-#layout-drag-region ~ * .k-icon-button,
-#layout-drag-region ~ * .sidenav__nav-item,
-#layout-drag-region ~ * .topbar__nav-link {
-    -webkit-app-region: no-drag;
+#layout-drag-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 74px;
+    z-index: 100;
+    cursor: default;
+}
+
+/*
+ * Interactive elements must sit above the drag regions (z-index: 100).
+ * We give them z-index: 200 + position: relative so they receive
+ * pointer events instead of the drag overlay.
+ */
+#layout-grid button,
+#layout-grid a,
+#layout-grid input,
+#layout-grid select,
+#layout-grid [role="button"],
+#layout-grid .k-select__trigger,
+#layout-grid .k-icon-button,
+#layout-grid .sidenav__nav-item,
+#layout-grid .topbar__nav-link,
+#layout-grid .k-search-input,
+#layout-grid .k-tree__branch-trigger,
+#layout-grid .k-tree__leaf {
+    position: relative;
+    z-index: 200;
 }
