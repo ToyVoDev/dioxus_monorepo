@@ -11,6 +11,7 @@ kinetic_ui = { workspace = true }
 dotenvy = { workspace = true }
 tokio = { workspace = true }
 axum = { workspace = true }
+uuid = { workspace = true }
 
 [features]
 default = []

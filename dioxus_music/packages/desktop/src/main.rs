@@ -1,7 +1,8 @@
 use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
-use views::{AlbumDetail, Artists, Downloads, Home, Library, Playlists};
+use uuid::Uuid;
+use views::{AlbumDetail, Artists, Downloads, Home, Library, PlaylistView, Playlists};
 
 mod views;
 
@@ -17,6 +18,8 @@ enum Route {
         Artists {},
         #[route("/playlists")]
         Playlists {},
+        #[route("/playlist/:id")]
+        PlaylistView { id: Uuid },
         #[route("/downloads")]
         Downloads {},
         #[route("/home")]

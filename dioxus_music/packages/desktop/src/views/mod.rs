@@ -13,5 +13,8 @@ pub use artists::Artists;
 mod playlists;
 pub use playlists::Playlists;
 
+mod playlist_view;
+pub use playlist_view::PlaylistView;
+
 mod downloads;
 pub use downloads::Downloads;
