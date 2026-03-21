@@ -7,6 +7,7 @@ edition = "2024"
 dioxus = { workspace = true }
 dioxus_music_api = { workspace = true }
 fastrand = { workspace = true }
+kinetic_ui = { workspace = true }
 serde = { workspace = true }
 
 [features]
