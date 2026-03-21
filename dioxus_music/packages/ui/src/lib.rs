@@ -1,5 +1,8 @@
 pub mod player_state;
 
+mod header;
+pub use header::Header;
+
 mod app_shell;
 pub use app_shell::AppShell;
 

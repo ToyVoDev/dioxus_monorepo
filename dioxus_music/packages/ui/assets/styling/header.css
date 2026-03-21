@@ -1,0 +1,32 @@
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-4);
+    background: var(--k-surface-low);
+    padding: 0 var(--k-space-4);
+    height: 56px;
+}
+
+.header__brand {
+    font-family: var(--k-font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--k-primary);
+    letter-spacing: -0.01em;
+}
+
+.header__spacer { flex: 1; }
+
+.header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-2);
+}
+
+.header__sync-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--k-secondary);
+}
