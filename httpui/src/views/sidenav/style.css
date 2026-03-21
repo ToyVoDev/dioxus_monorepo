@@ -9,7 +9,6 @@
 }
 
 .sidenav__drag-region {
-    -webkit-app-region: drag;
     height: 28px;
     flex-shrink: 0;
 }

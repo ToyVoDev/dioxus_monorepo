@@ -10,6 +10,8 @@ pub fn LayoutGrid(children: Element) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         div { id: "layout-grid",
+            // Invisible drag region for macOS window dragging
+            div { id: "layout-drag-region" }
             SideNav {}
             Explorer {}
             TopBar {}

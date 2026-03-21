@@ -44,7 +44,7 @@
     backdrop-filter: blur(24px);
     padding: var(--k-space-1);
     min-width: 10rem;
-    z-index: 100;
+    z-index: 1000;
     overflow: hidden;
 }
 

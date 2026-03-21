@@ -6,6 +6,9 @@
     background: var(--k-surface-low);
     padding: 0 var(--k-space-4);
     height: 64px;
+    overflow: visible;
+    position: relative;
+    z-index: 50;
 }
 
 .topbar__brand {
@@ -54,4 +57,6 @@
     display: flex;
     align-items: center;
     gap: var(--k-space-2);
+    overflow: visible;
+    position: relative;
 }

@@ -1,6 +1,6 @@
 #layout-grid {
     display: grid;
-    grid-template-columns: 64px 288px 1fr;
+    grid-template-columns: 80px 288px 1fr;
     grid-template-rows: 64px 1fr auto;
     grid-template-areas:
         "sidebar  explorer  topbar"
@@ -10,4 +10,29 @@
     width: 100vw;
     overflow: hidden;
     background: var(--k-surface);
+}
+
+/* Invisible drag region across the top for macOS titlebar dragging */
+#layout-drag-region {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    -webkit-app-region: drag;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+/* Buttons and interactive elements must opt out of the drag region */
+#layout-drag-region ~ * button,
+#layout-drag-region ~ * a,
+#layout-drag-region ~ * input,
+#layout-drag-region ~ * select,
+#layout-drag-region ~ * [role="button"],
+#layout-drag-region ~ * .k-select__trigger,
+#layout-drag-region ~ * .k-icon-button,
+#layout-drag-region ~ * .sidenav__nav-item,
+#layout-drag-region ~ * .topbar__nav-link {
+    -webkit-app-region: no-drag;
 }
