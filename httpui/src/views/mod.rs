@@ -6,6 +6,7 @@ pub mod request;
 pub mod request_editor;
 pub mod response_viewer;
 pub mod settings;
+pub mod sidenav;
 pub mod space;
 pub mod tabbar;
 pub mod urlbar;

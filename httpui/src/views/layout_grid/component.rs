@@ -1,3 +1,4 @@
+use crate::views::sidenav::SideNav;
 use dioxus::prelude::*;
 
 #[component]
@@ -5,9 +6,7 @@ pub fn LayoutGrid(children: Element) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         div { id: "layout-grid",
-            div { style: "grid-area: sidebar; background: var(--k-surface-low);",
-                "SideNav placeholder"
-            }
+            SideNav {}
             div { style: "grid-area: explorer; background: var(--k-surface-high);",
                 "Explorer placeholder"
             }
