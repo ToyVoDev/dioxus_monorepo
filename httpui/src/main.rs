@@ -2,10 +2,10 @@
 // need dioxus
 use dioxus::prelude::*;
 
+use kinetic_ui::KineticTheme;
 use views::{
     collection::CollectionSection,
     layout_grid::LayoutGrid,
-    navbar::Navbar,
     request::{NewRequestSection, RequestSection},
     settings::SettingsSection,
     space::SpaceSection,
@@ -26,25 +26,16 @@ mod views;
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
 enum Route {
-    // The layout attribute defines a wrapper for all routes under the layout. Layouts are great for wrapping
-    // many routes with a common UI like a navbar.
-    #[layout(Navbar)]
-        // The route attribute defines the URL pattern that a specific route matches. If that pattern matches the URL,
-        // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
-        #[route("/request/:id")]
-        RequestSection { id: i32 },
-        // The route attribute can include dynamic parameters that implement [`std::str::FromStr`] and [`std::fmt::Display`] with the `:` syntax.
-        // In this case, id will match any integer like `/space/123` or `/space/-456`.
-        #[route("/space/:id")]
-        // Fields of the route variant will be passed to the component as props. In this case, the space component must accept
-        // an `id` prop of type `i32`.
-        SpaceSection { id: i32 },
-        #[route("/collection/:id")]
-        CollectionSection { id: i32 },
-        #[route("/settings")]
-        SettingsSection {},
-        #[route("/")]
-        NewRequestSection {},
+    #[route("/request/:id")]
+    RequestSection { id: i32 },
+    #[route("/space/:id")]
+    SpaceSection { id: i32 },
+    #[route("/collection/:id")]
+    CollectionSection { id: i32 },
+    #[route("/settings")]
+    SettingsSection {},
+    #[route("/")]
+    NewRequestSection {},
 }
 
 #[component]
@@ -103,6 +94,10 @@ fn App() -> Element {
     let open_requests = use_signal(|| Vec::new());
     let selected_request = use_signal(|| None);
     let response = use_signal(|| String::new());
+    let active_sidebar_nav = use_signal(|| state::SideNavItem::Collections);
+    let active_topbar_nav = use_signal(|| state::TopBarNav::Collections);
+    let active_editor_tab = use_signal(|| state::EditorTab::Params);
+    let http_response = use_signal(|| None);
 
     // Create the app state
     let app_state = state::AppState::new(
@@ -115,6 +110,10 @@ fn App() -> Element {
         open_requests,
         selected_request,
         response,
+        active_sidebar_nav,
+        active_topbar_nav,
+        active_editor_tab,
+        http_response,
     );
 
     // Provide the state to all child components via context
@@ -127,14 +126,10 @@ fn App() -> Element {
         // We can import assets in dioxus with the `asset!` macro. This macro takes a path to an asset relative to the crate root.
         // The macro returns an `Asset` type that will display as the path to the asset in the browser or a local path in desktop bundles.
         document::Link { rel: "icon", href: asset!("/assets/favicon.ico") }
-        // The asset macro also minifies some assets like CSS and JS to make bundled smaller
-        document::Link { rel: "stylesheet", href: asset!("/assets/dx-components-theme.css") }
-
-
-        // The router component renders the route enum we defined above. It will handle synchronization of the URL and render
-        // the layouts and components for the active route.
-        LayoutGrid {
-            Router::<Route> {}
+        KineticTheme {
+            LayoutGrid {
+                Router::<Route> {}
+            }
         }
     }
 }
