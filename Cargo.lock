@@ -2038,6 +2038,7 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus_music_ui",
+ "kinetic_ui",
 ]
 
 [[package]]
@@ -2047,6 +2048,7 @@ dependencies = [
  "dioxus",
  "dioxus_music_api",
  "fastrand",
+ "kinetic_ui",
  "serde",
 ]
 

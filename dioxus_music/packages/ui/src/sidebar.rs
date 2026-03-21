@@ -8,8 +8,8 @@ pub fn Sidebar(children: Element) -> Element {
         document::Link { rel: "stylesheet", href: SIDEBAR_CSS }
         nav { class: "sidebar",
             div { class: "sidebar__brand",
-                span { class: "sidebar__brand-name", "MONOLITH" }
-                span { class: "sidebar__subtitle", "Offline-First" }
+                span { class: "sidebar__brand-name", {env!("CARGO_PKG_NAME")} }
+                span { class: "sidebar__subtitle", "v{env!(\"CARGO_PKG_VERSION\")}" }
             }
             div { class: "sidebar__nav",
                 {children}

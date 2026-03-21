@@ -8,7 +8,7 @@ pub fn Header() -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: HEADER_CSS }
         header { class: "header",
-            span { class: "header__brand", "KINETIC" }
+            span { class: "header__brand", {env!("CARGO_PKG_NAME")} }
             div { class: "header__spacer" }
             div { class: "header__actions",
                 KSearchInput { placeholder: "Search...".to_string() }

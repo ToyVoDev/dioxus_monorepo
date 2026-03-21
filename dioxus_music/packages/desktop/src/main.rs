@@ -20,7 +20,7 @@ fn main() {
     use dioxus::desktop::Config;
     use dioxus::desktop::tao::window::WindowBuilder;
 
-    let mut wb = WindowBuilder::new().with_title("Kinetic Music");
+    let mut wb = WindowBuilder::new().with_title(env!("CARGO_PKG_NAME"));
 
     #[cfg(target_os = "macos")]
     {
