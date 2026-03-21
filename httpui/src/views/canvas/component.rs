@@ -81,6 +81,8 @@ pub fn Canvas() -> Element {
 
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
+        // Load tabs CSS — canvas uses dioxus_primitives::tabs directly with k-tabs classes
+        kinetic_ui::TabsStylesheet {}
 
         div { class: "canvas",
             if let Some(req) = current_request() {
