@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
-use views::Home;
+use views::{AlbumDetail, Artists, Downloads, Home, Library, Playlists};
 
 mod views;
 
@@ -10,6 +10,16 @@ mod views;
 enum Route {
     #[layout(DesktopLayout)]
         #[route("/")]
+        Library {},
+        #[route("/album/:name")]
+        AlbumDetail { name: String },
+        #[route("/artists")]
+        Artists {},
+        #[route("/playlists")]
+        Playlists {},
+        #[route("/downloads")]
+        Downloads {},
+        #[route("/home")]
         Home {},
 }
 
@@ -81,7 +91,10 @@ fn DesktopLayout() -> Element {
         AppShell {
             sidebar: rsx! {
                 Sidebar {
-                    Link { class: "sidebar__nav-item", to: Route::Home {}, "Home" }
+                    Link { class: "sidebar__nav-item", to: Route::Artists {}, "Artists" }
+                    Link { class: "sidebar__nav-item", to: Route::Library {}, "Albums" }
+                    Link { class: "sidebar__nav-item", to: Route::Playlists {}, "Playlists" }
+                    Link { class: "sidebar__nav-item", to: Route::Downloads {}, "Downloads" }
                 }
             },
             Outlet::<Route> {}
