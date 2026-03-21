@@ -8,6 +8,7 @@ axum = { workspace = true, optional = true }
 dioxus = { workspace = true, features = ["router", "fullstack"] }
 dioxus_music_api = { workspace = true }
 dioxus_music_ui = { workspace = true }
+kinetic_ui = { workspace = true }
 dotenvy = { workspace = true, optional = true }
 tokio = { workspace = true, optional = true }
 uuid = { workspace = true }
