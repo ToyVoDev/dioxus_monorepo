@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
 use views::Home;
 
@@ -28,6 +29,7 @@ fn App() -> Element {
 
 #[component]
 fn DesktopLayout() -> Element {
+    use_player_state_provider();
     rsx! {
         AppShell {
             sidebar: rsx! {
