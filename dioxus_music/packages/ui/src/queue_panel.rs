@@ -1,7 +1,7 @@
 use crate::player_state::use_player_state;
 use dioxus::prelude::*;
 
-const QUEUE_PANEL_CSS: Asset = asset!("/assets/styling/queue_panel.css");
+const QUEUE_PANEL_CSS: Asset = asset!("/assets/styling/queue-panel.css");
 
 #[component]
 pub fn QueuePanel() -> Element {
