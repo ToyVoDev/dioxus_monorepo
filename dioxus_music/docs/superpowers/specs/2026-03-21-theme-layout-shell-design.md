@@ -99,9 +99,9 @@ The header remains visible and provides navigation when the sidebar is hidden. T
 
 **Location:** `packages/ui/src/app_shell.rs`
 
-**Props:** `children: Element` (the routed content)
+**Props:** `sidebar: Element`, `children: Element`
 
-**Note:** The current AppShell accepts `sidebar: Element` and other props from platform callers. The rebuilt version takes only `children`. All three platform crates (web, desktop, mobile) must update their `AppLayout`/`DesktopLayout`/`MobileLayout` call sites to pass only children content. The Sidebar, Header, and PlayerBar are now rendered internally by AppShell (desktop) or by the platform layout wrapper (mobile).
+**Note:** AppShell keeps the `sidebar: Element` prop. This is necessary because each platform crate defines its own `Route` enum — the Sidebar can't import route types from web/desktop/mobile. Platform crates wrap `Sidebar` with their route-specific `Link` elements and pass it as the `sidebar` prop. Header and PlayerBar are rendered internally by AppShell. The mobile crate does NOT use AppShell — it builds its own layout.
 
 **Renders:**
 - `KineticTheme` wrapper (loads all token CSS)
@@ -141,7 +141,7 @@ KineticTheme {
 
 **Location:** `packages/ui/src/sidebar.rs`
 
-**Props:** None. Reads the current route internally via Dioxus router hooks to determine the active nav item.
+**Props:** `children: Element` — platform crates provide route-specific `Link` elements as children, styled with `.sidebar__nav-item` CSS class. This preserves the multi-platform architecture where each platform defines its own routes.
 
 **Structure (top to bottom):**
 1. **Brand** — "MONOLITH" in Space Grotesk, `--k-primary` color. Subtitle: "Offline-First" badge in `--k-on-surface-variant`, small monospace. This matches the Stitch mockup where "MONOLITH" is the sidebar brand.
@@ -153,9 +153,7 @@ KineticTheme {
 3. **Spacer** (flex: 1)
 4. **Footer** — "Core Engine v2.4" in muted monospace text
 
-**Active state:** `--k-surface-highest` background + `--k-primary` text color. No left border (per Stitch mockup and no-line rule). Background fill only.
-
-**Navigation:** Clicking a nav item uses Dioxus router navigation. The active item is determined by matching the current route.
+**Active state:** `--k-surface-highest` background + `--k-primary` text color. No left border (per Stitch mockup and no-line rule). Background fill only. Platform crates apply the active styling via Dioxus router's `Link` component, which can set `class` based on whether the link is active (using the router's active class feature or manual matching).
 
 **Surface:** `--k-surface-low` background. Width: 256px.
 
@@ -320,14 +318,14 @@ Platform-specific CSS:
 
 ### 8.1 Web (`packages/web`)
 
-- `AppLayout` uses the new `AppShell` — update call site to pass only `children` (remove `sidebar` prop)
+- `AppLayout` uses the new `AppShell` — keeps `sidebar` prop pattern (Sidebar with route-specific Link children)
 - Routes remain: `/` (Library), `/playlist/:id` (PlaylistView)
 - Future sub-projects will add: `/artists`, `/albums`, `/album/:id`, `/now-playing`, `/downloads`
 - `main.css` updated: remove old resets/backgrounds, rely on kinetic theme
 
 ### 8.2 Desktop (`packages/desktop`)
 
-- `DesktopLayout` uses the new `AppShell` — update call site to pass only `children`
+- `DesktopLayout` uses the new `AppShell` — keeps `sidebar` prop pattern
 - Currently placeholder — Home view says "coming soon"
 - macOS transparent titlebar config preserved from current code (if present)
 
