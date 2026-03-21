@@ -25,31 +25,63 @@ enum Route {
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
 
-#[cfg(feature = "desktop")]
 fn main() {
-    use dioxus::desktop::Config;
-    use dioxus::desktop::tao::window::WindowBuilder;
+    #[cfg(feature = "server")]
+    dioxus::serve(|| async move {
+        use axum::Extension;
+        use dioxus::server::axum::routing::get;
 
-    let mut wb = WindowBuilder::new().with_title(env!("CARGO_PKG_NAME"));
+        dotenvy::dotenv().ok();
+        let database_url =
+            std::env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env or environment");
 
-    #[cfg(target_os = "macos")]
+        // Run migrations synchronously on a blocking thread
+        {
+            let url = database_url.clone();
+            tokio::task::spawn_blocking(move || dioxus_music_api::db::run_migrations(&url))
+                .await
+                .expect("Migration thread panicked");
+        }
+
+        let pool = dioxus_music_api::db::create_pool(&database_url).await;
+
+        // Spawn background quick scan
+        tokio::spawn(dioxus_music_api::scanner::quick_scan(pool.clone()));
+
+        let router = dioxus::server::router(App)
+            .route(
+                "/stream/{track_id}",
+                get(dioxus_music_api::streaming::stream_track),
+            )
+            .layer(Extension(pool));
+
+        Ok(router)
+    });
+
+    #[cfg(feature = "desktop")]
     {
-        use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
-        wb = wb
-            .with_titlebar_transparent(true)
-            .with_fullsize_content_view(true)
-            .with_title_hidden(true);
+        use dioxus::desktop::Config;
+        use dioxus::desktop::tao::window::WindowBuilder;
+
+        let mut wb = WindowBuilder::new().with_title(env!("CARGO_PKG_NAME"));
+
+        #[cfg(target_os = "macos")]
+        {
+            use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
+            wb = wb
+                .with_titlebar_transparent(true)
+                .with_fullsize_content_view(true)
+                .with_title_hidden(true);
+        }
+
+        let config = Config::new().with_window(wb);
+
+        dioxus::LaunchBuilder::desktop()
+            .with_cfg(config)
+            .launch(App);
     }
 
-    let config = Config::new().with_window(wb);
-
-    dioxus::LaunchBuilder::desktop()
-        .with_cfg(config)
-        .launch(App);
-}
-
-#[cfg(not(feature = "desktop"))]
-fn main() {
+    #[cfg(not(any(feature = "desktop", feature = "server")))]
     dioxus::launch(App);
 }
 
