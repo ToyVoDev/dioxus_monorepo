@@ -37,12 +37,9 @@ pub fn SideNav() -> Element {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
 
         div { class: "sidenav",
-            // macOS drag region
-            div { class: "sidenav__drag-region" }
-
             // Brand
             div { class: "sidenav__brand",
-                "HTTP CLIENT"
+                {env!("CARGO_PKG_NAME")}
                 span { class: "sidenav__version", "v{env!(\"CARGO_PKG_VERSION\")}" }
             }
 

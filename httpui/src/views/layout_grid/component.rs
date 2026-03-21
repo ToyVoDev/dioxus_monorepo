@@ -9,9 +9,25 @@ use dioxus::prelude::*;
 pub fn LayoutGrid(children: Element) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
+        div {
+            id: "layout-drag-top",
+            onmousedown: move |_| {
+                dioxus::desktop::window().drag()
+            },
+            ondoubleclick: move |_| {
+                dioxus::desktop::window().toggle_maximized();
+            },
+        }
+        div {
+            id: "layout-drag-side",
+            onmousedown: move |_| {
+                dioxus::desktop::window().drag()
+            },
+            ondoubleclick: move |_| {
+                dioxus::desktop::window().toggle_maximized();
+            },
+        }
         div { id: "layout-grid",
-            // Invisible drag region for macOS window dragging
-            div { id: "layout-drag-region" }
             SideNav {}
             Explorer {}
             TopBar {}

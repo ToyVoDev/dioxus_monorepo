@@ -3142,6 +3142,7 @@ dependencies = [
  "dioxus",
  "dioxus-free-icons",
  "dioxus-primitives",
+ "kinetic_ui",
  "reqwest 0.13.2",
  "serde",
  "strum",

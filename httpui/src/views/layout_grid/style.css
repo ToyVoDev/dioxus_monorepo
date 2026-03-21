@@ -31,24 +31,3 @@
     z-index: 100;
     cursor: default;
 }
-
-/*
- * Interactive elements must sit above the drag regions (z-index: 100).
- * We give them z-index: 200 + position: relative so they receive
- * pointer events instead of the drag overlay.
- */
-#layout-grid button,
-#layout-grid a,
-#layout-grid input,
-#layout-grid select,
-#layout-grid [role="button"],
-#layout-grid .k-select__trigger,
-#layout-grid .k-icon-button,
-#layout-grid .sidenav__nav-item,
-#layout-grid .topbar__nav-link,
-#layout-grid .k-search-input,
-#layout-grid .k-tree__branch-trigger,
-#layout-grid .k-tree__leaf {
-    position: relative;
-    z-index: 200;
-}

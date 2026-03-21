@@ -4,6 +4,7 @@
     flex-direction: column;
     background: var(--k-surface-low);
     padding: var(--k-space-2);
+    padding-top: 31px;
     height: 100%;
     overflow: hidden;
 }
@@ -36,6 +37,8 @@
 }
 
 .sidenav__cta {
+    display: flex;
+    flex-direction: column;
     padding: var(--k-space-2) 0;
 }
 
@@ -91,4 +94,8 @@
     gap: var(--k-space-1);
     padding-bottom: var(--k-space-2);
     align-items: center;
+}
+
+.sidenav button {
+    z-index: 101;
 }
