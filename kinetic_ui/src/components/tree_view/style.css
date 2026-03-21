@@ -1,0 +1,71 @@
+.k-tree {
+}
+
+.k-tree__branch {
+}
+
+.k-tree__branch-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: var(--k-radius-sm);
+    color: var(--k-on-surface);
+    font-size: 0.875rem;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.k-tree__branch-trigger:hover {
+    background: var(--k-surface-highest);
+}
+
+.k-tree__branch-trigger .k-tree__chevron {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.k-tree__branch-trigger[data-expanded="true"] .k-tree__chevron {
+    transform: rotate(90deg);
+}
+
+.k-tree__branch-content {
+    padding-left: 16px;
+}
+
+.k-tree__leaf {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px 6px 12px;
+    cursor: pointer;
+    border-radius: var(--k-radius-sm);
+    font-size: 0.8125rem;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    color: var(--k-on-surface);
+    box-sizing: border-box;
+}
+
+.k-tree__leaf:hover {
+    background: var(--k-surface-highest);
+}
+
+.k-tree__leaf[data-selected="true"] {
+    background: var(--k-surface-highest);
+    border-left: 2px solid var(--k-primary);
+}

@@ -1,0 +1,62 @@
+.k-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.k-table__header {
+    color: var(--k-on-surface-variant);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px;
+    border-bottom: 1px solid rgba(91, 64, 62, 0.1);
+    text-align: left;
+    font-weight: 500;
+}
+
+.k-table__row {
+    border-bottom: 1px solid rgba(91, 64, 62, 0.05);
+}
+
+.k-table__row:hover {
+    background: var(--k-surface-low);
+}
+
+.k-table__cell {
+    padding: 6px 8px;
+}
+
+.k-table__input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    color: var(--k-on-surface);
+    font-family: var(--k-font-mono);
+    font-size: 0.8125rem;
+    outline: none;
+}
+
+.k-table__input:focus {
+    outline: 1px solid rgba(91, 64, 62, 0.15);
+    outline-offset: -1px;
+    border-radius: 2px;
+}
+
+.k-table__input::placeholder {
+    color: var(--k-on-surface-variant);
+    opacity: 0.5;
+}
+
+.k-table__add-row {
+    color: var(--k-primary);
+    cursor: pointer;
+    padding: 8px;
+    font-size: 0.75rem;
+    background: none;
+    border: none;
+    font-family: inherit;
+}
+
+.k-table__add-row:hover {
+    text-decoration: underline;
+}
