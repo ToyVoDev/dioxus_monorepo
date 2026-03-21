@@ -16,9 +16,8 @@
 }
 
 .explorer__title {
-    font-family: var(--k-font-display);
     font-size: 0.6875rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--k-on-surface-variant);

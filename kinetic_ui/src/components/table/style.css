@@ -1,6 +1,9 @@
 .k-table {
     width: 100%;
     border-collapse: collapse;
+    background: var(--k-surface-low);
+    border-radius: var(--k-radius-lg);
+    overflow: hidden;
 }
 
 .k-table__header {
@@ -8,14 +11,16 @@
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 8px;
+    padding: var(--k-space-3) var(--k-space-4);
     border-bottom: 1px solid rgba(91, 64, 62, 0.1);
     text-align: left;
     font-weight: 500;
+    background: var(--k-surface-high);
 }
 
 .k-table__row {
     border-bottom: 1px solid rgba(91, 64, 62, 0.05);
+    transition: background 150ms ease;
 }
 
 .k-table__row:hover {
@@ -23,7 +28,7 @@
 }
 
 .k-table__cell {
-    padding: 6px 8px;
+    padding: var(--k-space-3) var(--k-space-4);
 }
 
 .k-table__input {

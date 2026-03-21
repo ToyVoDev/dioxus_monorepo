@@ -6,7 +6,7 @@
     padding: 6px 14px;
     border: none;
     border-radius: var(--k-radius-default);
-    font-family: var(--k-font-sans);
+    font-family: var(--k-font-body);
     font-size: 0.8125rem;
     font-weight: 500;
     cursor: pointer;
@@ -22,7 +22,7 @@
 /* Primary */
 .k-button--primary {
     background: linear-gradient(135deg, var(--k-primary), var(--k-primary-container));
-    color: var(--k-on-primary);
+    color: var(--k-on-primary-container);
 }
 
 .k-button--primary:hover {
@@ -33,7 +33,7 @@
 .k-button--secondary {
     background: var(--k-surface-highest);
     color: var(--k-on-surface);
-    border: 1px solid var(--k-outline-variant);
+    border: 1px solid rgba(91, 64, 62, 0.2);
 }
 
 .k-button--secondary:hover {

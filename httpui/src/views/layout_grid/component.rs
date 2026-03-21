@@ -1,6 +1,7 @@
 use crate::views::canvas::Canvas;
 use crate::views::explorer::Explorer;
 use crate::views::sidenav::SideNav;
+use crate::views::statusbar::StatusBar;
 use crate::views::topbar::TopBar;
 use dioxus::prelude::*;
 
@@ -15,8 +16,7 @@ pub fn LayoutGrid(children: Element) -> Element {
             div { style: "grid-area: canvas;",
                 Canvas {}
             }
-            div { style: "grid-area: statusbar; background: var(--k-surface-low); min-height: 24px;",
-            }
+            StatusBar {}
         }
     }
 }

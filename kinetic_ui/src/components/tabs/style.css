@@ -7,18 +7,21 @@
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid rgba(91, 64, 62, 0.1);
-    gap: var(--k-space-4);
+    gap: var(--k-space-6);
+    padding: 0 var(--k-space-4);
 }
 
 .k-tabs__trigger {
-    padding: var(--k-space-2) var(--k-space-3);
+    padding: var(--k-space-3) 0;
     color: var(--k-on-surface-variant);
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 150ms ease, border-color 150ms ease;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     display: inline-flex;

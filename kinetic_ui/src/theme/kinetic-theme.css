@@ -16,6 +16,8 @@
     --k-secondary-container: #03C6B2;
     --k-tertiary: #F9BD22;
     --k-error: #FFB4AB;
+    --k-error-container: #93000A;
+    --k-on-error: #690005;
     --k-on-surface: #E4E2E1;
     --k-on-surface-variant: #E4BEBA;
     --k-outline-variant: #5B403E;
@@ -59,4 +61,23 @@ body {
     font-family: var(--k-font-body);
     font-size: 0.875rem;
     line-height: 1.5;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--k-surface-highest);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--k-outline-variant);
 }

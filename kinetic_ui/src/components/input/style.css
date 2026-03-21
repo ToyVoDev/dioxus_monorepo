@@ -5,7 +5,7 @@
     color: var(--k-on-surface);
     border: 1px solid transparent;
     border-radius: var(--k-radius-default);
-    font-family: var(--k-font-sans);
+    font-family: var(--k-font-body);
     font-size: 0.8125rem;
     line-height: 1.4;
     outline: none;

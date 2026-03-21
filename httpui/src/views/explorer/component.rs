@@ -2,18 +2,16 @@ use crate::state::{AppState, SideNavItem};
 use dioxus::prelude::*;
 use kinetic_ui::{Badge, BadgeVariant, KTreeBranch, KTreeLeaf};
 
-fn method_badge_variant(method: &str) -> BadgeVariant {
-    match method.to_uppercase().as_str() {
-        "GET" => BadgeVariant::Secondary,
-        "POST" => BadgeVariant::Primary,
-        "PUT" | "PATCH" => BadgeVariant::Tertiary,
-        "DELETE" => BadgeVariant::Tertiary,
-        "OPTIONS" | "HEAD" => BadgeVariant::Muted,
+const fn method_badge_variant(method: &str) -> BadgeVariant {
+    match method.as_bytes() {
+        b"GET" => BadgeVariant::Secondary,
+        b"POST" => BadgeVariant::Primary,
+        b"PUT" | b"PATCH" | b"DELETE" => BadgeVariant::Tertiary,
         _ => BadgeVariant::Muted,
     }
 }
 
-fn header_title(nav: SideNavItem) -> &'static str {
+const fn header_title(nav: SideNavItem) -> &'static str {
     match nav {
         SideNavItem::Collections => "COLLECTIONS",
         SideNavItem::History => "HISTORY",
@@ -48,18 +46,17 @@ pub fn Explorer() -> Element {
                             initially_expanded: true,
                             label: rsx! { "{collection.name}" },
                             {
-                                let coll_requests: Vec<_> = requests()
-                                    .into_iter()
-                                    .filter(|r| r.collection_id == Some(collection.id))
-                                    .collect();
                                 rsx! {
-                                    for request in coll_requests {
+                                    for request in requests()
+                                        .into_iter()
+                                        .filter(|r| r.collection_id == Some(collection.id))
+                                    {
                                         {
                                             let req_id = request.id;
                                             let variant = method_badge_variant(&request.method);
                                             let method = request.method.clone();
                                             let name = request.name.clone();
-                                            let url = request.url.clone();
+                                            let url = request.url;
                                             rsx! {
                                                 KTreeLeaf {
                                                     selected: selected_request() == Some(req_id),
@@ -86,7 +83,9 @@ pub fn Explorer() -> Element {
                             .into_iter()
                             .filter(|r| r.collection_id.is_none())
                             .collect();
-                        if !draft_requests.is_empty() {
+                        if draft_requests.is_empty() {
+                            rsx! {}
+                        } else {
                             rsx! {
                                 KTreeBranch {
                                     initially_expanded: true,
@@ -97,7 +96,7 @@ pub fn Explorer() -> Element {
                                             let variant = method_badge_variant(&request.method);
                                             let method = request.method.clone();
                                             let name = request.name.clone();
-                                            let url = request.url.clone();
+                                            let url = request.url;
                                             rsx! {
                                                 KTreeLeaf {
                                                     selected: selected_request() == Some(req_id),
@@ -115,8 +114,6 @@ pub fn Explorer() -> Element {
                                     }
                                 }
                             }
-                        } else {
-                            rsx! {}
                         }
                     }
                 }

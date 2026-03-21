@@ -23,7 +23,7 @@
     font-family: var(--k-font-display);
     font-size: 0.625rem;
     font-weight: 700;
-    color: var(--k-on-surface);
+    color: var(--k-primary);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     text-align: center;

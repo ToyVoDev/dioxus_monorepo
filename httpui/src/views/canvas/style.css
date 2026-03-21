@@ -11,8 +11,7 @@
     display: flex;
     align-items: center;
     gap: var(--k-space-2);
-    padding: var(--k-space-3) var(--k-space-4);
-    background: var(--k-surface-low);
+    padding: var(--k-space-4) var(--k-space-6);
 }
 
 .canvas__url-input {
@@ -29,11 +28,11 @@
 .canvas__tab-content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--k-space-2) var(--k-space-4);
+    padding: 0 var(--k-space-2);
 }
 
 .canvas__response {
-    border-top: 1px solid rgba(91, 64, 62, 0.1);
+    background: var(--k-surface-low);
 }
 
 .canvas__response-header {
@@ -41,8 +40,8 @@
     align-items: center;
     gap: var(--k-space-3);
     padding: var(--k-space-2) var(--k-space-4);
-    background: var(--k-surface-low);
     cursor: pointer;
+    transition: background 150ms ease;
 }
 
 .canvas__response-header:hover {
@@ -50,8 +49,11 @@
 }
 
 .canvas__response-label {
+    font-family: var(--k-font-display);
     font-size: 0.875rem;
+    font-weight: 600;
     color: var(--k-on-surface);
+    letter-spacing: 0.02em;
 }
 
 .canvas__response-meta {
@@ -66,13 +68,16 @@
 
 .canvas__response-body {
     background: var(--k-surface-lowest);
-    padding: var(--k-space-3) var(--k-space-4);
+    padding: var(--k-space-4) var(--k-space-6);
+    margin: var(--k-space-3) var(--k-space-4);
+    border-radius: var(--k-radius-lg);
+    border: 1px solid rgba(91, 64, 62, 0.1);
     font-family: var(--k-font-mono);
     font-size: 0.75rem;
     line-height: 1.6;
     color: var(--k-on-surface);
     overflow: auto;
-    max-height: 300px;
+    max-height: 400px;
     white-space: pre;
 }
 

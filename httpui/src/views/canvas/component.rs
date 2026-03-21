@@ -1,18 +1,14 @@
-use crate::components::button::{Button, ButtonVariant};
-use crate::components::select::{
-    ButtonSelectTrigger, Select, SelectList, SelectOption, SelectValue,
-};
-use crate::state::{EditorTab, HttpResponse, KeyValue};
-use crate::state::AppState;
+use crate::state::{AppState, EditorTab, HttpResponse, KeyValue};
 use dioxus::prelude::*;
-use dioxus_free_icons::icons::md_navigation_icons::MdUnfoldMore;
 use dioxus_primitives::tabs;
 use kinetic_ui::{
-    Badge, BadgeVariant, IconButton, Input, KTable, KTableAddRow, KTableCell, KTableHeader,
+    Badge, BadgeVariant, Button, ButtonVariant, IconButton, Input, KSelect, KSelectList,
+    KSelectOption, KSelectTrigger, KSelectValue, KTable, KTableAddRow, KTableCell, KTableHeader,
     KTableInput, KTableRow,
 };
 use strum::IntoEnumIterator;
 
+#[allow(clippy::upper_case_acronyms)]
 #[derive(Debug, Clone, Copy, PartialEq, strum::EnumCount, strum::EnumIter, strum::Display)]
 enum HttpMethods {
     GET,
@@ -38,6 +34,7 @@ impl HttpMethods {
     }
 }
 
+#[allow(clippy::cast_precision_loss)]
 fn format_bytes(bytes: u64) -> String {
     if bytes < 1024 {
         format!("{bytes} B")
@@ -48,7 +45,7 @@ fn format_bytes(bytes: u64) -> String {
     }
 }
 
-fn status_badge_variant(status: u16) -> BadgeVariant {
+const fn status_badge_variant(status: u16) -> BadgeVariant {
     match status {
         200..=299 => BadgeVariant::Secondary,
         300..=399 => BadgeVariant::Tertiary,
@@ -89,7 +86,7 @@ pub fn Canvas() -> Element {
             if let Some(req) = current_request() {
                 // URL Bar
                 div { class: "canvas__urlbar",
-                    Select::<HttpMethods> {
+                    KSelect::<HttpMethods> {
                         value: method_value,
                         on_value_change: {
                             let req_id = req.id;
@@ -104,16 +101,14 @@ pub fn Canvas() -> Element {
                                 }
                             }
                         },
-                        ButtonSelectTrigger {
+                        KSelectTrigger {
                             aria_label: "HTTP Method",
-                            variant: ButtonVariant::Ghost,
-                            icon: MdUnfoldMore,
-                            SelectValue { style: "font-size: small;" }
+                            KSelectValue { style: "font-size: small;" }
                         }
-                        SelectList { aria_label: "HTTP Method",
+                        KSelectList { aria_label: "HTTP Method",
                             {HttpMethods::iter().enumerate().map(|(i, option)| {
                                 rsx! {
-                                    SelectOption::<HttpMethods> {
+                                    KSelectOption::<HttpMethods> {
                                         index: i,
                                         value: option,
                                         text_value: option.to_string(),
@@ -169,7 +164,7 @@ pub fn Canvas() -> Element {
 
                 // Editor Tabs
                 div { class: "canvas__editor",
-                    {render_editor_tabs(app_state, req.id, req.params.clone(), req.headers.clone())}
+                    {render_editor_tabs(app_state, req.id, req.params.clone(), req.headers)}
                 }
 
                 // Response Section
@@ -231,6 +226,7 @@ pub fn Canvas() -> Element {
     }
 }
 
+#[allow(clippy::needless_pass_by_value)]
 fn render_editor_tabs(
     mut app_state: AppState,
     request_id: i32,
@@ -243,10 +239,9 @@ fn render_editor_tabs(
     rsx! {
         tabs::Tabs {
             class: "k-tabs",
-            default_value: active_tab.clone(),
+            default_value: active_tab,
             on_value_change: move |val: String| {
                 let tab = match val.as_str() {
-                    "Params" => EditorTab::Params,
                     "Authorization" => EditorTab::Authorization,
                     "Headers" => EditorTab::Headers,
                     "Body" => EditorTab::Body,
@@ -275,7 +270,7 @@ fn render_editor_tabs(
                 value: "Params".to_string(),
                 index: 0usize,
                 div { class: "canvas__tab-content",
-                    {render_kv_table(app_state, request_id, params, KvKind::Params)}
+                    {render_kv_table(app_state, request_id, &params, KvKind::Params)}
                 }
             }
 
@@ -293,7 +288,7 @@ fn render_editor_tabs(
                 value: "Headers".to_string(),
                 index: 2usize,
                 div { class: "canvas__tab-content",
-                    {render_kv_table(app_state, request_id, headers, KvKind::Headers)}
+                    {render_kv_table(app_state, request_id, &headers, KvKind::Headers)}
                 }
             }
 
@@ -327,15 +322,15 @@ enum KvKind {
 fn render_kv_table(
     mut app_state: AppState,
     request_id: i32,
-    items: Vec<KeyValue>,
+    items: &[KeyValue],
     kind: KvKind,
 ) -> Element {
     rsx! {
         KTable {
-            KTableHeader { columns: vec!["KEY".to_string(), "VALUE".to_string(), "DESCRIPTION".to_string(), "".to_string()] }
+            KTableHeader { columns: vec!["KEY".to_string(), "VALUE".to_string(), "DESCRIPTION".to_string(), String::new()] }
             tbody {
                 for item in items.iter() {
-                    {render_kv_row(app_state, request_id, item.clone(), kind)}
+                    {render_kv_row(app_state, request_id, item, kind)}
                 }
             }
         }
@@ -368,7 +363,7 @@ fn render_kv_table(
 fn render_kv_row(
     mut app_state: AppState,
     request_id: i32,
-    item: KeyValue,
+    item: &KeyValue,
     kind: KvKind,
 ) -> Element {
     let item_id = item.id;
@@ -464,6 +459,9 @@ fn render_kv_row(
     }
 }
 
+#[allow(clippy::future_not_send)]
+#[allow(clippy::cast_possible_truncation)]
+#[allow(clippy::large_types_passed_by_value)]
 async fn send_request(
     mut app_state: AppState,
     method: String,
@@ -476,23 +474,23 @@ async fn send_request(
     let client = reqwest::Client::new();
 
     // Build URL with query params
-    let request_url = if let Ok(mut parsed) = reqwest::Url::parse(&url) {
-        let enabled_params: Vec<_> = params
-            .iter()
-            .filter(|p| p.enabled && !p.key.is_empty())
-            .collect();
-        if !enabled_params.is_empty() {
-            {
+    let request_url = reqwest::Url::parse(&url).map_or_else(
+        |_| url.clone(),
+        |mut parsed| {
+            let enabled_params: Vec<_> = params
+                .iter()
+                .filter(|p| p.enabled && !p.key.is_empty())
+                .collect();
+            if !enabled_params.is_empty() {
                 let mut query_pairs = parsed.query_pairs_mut();
                 for p in &enabled_params {
                     query_pairs.append_pair(&p.key, &p.value);
                 }
+                drop(query_pairs);
             }
-        }
-        parsed.to_string()
-    } else {
-        url.clone()
-    };
+            parsed.to_string()
+        },
+    );
 
     let mut req_builder = match method.to_uppercase().as_str() {
         "POST" => client.post(&request_url),
@@ -510,10 +508,10 @@ async fn send_request(
     }
 
     // Add body if present
-    if let Some(body_str) = &body {
-        if !body_str.is_empty() {
-            req_builder = req_builder.body(body_str.clone());
-        }
+    if let Some(body_str) = &body
+        && !body_str.is_empty()
+    {
+        req_builder = req_builder.body(body_str.clone());
     }
 
     let result = req_builder.send().await;
@@ -534,25 +532,22 @@ async fn send_request(
                     let size_bytes = body_text.len() as u64;
                     let http_resp = HttpResponse {
                         status,
-                        status_text: status_text.clone(),
-                        body: body_text.clone(),
+                        status_text,
+                        body: body_text,
                         headers: resp_headers,
                         time_ms: elapsed,
                         size_bytes,
                     };
                     app_state.http_response.set(Some(http_resp));
-                    // Backward compat
-                    *app_state.response.write() =
-                        format!("HTTP {status} {status_text}\n\n{body_text}");
                 }
                 Err(e) => {
-                    *app_state.response.write() = format!("Error reading response body: {e}");
+                    eprintln!("Error reading response body: {e}");
                     app_state.http_response.set(None);
                 }
             }
         }
         Err(e) => {
-            *app_state.response.write() = format!("Request failed: {e}");
+            eprintln!("Request failed: {e}");
             app_state.http_response.set(None);
         }
     }

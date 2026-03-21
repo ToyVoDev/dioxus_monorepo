@@ -5,6 +5,12 @@
     background: var(--k-surface-highest);
     border-radius: var(--k-radius-full);
     padding: 6px 12px;
+    border: 1px solid transparent;
+    transition: border-color 150ms ease, background 150ms ease;
+}
+
+.k-search-input:focus-within {
+    border-color: rgba(91, 64, 62, 0.3);
 }
 
 .k-search-input__icon {
