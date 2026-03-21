@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::{AppShell, Sidebar};
+use dioxus_music_ui::PlayerBar;
+use kinetic_ui::KineticTheme;
+use views::mobile_nav::MobileNav;
 use views::Home;
 
 mod views;
@@ -29,13 +31,13 @@ fn App() -> Element {
 #[component]
 fn MobileLayout() -> Element {
     rsx! {
-        AppShell {
-            sidebar: rsx! {
-                Sidebar {
-                    Link { to: Route::Home {}, "Home" }
-                }
-            },
-            Outlet::<Route> {}
+        KineticTheme {
+            main {
+                style: "padding-bottom: 128px; min-height: 100vh; background: var(--k-surface);",
+                Outlet::<Route> {}
+            }
+            PlayerBar { compact: true }
+            MobileNav {}
         }
     }
 }
