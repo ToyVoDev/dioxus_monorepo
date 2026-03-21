@@ -5,3 +5,38 @@ body {
   height: 100%;
   overflow: hidden;
 }
+
+/* macOS drag regions — invisible overlays for window dragging */
+.drag-region-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 31px;
+  z-index: 100;
+  cursor: default;
+}
+
+.drag-region-side {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 256px;
+  z-index: 100;
+  cursor: default;
+}
+
+/* Interactive elements sit above drag regions */
+.app-shell button,
+.app-shell a,
+.app-shell input,
+.app-shell select,
+.app-shell .sidebar__nav-item,
+.app-shell .k-search-input,
+.app-shell .k-icon-button,
+.app-shell .k-select__trigger,
+.app-shell .player-bar__btn {
+  position: relative;
+  z-index: 200;
+}

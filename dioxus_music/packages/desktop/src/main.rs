@@ -15,6 +15,30 @@ enum Route {
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
 
+#[cfg(feature = "desktop")]
+fn main() {
+    use dioxus::desktop::Config;
+    use dioxus::desktop::tao::window::WindowBuilder;
+
+    let mut wb = WindowBuilder::new().with_title("Kinetic Music");
+
+    #[cfg(target_os = "macos")]
+    {
+        use dioxus::desktop::tao::platform::macos::WindowBuilderExtMacOS;
+        wb = wb
+            .with_titlebar_transparent(true)
+            .with_fullsize_content_view(true)
+            .with_title_hidden(true);
+    }
+
+    let config = Config::new().with_window(wb);
+
+    dioxus::LaunchBuilder::desktop()
+        .with_cfg(config)
+        .launch(App);
+}
+
+#[cfg(not(feature = "desktop"))]
 fn main() {
     dioxus::launch(App);
 }
@@ -27,10 +51,33 @@ fn App() -> Element {
     }
 }
 
+#[cfg(feature = "desktop")]
+fn drag_regions() -> Element {
+    rsx! {
+        div {
+            class: "drag-region-top",
+            onmousedown: move |_| { dioxus::desktop::window().drag(); },
+            ondoubleclick: move |_| { dioxus::desktop::window().toggle_maximized(); },
+        }
+        div {
+            class: "drag-region-side",
+            onmousedown: move |_| { dioxus::desktop::window().drag(); },
+            ondoubleclick: move |_| { dioxus::desktop::window().toggle_maximized(); },
+        }
+    }
+}
+
+#[cfg(not(feature = "desktop"))]
+fn drag_regions() -> Element {
+    rsx! {}
+}
+
 #[component]
 fn DesktopLayout() -> Element {
     use_player_state_provider();
     rsx! {
+        // Drag regions for macOS window dragging
+        {drag_regions()}
         AppShell {
             sidebar: rsx! {
                 Sidebar {
