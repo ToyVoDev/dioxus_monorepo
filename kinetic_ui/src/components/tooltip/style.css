@@ -1,0 +1,16 @@
+.k-tooltip {
+    position: relative;
+    display: inline-flex;
+}
+
+.k-tooltip__content {
+    background: var(--k-surface-highest);
+    color: var(--k-on-surface);
+    padding: 4px 8px;
+    border-radius: var(--k-radius-sm);
+    font-size: 0.75rem;
+    box-shadow: var(--k-shadow-float);
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+}
