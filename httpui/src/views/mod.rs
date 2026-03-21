@@ -1,4 +1,5 @@
 pub mod collection;
+pub mod explorer;
 pub mod layout_grid;
 pub mod library;
 pub mod navbar;

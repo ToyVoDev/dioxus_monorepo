@@ -1,3 +1,4 @@
+use crate::views::explorer::Explorer;
 use crate::views::sidenav::SideNav;
 use dioxus::prelude::*;
 
@@ -7,9 +8,7 @@ pub fn LayoutGrid(children: Element) -> Element {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         div { id: "layout-grid",
             SideNav {}
-            div { style: "grid-area: explorer; background: var(--k-surface-high);",
-                "Explorer placeholder"
-            }
+            Explorer {}
             div { style: "grid-area: topbar; background: var(--k-surface-low);",
                 "TopBar placeholder"
             }
