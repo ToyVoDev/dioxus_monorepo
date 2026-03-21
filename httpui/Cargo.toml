@@ -8,8 +8,9 @@ edition = "2024"
 
 [dependencies]
 dioxus = { workspace = true, features = ["router"] }
-dioxus-free-icons = { workspace = true, features = ["codicons", "material-design-icons-navigation", "material-design-icons-file"] }
+dioxus-free-icons = { workspace = true, features = ["codicons", "material-design-icons-navigation", "material-design-icons-file", "material-design-icons-action"] }
 dioxus-primitives = { workspace = true, default-features = false }
+kinetic_ui = { workspace = true }
 reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true, features = ["derive"] }
 strum = { workspace = true, features = ["derive"] }

@@ -1,0 +1,20 @@
+[package]
+name = "kinetic_ui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dioxus = { workspace = true, features = ["router"] }
+dioxus-free-icons = { workspace = true, features = [
+    "codicons",
+    "material-design-icons-navigation",
+    "material-design-icons-file",
+    "material-design-icons-action",
+    "material-design-icons-content",
+] }
+dioxus-primitives = { workspace = true, default-features = false }
+strum = { workspace = true, features = ["derive"] }
+
+[lints.clippy]
+pedantic = "deny"
+nursery = "deny"

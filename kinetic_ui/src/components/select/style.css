@@ -1,0 +1,102 @@
+.k-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.k-select__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--k-space-2);
+    padding: var(--k-space-2) var(--k-space-3);
+    background: var(--k-surface-high);
+    color: var(--k-on-surface);
+    border: 1px solid rgba(91, 64, 62, 0.12);
+    border-radius: var(--k-radius-default);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.k-select__trigger:hover {
+    background: var(--k-surface-highest);
+    border-color: rgba(91, 64, 62, 0.2);
+}
+
+.k-select__trigger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.k-select__trigger svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+}
+
+.k-select__list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--k-space-1);
+    background: var(--k-surface-highest);
+    border-radius: var(--k-radius-lg);
+    box-shadow: var(--k-shadow-float);
+    backdrop-filter: blur(24px);
+    padding: var(--k-space-1);
+    min-width: 10rem;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Align dropdown to right edge when near the window boundary */
+.k-select--align-right .k-select__list {
+    left: auto;
+    right: 0;
+}
+
+.k-select__option {
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-2);
+    padding: var(--k-space-2) var(--k-space-3);
+    border-radius: var(--k-radius-sm);
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--k-on-surface);
+    transition: background 0.1s ease;
+}
+
+.k-select__option:hover,
+.k-select__option[data-highlighted="true"] {
+    background: var(--k-surface-high);
+}
+
+.k-select__option[data-state="checked"] {
+    font-weight: 500;
+}
+
+.k-select__option[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.k-select__group-label {
+    padding: var(--k-space-2) var(--k-space-3);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--k-on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.k-select__check-icon {
+    width: 14px;
+    height: 14px;
+    stroke: var(--k-primary);
+    stroke-width: 2.5;
+    fill: none;
+}

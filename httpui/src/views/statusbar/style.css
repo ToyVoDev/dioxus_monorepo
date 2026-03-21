@@ -1,0 +1,11 @@
+.statusbar {
+    grid-area: statusbar;
+    background: var(--k-surface-low);
+    height: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--k-space-3);
+    font-size: 0.6875rem;
+    color: var(--k-on-surface-variant);
+    font-family: var(--k-font-mono);
+}
