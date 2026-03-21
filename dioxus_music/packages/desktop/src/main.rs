@@ -32,7 +32,7 @@ fn DesktopLayout() -> Element {
         AppShell {
             sidebar: rsx! {
                 Sidebar {
-                    Link { to: Route::Home {}, "Home" }
+                    Link { class: "sidebar__nav-item", to: Route::Home {}, "Home" }
                 }
             },
             Outlet::<Route> {}

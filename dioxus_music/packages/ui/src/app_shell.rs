@@ -1,26 +1,25 @@
+use crate::header::Header;
 use crate::player_bar::PlayerBar;
 use crate::queue_panel::QueuePanel;
 use dioxus::prelude::*;
 use kinetic_ui::KineticTheme;
 
-const APP_SHELL_CSS: Asset = asset!("/assets/styling/app_shell.css");
+const APP_SHELL_CSS: Asset = asset!("/assets/styling/app-shell.css");
 
 #[component]
 pub fn AppShell(sidebar: Element, children: Element) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: APP_SHELL_CSS }
-
         KineticTheme {
             div { class: "app-shell",
-                div { class: "app-shell__sidebar",
-                    {sidebar}
-                }
-                div { class: "app-shell__main",
+                {sidebar}
+                Header {}
+                main { class: "app-shell__content",
                     {children}
                     QueuePanel {}
                 }
-                PlayerBar {}
             }
+            PlayerBar {}
         }
     }
 }

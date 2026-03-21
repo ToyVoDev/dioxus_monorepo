@@ -1,0 +1,29 @@
+.app-shell {
+    display: grid;
+    grid-template-columns: 256px 1fr;
+    grid-template-rows: 56px 1fr;
+    grid-template-areas:
+        "sidebar  header"
+        "sidebar  content";
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: var(--k-surface);
+}
+
+.app-shell__content {
+    grid-area: content;
+    overflow-y: auto;
+    padding-bottom: 88px;
+}
+
+@media (max-width: 768px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px 1fr;
+        grid-template-areas:
+            "header"
+            "content";
+    }
+    .app-shell .sidebar { display: none; }
+}

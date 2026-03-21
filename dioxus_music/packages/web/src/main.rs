@@ -74,7 +74,7 @@ fn AppLayout() -> Element {
         AppShell {
             sidebar: rsx! {
                 Sidebar {
-                    Link { to: Route::Library {}, "All Songs" }
+                    Link { class: "sidebar__nav-item", to: Route::Library {}, "All Songs" }
                     PlaylistSidebarSection {}
                 }
             },
