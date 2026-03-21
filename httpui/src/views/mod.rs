@@ -1,11 +1,7 @@
-pub mod collection;
+pub mod canvas;
+pub mod explorer;
 pub mod layout_grid;
-pub mod library;
-pub mod navbar;
-pub mod request;
-pub mod request_editor;
-pub mod response_viewer;
 pub mod settings;
-pub mod space;
-pub mod tabbar;
-pub mod urlbar;
+pub mod sidenav;
+pub mod statusbar;
+pub mod topbar;

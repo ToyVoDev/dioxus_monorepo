@@ -1,0 +1,22 @@
+.k-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--k-radius-default);
+    border: none;
+    background: transparent;
+    color: var(--k-on-surface-variant);
+    cursor: pointer;
+    transition: background 150ms ease, color 150ms ease;
+}
+
+.k-icon-button:hover {
+    background: var(--k-surface-high);
+}
+
+.k-icon-button[data-active="true"] {
+    color: var(--k-primary);
+    background: var(--k-surface-high);
+}
