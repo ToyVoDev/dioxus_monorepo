@@ -11,7 +11,10 @@ fn format_duration(secs: i32) -> String {
 }
 
 #[component]
-pub fn TrackList(tracks: Vec<TrackSummary>, #[props(default = false)] show_download_status: bool) -> Element {
+pub fn TrackList(
+    tracks: Vec<TrackSummary>,
+    #[props(default = false)] show_download_status: bool,
+) -> Element {
     let mut player = use_player_state();
     let current_id = player.read().current_track.as_ref().map(|t| t.id);
 

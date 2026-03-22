@@ -36,10 +36,7 @@ pub fn KTabList(props: TabListProps) -> Element {
 }
 
 #[component]
-pub fn KTabTrigger(
-    #[props(default)] badge: Option<u32>,
-    props: TabTriggerProps,
-) -> Element {
+pub fn KTabTrigger(#[props(default)] badge: Option<u32>, props: TabTriggerProps) -> Element {
     rsx! {
         tabs::TabTrigger {
             class: "k-tabs__trigger",

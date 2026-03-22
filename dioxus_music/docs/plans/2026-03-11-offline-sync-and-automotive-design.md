@@ -45,6 +45,7 @@ dioxus_music/packages/
 ### Local Storage
 
 **Desktop (SQLite via Diesel):**
+
 - Mirror server schema: `tracks`, `playlists`, `playlist_tracks`
 - Additional fields:
   - `tracks.local_path: Option<String>` — path to cached audio file
@@ -54,6 +55,7 @@ dioxus_music/packages/
   - `cache_meta` table: key-value for last sync timestamp, cache size limit, etc.
 
 **Android (Room) / iOS (Core Data):**
+
 - Same logical schema, platform-native ORM
 - Exposed to Rust via UniFFI trait bridge
 
@@ -111,6 +113,7 @@ pub trait PlatformAudio: Send + Sync {
 ### PlayerState Refactor
 
 Current `PlayerState` controls an HTML5 `<audio>` element via JS eval. Must become platform-agnostic:
+
 - `PlayerState` calls `PlatformAudio` trait methods
 - Each platform provides a concrete implementation
 - Web keeps current `document::eval` approach
@@ -187,12 +190,14 @@ GET  /api/track/{id}/cover             → album art (extracted by lofty)
 ## Implementation Phases
 
 ### Phase 1 — Foundation
+
 - Server: `/health`, incremental sync (`?since=`), `updated_at` columns, `Content-Length` on streams
 - Album art extraction + `/api/track/{id}/cover`
 - `PlatformAudio` / `PlatformStorage` trait definitions
 - Desktop: SQLite local DB via Diesel, sync engine, playback routing
 
 ### Phase 2 — Desktop Offline Experience
+
 - Connectivity detection + `ConnectionStatus` signal
 - Download manager: background queue, progress tracking
 - Playlist sync toggle UI
@@ -201,6 +206,7 @@ GET  /api/track/{id}/cover             → album art (extracted by lofty)
 - Offline-aware views (grey out unavailable tracks when offline)
 
 ### Phase 3 — Mobile App (Android First)
+
 - Dioxus mobile UI — port views from web, adapt for touch
 - Kotlin: Room DB implementing `PlatformStorage` via UniFFI
 - ExoPlayer implementing `PlatformAudio`
@@ -208,18 +214,21 @@ GET  /api/track/{id}/cover             → album art (extracted by lofty)
 - Connectivity detection via Android network APIs
 
 ### Phase 4 — Android Auto
+
 - `MusicMediaBrowserService` + browse tree from Room DB
 - `MediaSession` as shared playback authority
 - Refactor `PlayerState` on Android to read/write through MediaSession
 - Album art in now-playing metadata
 
 ### Phase 5 — iOS + CarPlay
+
 - Swift: Core Data + AVQueuePlayer
 - CarPlay scene delegate + templates
 - `MPNowPlayingInfoCenter` + `MPRemoteCommandCenter`
 - Same sync/cache model as Android
 
 ### Future (Not In Scope)
+
 - PWA offline support for web
 - Range request support for resumable downloads
 - Search in Android Auto / CarPlay

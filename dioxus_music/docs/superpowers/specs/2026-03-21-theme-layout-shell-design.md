@@ -16,6 +16,7 @@ This spec does NOT cover view content (Library grid, Album detail, Now Playing, 
 ## 2. Approach
 
 **Rebuild layout shell, preserve domain components (Approach B):**
+
 - AppShell and Sidebar rebuilt from scratch to match the new layout
 - New Header component replaces Navbar
 - PlayerBar restyled as floating glassmorphic overlay
@@ -24,6 +25,7 @@ This spec does NOT cover view content (Library grid, Album detail, Now Playing, 
 - `packages/ui` gains `kinetic_ui` as a dependency
 
 **Platform strategy (Approach C):**
+
 - Web and desktop use the sidebar layout; CSS media query collapses sidebar at narrow widths
 - Mobile crate uses its own MobileLayout with bottom tab nav, no sidebar
 - Shared components in `packages/ui` are platform-agnostic
@@ -33,6 +35,7 @@ This spec does NOT cover view content (Library grid, Album detail, Now Playing, 
 ## 3. Dependencies
 
 `packages/ui/Cargo.toml` adds:
+
 ```toml
 kinetic_ui = { workspace = true }
 ```
@@ -81,11 +84,18 @@ Content area has `padding-bottom: 128px` (player bar + bottom nav height).
 ### 4.3 Responsive Behavior (Web/Desktop only)
 
 At viewport widths below `768px`, CSS hides the sidebar:
+
 ```css
 @media (max-width: 768px) {
-  .app-shell { grid-template-columns: 1fr; }
-  .sidebar { display: none; }
-  .player-bar { left: 16px; }  /* no sidebar offset */
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none;
+  }
+  .player-bar {
+    left: 16px;
+  } /* no sidebar offset */
 }
 ```
 
@@ -104,12 +114,14 @@ The header remains visible and provides navigation when the sidebar is hidden. T
 **Note:** AppShell keeps the `sidebar: Element` prop. This is necessary because each platform crate defines its own `Route` enum — the Sidebar can't import route types from web/desktop/mobile. Platform crates wrap `Sidebar` with their route-specific `Link` elements and pass it as the `sidebar` prop. Header and PlayerBar are rendered internally by AppShell. The mobile crate does NOT use AppShell — it builds its own layout.
 
 **Renders:**
+
 - `KineticTheme` wrapper (loads all token CSS)
 - Grid container with Sidebar + Header + content area
 - QueuePanel (rendered inside the content area, toggled by PlayerState)
 - PlayerBar (floating, outside the grid)
 
 **Desktop structure:**
+
 ```
 KineticTheme {
   div.app-shell {
@@ -125,6 +137,7 @@ KineticTheme {
 ```
 
 **Mobile structure (in mobile crate's layout wrapper):**
+
 ```
 KineticTheme {
   div.app-shell--mobile {
@@ -144,6 +157,7 @@ KineticTheme {
 **Props:** `children: Element` — platform crates provide route-specific `Link` elements as children, styled with `.sidebar__nav-item` CSS class. This preserves the multi-platform architecture where each platform defines its own routes.
 
 **Structure (top to bottom):**
+
 1. **Brand** — "MONOLITH" in Space Grotesk, `--k-primary` color. Subtitle: "Offline-First" badge in `--k-on-surface-variant`, small monospace. This matches the Stitch mockup where "MONOLITH" is the sidebar brand.
 2. **Nav items** (icon + label, horizontal per item):
    - Artists
@@ -164,6 +178,7 @@ KineticTheme {
 **Props:** None
 
 **Structure (left to right):**
+
 1. "KINETIC" brand text in Space Grotesk, `--k-primary` — this is the app brand, distinct from the "MONOLITH" engine brand in the sidebar
 2. Spacer (flex: 1)
 3. `KSearchInput` — placeholder "Search...", non-functional
@@ -186,6 +201,7 @@ KineticTheme {
 **Visual changes only:**
 
 **Full layout (default, desktop/web):**
+
 - Album art thumbnail (40x40, `--k-radius-default` rounding) — placeholder colored div if no track
 - Track title (`--k-on-surface`) + artist (`--k-on-surface-variant`), stacked
 - Spacer
@@ -195,12 +211,14 @@ KineticTheme {
 - Volume slider (hidden below 1024px width via CSS media query)
 
 **Compact layout (`compact: true`, mobile crate):**
+
 - Album art thumbnail (32x32)
 - Track title (single line, truncated)
 - Play/pause + next buttons only
 - No progress bar, no volume
 
 **Positioning — centered pill style matching album_detail mockup:**
+
 - Desktop: `position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); max-width: 800px; width: calc(100% - 272px - 32px);` (centered, respecting sidebar width)
 - Narrow desktop (below 768px): `width: calc(100% - 32px);` (no sidebar offset)
 - Mobile: `position: fixed; bottom: 72px; left: 8px; right: 8px;` (above MobileNav)
@@ -216,6 +234,7 @@ KineticTheme {
 Since this is only for the mobile crate, it lives in the mobile package.
 
 **Structure:** Fixed bottom bar with 4 tab icons:
+
 - Home (house icon)
 - Search (search icon)
 - Library (music note / book icon)
@@ -240,6 +259,7 @@ These components keep their existing props and behavior. Only CSS changes, excep
 **Current:** Div-based CSS grid layout (NOT an HTML `<table>`) with `.track-list__*` classes and blue accent (#6d85c6).
 
 **Changes:**
+
 - Replace all color values with kinetic tokens (`--k-on-surface`, `--k-on-surface-variant`, `--k-primary`)
 - Row hover: `background: var(--k-surface-low)`
 - Active track row: `border-left: 2px solid var(--k-primary)` + primary text color for title
@@ -254,6 +274,7 @@ These components keep their existing props and behavior. Only CSS changes, excep
 **Current:** Right-side sliding panel, dark background, drag-to-reorder.
 
 **Changes:**
+
 - Background: `--k-surface-high`
 - Current track: primary left border removed (no-line rule) — instead use `--k-surface-highest` background + `--k-primary` text color for title
 - Track title: `--k-on-surface`
@@ -269,6 +290,7 @@ These components keep their existing props and behavior. Only CSS changes, excep
 **Current:** Modal overlay with form fields and genre chip UI.
 
 **Changes:**
+
 - Overlay: `var(--k-glass-surface)` + `backdrop-filter: blur(24px)`
 - Modal card: `--k-surface-high`, `--k-radius-lg` rounding, `--k-shadow-float`
 - Form inputs: kinetic_ui `Input` component
@@ -284,6 +306,7 @@ These components keep their existing props and behavior. Only CSS changes, excep
 ### 7.1 Remove old CSS files
 
 Delete all files in `packages/ui/assets/styling/`:
+
 - `app_shell.css`
 - `sidebar.css`
 - `player_bar.css`
@@ -295,6 +318,7 @@ Delete all files in `packages/ui/assets/styling/`:
 ### 7.2 New CSS files
 
 Each restyled component gets a new CSS file using kinetic tokens and `k-` BEM naming:
+
 - `packages/ui/assets/styling/app-shell.css`
 - `packages/ui/assets/styling/sidebar.css`
 - `packages/ui/assets/styling/header.css`
@@ -304,6 +328,7 @@ Each restyled component gets a new CSS file using kinetic tokens and `k-` BEM na
 - `packages/ui/assets/styling/playlist-form.css`
 
 Platform-specific CSS:
+
 - `packages/mobile/assets/mobile-nav.css`
 - `packages/web/assets/main.css` (updated)
 - `packages/desktop/assets/main.css` (updated)

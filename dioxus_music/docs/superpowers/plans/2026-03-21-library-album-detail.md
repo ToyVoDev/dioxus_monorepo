@@ -18,31 +18,32 @@
 
 ### New files
 
-| File | Responsibility |
-|---|---|
-| `packages/web/src/views/album_detail.rs` | Album Detail view |
-| `packages/web/src/views/artists.rs` | Artists placeholder view |
-| `packages/web/src/views/downloads.rs` | Downloads placeholder view |
-| `packages/web/src/views/playlists.rs` | Playlists full view (promotes sidebar content) |
-| `packages/web/assets/library.css` | Library album grid CSS |
-| `packages/web/assets/album_detail.css` | Album Detail CSS |
-| `packages/ui/assets/styling/settings-dropdown.css` | Settings dropdown CSS |
+| File                                               | Responsibility                                 |
+| -------------------------------------------------- | ---------------------------------------------- |
+| `packages/web/src/views/album_detail.rs`           | Album Detail view                              |
+| `packages/web/src/views/artists.rs`                | Artists placeholder view                       |
+| `packages/web/src/views/downloads.rs`              | Downloads placeholder view                     |
+| `packages/web/src/views/playlists.rs`              | Playlists full view (promotes sidebar content) |
+| `packages/web/assets/library.css`                  | Library album grid CSS                         |
+| `packages/web/assets/album_detail.css`             | Album Detail CSS                               |
+| `packages/ui/assets/styling/settings-dropdown.css` | Settings dropdown CSS                          |
 
 ### Modified files
 
-| File | Changes |
-|---|---|
-| `packages/web/src/main.rs` | New routes, updated sidebar nav links |
-| `packages/web/src/views/mod.rs` | New view modules |
-| `packages/web/src/views/library.rs` | Rewrite: album grid + all-songs toggle |
-| `packages/ui/src/header.rs` | Add settings dropdown |
-| `packages/ui/src/lib.rs` | Export AlbumSummary + grouping function |
+| File                                | Changes                                 |
+| ----------------------------------- | --------------------------------------- |
+| `packages/web/src/main.rs`          | New routes, updated sidebar nav links   |
+| `packages/web/src/views/mod.rs`     | New view modules                        |
+| `packages/web/src/views/library.rs` | Rewrite: album grid + all-songs toggle  |
+| `packages/ui/src/header.rs`         | Add settings dropdown                   |
+| `packages/ui/src/lib.rs`            | Export AlbumSummary + grouping function |
 
 ---
 
 ## Task 1: Add AlbumSummary model + grouping function
 
 **Files:**
+
 - Create: `packages/ui/src/album_utils.rs`
 - Modify: `packages/ui/src/lib.rs`
 
@@ -96,6 +97,7 @@ pub fn group_tracks_into_albums(tracks: &[TrackSummary]) -> Vec<AlbumSummary> {
 - [ ] **Step 2: Update `packages/ui/src/lib.rs`**
 
 Add:
+
 ```rust
 mod album_utils;
 pub use album_utils::{AlbumSummary, group_tracks_into_albums};
@@ -117,6 +119,7 @@ git commit -m "feat(dioxus_music): add AlbumSummary model and track grouping uti
 ## Task 2: Expand routes + add placeholder views
 
 **Files:**
+
 - Create: `packages/web/src/views/artists.rs`
 - Create: `packages/web/src/views/downloads.rs`
 - Create: `packages/web/src/views/playlists.rs`
@@ -126,6 +129,7 @@ git commit -m "feat(dioxus_music): add AlbumSummary model and track grouping uti
 - [ ] **Step 1: Create placeholder views**
 
 `artists.rs`:
+
 ```rust
 use dioxus::prelude::*;
 
@@ -166,6 +170,7 @@ pub fn Playlists() -> Element {
 - [ ] **Step 2: Update `packages/web/src/views/mod.rs`**
 
 Add new modules:
+
 ```rust
 mod library;
 pub use library::Library;
@@ -216,6 +221,7 @@ Update imports at the top of `main.rs` to include the new view types.
 - [ ] **Step 4: Update sidebar nav links in AppLayout**
 
 Replace the current sidebar children with route-mapped nav items:
+
 ```rust
 Sidebar {
     Link { class: "sidebar__nav-item", to: Route::Artists {}, "Artists" }
@@ -242,6 +248,7 @@ git commit -m "feat(dioxus_music): expand routes with placeholder views for Arti
 ## Task 3: Rewrite Library view as album grid
 
 **Files:**
+
 - Rewrite: `packages/web/src/views/library.rs`
 - Create: `packages/web/assets/library.css`
 
@@ -249,90 +256,90 @@ git commit -m "feat(dioxus_music): expand routes with placeholder views for Arti
 
 ```css
 .library {
-    padding: var(--k-space-6);
+  padding: var(--k-space-6);
 }
 
 .library__header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: var(--k-space-6);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--k-space-6);
 }
 
 .library__title {
-    font-family: var(--k-font-display);
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--k-on-surface);
+  font-family: var(--k-font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--k-on-surface);
 }
 
 .library__subtitle {
-    color: var(--k-on-surface-variant);
-    font-size: 0.875rem;
-    margin-top: var(--k-space-1);
+  color: var(--k-on-surface-variant);
+  font-size: 0.875rem;
+  margin-top: var(--k-space-1);
 }
 
 .library__toggle {
-    background: transparent;
-    border: none;
-    color: var(--k-primary);
-    font-size: 0.875rem;
-    cursor: pointer;
-    padding: var(--k-space-1) var(--k-space-2);
-    border-radius: var(--k-radius-default);
-    transition: background 150ms ease;
+  background: transparent;
+  border: none;
+  color: var(--k-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: var(--k-space-1) var(--k-space-2);
+  border-radius: var(--k-radius-default);
+  transition: background 150ms ease;
 }
 
 .library__toggle:hover {
-    background: var(--k-surface-high);
+  background: var(--k-surface-high);
 }
 
 .album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: var(--k-space-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--k-space-4);
 }
 
 .album-card {
-    cursor: pointer;
-    transition: transform 150ms ease;
-    text-decoration: none;
-    color: inherit;
-    display: block;
+  cursor: pointer;
+  transition: transform 150ms ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .album-card:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .album-card__art {
-    aspect-ratio: 1;
-    background: var(--k-surface-highest);
-    border-radius: var(--k-radius-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--k-font-display);
-    font-size: 2rem;
-    color: var(--k-on-surface-variant);
-    margin-bottom: var(--k-space-2);
-    overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--k-surface-highest);
+  border-radius: var(--k-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--k-font-display);
+  font-size: 2rem;
+  color: var(--k-on-surface-variant);
+  margin-bottom: var(--k-space-2);
+  overflow: hidden;
 }
 
 .album-card__name {
-    font-size: 0.875rem;
-    color: var(--k-on-surface);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 0.875rem;
+  color: var(--k-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .album-card__artist {
-    font-size: 0.75rem;
-    color: var(--k-on-surface-variant);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 0.75rem;
+  color: var(--k-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 ```
 
@@ -421,12 +428,14 @@ git commit -m "feat(dioxus_music): rewrite Library view as album grid with all-s
 ## Task 4: Create Album Detail view
 
 **Files:**
+
 - Create: `packages/web/src/views/album_detail.rs`
 - Create: `packages/web/assets/album_detail.css`
 
 - [ ] **Step 1: Create `packages/web/assets/album_detail.css`**
 
 Key classes:
+
 - `.album-detail` — padding
 - `.album-detail__back` — back link styling (muted, hover primary)
 - `.album-detail__header` — CSS grid: `grid-template-columns: 200px 1fr`, gap
@@ -555,6 +564,7 @@ git commit -m "feat(dioxus_music): add Album Detail view with asymmetric header 
 ## Task 5: Add settings dropdown to Header
 
 **Files:**
+
 - Create: `packages/ui/assets/styling/settings-dropdown.css`
 - Modify: `packages/ui/src/header.rs`
 
@@ -564,40 +574,40 @@ Create `packages/ui/assets/styling/settings-dropdown.css`:
 
 ```css
 .settings-dropdown {
-    position: relative;
+  position: relative;
 }
 
 .settings-dropdown__menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: var(--k-space-1);
-    background: var(--k-surface-highest);
-    border-radius: var(--k-radius-lg);
-    box-shadow: var(--k-shadow-float);
-    padding: var(--k-space-1);
-    min-width: 180px;
-    z-index: 1000;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--k-space-1);
+  background: var(--k-surface-highest);
+  border-radius: var(--k-radius-lg);
+  box-shadow: var(--k-shadow-float);
+  padding: var(--k-space-1);
+  min-width: 180px;
+  z-index: 1000;
 }
 
 .settings-dropdown__item {
-    display: flex;
-    align-items: center;
-    gap: var(--k-space-2);
-    padding: var(--k-space-2) var(--k-space-3);
-    border-radius: var(--k-radius-sm);
-    color: var(--k-on-surface);
-    font-size: 0.875rem;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    width: 100%;
-    text-align: left;
-    transition: background 150ms ease;
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-2);
+  padding: var(--k-space-2) var(--k-space-3);
+  border-radius: var(--k-radius-sm);
+  color: var(--k-on-surface);
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: background 150ms ease;
 }
 
 .settings-dropdown__item:hover {
-    background: var(--k-surface-high);
+  background: var(--k-surface-high);
 }
 ```
 
@@ -627,6 +637,7 @@ git commit -m "feat(dioxus_music): add settings dropdown with Rescan Library to 
 ## Task 6: Visual polish + cleanup
 
 **Files:**
+
 - Various CSS files
 - Possibly Rust files for clippy
 
@@ -635,6 +646,7 @@ git commit -m "feat(dioxus_music): add settings dropdown with Rescan Library to 
 Run `dx serve --package dioxus_music_web` (if DB available) or `cargo check -p dioxus_music_web`.
 
 Check:
+
 - `/` shows album grid
 - "All Songs" toggle works
 - Clicking an album card navigates to `/album/{name}`
@@ -662,13 +674,13 @@ git commit -m "style(dioxus_music): polish Library + Album Detail views, clippy 
 
 ## Summary
 
-| Task | Description | Key Files |
-|---|---|---|
-| 1 | AlbumSummary model + grouping function | `ui/src/album_utils.rs` |
-| 2 | Expand routes + placeholder views | `web/src/main.rs`, new view files |
-| 3 | Library album grid + all-songs toggle | `web/src/views/library.rs`, `library.css` |
-| 4 | Album Detail view | `web/src/views/album_detail.rs`, `album_detail.css` |
-| 5 | Settings dropdown in Header | `ui/src/header.rs`, `settings-dropdown.css` |
-| 6 | Polish + clippy | Various |
+| Task | Description                            | Key Files                                           |
+| ---- | -------------------------------------- | --------------------------------------------------- |
+| 1    | AlbumSummary model + grouping function | `ui/src/album_utils.rs`                             |
+| 2    | Expand routes + placeholder views      | `web/src/main.rs`, new view files                   |
+| 3    | Library album grid + all-songs toggle  | `web/src/views/library.rs`, `library.css`           |
+| 4    | Album Detail view                      | `web/src/views/album_detail.rs`, `album_detail.css` |
+| 5    | Settings dropdown in Header            | `ui/src/header.rs`, `settings-dropdown.css`         |
+| 6    | Polish + clippy                        | Various                                             |
 
 Tasks 1-2 are sequential (model first, then routes). Tasks 3-5 depend on Task 2 (routes exist) but are independent of each other. Task 6 is cleanup after everything.

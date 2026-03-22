@@ -13,6 +13,7 @@
 **No tests currently exist in this workspace.** Verification uses `cargo check` and `dx serve` for visual confirmation.
 
 **Reference files:**
+
 - Current UI source: `dioxus_music/packages/ui/src/`
 - Current UI CSS: `dioxus_music/packages/ui/assets/styling/`
 - Stitch mockups: `dioxus_music/docs/stitch/library_overview/code.html`, `dioxus_music/docs/stitch/album_detail/code.html`
@@ -25,57 +26,58 @@
 
 ### New files
 
-| File | Responsibility |
-|---|---|
-| `packages/ui/src/header.rs` | New Header component (brand, search, action icons) |
-| `packages/ui/assets/styling/app-shell.css` | New AppShell grid layout CSS |
-| `packages/ui/assets/styling/sidebar.css` | New Sidebar CSS (replaces old) |
-| `packages/ui/assets/styling/header.css` | Header component CSS |
-| `packages/ui/assets/styling/player-bar.css` | New floating glassmorphic PlayerBar CSS |
-| `packages/ui/assets/styling/track-list.css` | Restyled TrackList CSS |
-| `packages/ui/assets/styling/queue-panel.css` | Restyled QueuePanel CSS |
-| `packages/ui/assets/styling/playlist-form.css` | Restyled PlaylistFormModal CSS |
-| `packages/mobile/src/views/mobile_nav.rs` | MobileNav bottom tab component |
-| `packages/mobile/assets/mobile-nav.css` | MobileNav CSS |
+| File                                           | Responsibility                                     |
+| ---------------------------------------------- | -------------------------------------------------- |
+| `packages/ui/src/header.rs`                    | New Header component (brand, search, action icons) |
+| `packages/ui/assets/styling/app-shell.css`     | New AppShell grid layout CSS                       |
+| `packages/ui/assets/styling/sidebar.css`       | New Sidebar CSS (replaces old)                     |
+| `packages/ui/assets/styling/header.css`        | Header component CSS                               |
+| `packages/ui/assets/styling/player-bar.css`    | New floating glassmorphic PlayerBar CSS            |
+| `packages/ui/assets/styling/track-list.css`    | Restyled TrackList CSS                             |
+| `packages/ui/assets/styling/queue-panel.css`   | Restyled QueuePanel CSS                            |
+| `packages/ui/assets/styling/playlist-form.css` | Restyled PlaylistFormModal CSS                     |
+| `packages/mobile/src/views/mobile_nav.rs`      | MobileNav bottom tab component                     |
+| `packages/mobile/assets/mobile-nav.css`        | MobileNav CSS                                      |
 
 ### Modified files
 
-| File | Changes |
-|---|---|
-| `packages/ui/Cargo.toml` | Add `kinetic_ui` dependency |
-| `packages/ui/src/lib.rs` | Add header module, remove navbar module |
-| `packages/ui/src/app_shell.rs` | Rebuild: 2-col grid, KineticTheme, internal Sidebar/Header/PlayerBar |
-| `packages/ui/src/sidebar.rs` | Rebuild: MONOLITH brand, icon nav, route-based active state |
-| `packages/ui/src/player_bar.rs` | Restyle: floating glassmorphic, compact prop, gradient play button |
-| `packages/ui/src/track_list.rs` | Restyle with kinetic tokens, add `show_download_status` prop |
-| `packages/ui/src/queue_panel.rs` | Restyle with kinetic tokens |
-| `packages/ui/src/playlist_form.rs` | Restyle with kinetic_ui components |
-| `packages/web/src/main.rs` | Update AppLayout call site (remove sidebar prop) |
-| `packages/desktop/src/main.rs` | Update DesktopLayout call site |
-| `packages/mobile/src/main.rs` | Rebuild MobileLayout (no sidebar, MobileNav, compact PlayerBar) |
-| `packages/mobile/src/views/mod.rs` | Add mobile_nav module |
-| `packages/web/assets/main.css` | Remove old resets, rely on kinetic theme |
-| `packages/desktop/assets/main.css` | Remove old resets, rely on kinetic theme |
-| `packages/mobile/assets/main.css` | Remove old resets, rely on kinetic theme |
+| File                               | Changes                                                              |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| `packages/ui/Cargo.toml`           | Add `kinetic_ui` dependency                                          |
+| `packages/ui/src/lib.rs`           | Add header module, remove navbar module                              |
+| `packages/ui/src/app_shell.rs`     | Rebuild: 2-col grid, KineticTheme, internal Sidebar/Header/PlayerBar |
+| `packages/ui/src/sidebar.rs`       | Rebuild: MONOLITH brand, icon nav, route-based active state          |
+| `packages/ui/src/player_bar.rs`    | Restyle: floating glassmorphic, compact prop, gradient play button   |
+| `packages/ui/src/track_list.rs`    | Restyle with kinetic tokens, add `show_download_status` prop         |
+| `packages/ui/src/queue_panel.rs`   | Restyle with kinetic tokens                                          |
+| `packages/ui/src/playlist_form.rs` | Restyle with kinetic_ui components                                   |
+| `packages/web/src/main.rs`         | Update AppLayout call site (remove sidebar prop)                     |
+| `packages/desktop/src/main.rs`     | Update DesktopLayout call site                                       |
+| `packages/mobile/src/main.rs`      | Rebuild MobileLayout (no sidebar, MobileNav, compact PlayerBar)      |
+| `packages/mobile/src/views/mod.rs` | Add mobile_nav module                                                |
+| `packages/web/assets/main.css`     | Remove old resets, rely on kinetic theme                             |
+| `packages/desktop/assets/main.css` | Remove old resets, rely on kinetic theme                             |
+| `packages/mobile/assets/main.css`  | Remove old resets, rely on kinetic theme                             |
 
 ### Files to delete
 
-| File | Reason |
-|---|---|
-| `packages/ui/src/navbar.rs` | Replaced by header.rs |
-| `packages/ui/assets/styling/app_shell.css` | Replaced by app-shell.css |
-| `packages/ui/assets/styling/sidebar.css` (old) | Replaced by new sidebar.css |
-| `packages/ui/assets/styling/player_bar.css` | Replaced by player-bar.css |
-| `packages/ui/assets/styling/track_list.css` | Replaced by track-list.css |
-| `packages/ui/assets/styling/navbar.css` | Replaced by header.css |
+| File                                           | Reason                        |
+| ---------------------------------------------- | ----------------------------- |
+| `packages/ui/src/navbar.rs`                    | Replaced by header.rs         |
+| `packages/ui/assets/styling/app_shell.css`     | Replaced by app-shell.css     |
+| `packages/ui/assets/styling/sidebar.css` (old) | Replaced by new sidebar.css   |
+| `packages/ui/assets/styling/player_bar.css`    | Replaced by player-bar.css    |
+| `packages/ui/assets/styling/track_list.css`    | Replaced by track-list.css    |
+| `packages/ui/assets/styling/navbar.css`        | Replaced by header.css        |
 | `packages/ui/assets/styling/playlist_form.css` | Replaced by playlist-form.css |
-| `packages/ui/assets/styling/queue_panel.css` | Replaced by queue-panel.css |
+| `packages/ui/assets/styling/queue_panel.css`   | Replaced by queue-panel.css   |
 
 ---
 
 ## Task 1: Add kinetic_ui dependency + KineticTheme wrapper
 
 **Files:**
+
 - Modify: `packages/ui/Cargo.toml`
 - Modify: `packages/ui/src/app_shell.rs`
 
@@ -116,6 +118,7 @@ git commit -m "feat(dioxus_music): add kinetic_ui dependency and KineticTheme wr
 ## Task 2: Create Header component + delete Navbar
 
 **Files:**
+
 - Create: `packages/ui/src/header.rs`
 - Create: `packages/ui/assets/styling/header.css`
 - Delete: `packages/ui/src/navbar.rs`
@@ -126,36 +129,38 @@ git commit -m "feat(dioxus_music): add kinetic_ui dependency and KineticTheme wr
 
 ```css
 .header {
-    grid-area: header;
-    display: flex;
-    align-items: center;
-    gap: var(--k-space-4);
-    background: var(--k-surface-low);
-    padding: 0 var(--k-space-4);
-    height: 56px;
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-4);
+  background: var(--k-surface-low);
+  padding: 0 var(--k-space-4);
+  height: 56px;
 }
 
 .header__brand {
-    font-family: var(--k-font-display);
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--k-primary);
-    letter-spacing: -0.01em;
+  font-family: var(--k-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--k-primary);
+  letter-spacing: -0.01em;
 }
 
-.header__spacer { flex: 1; }
+.header__spacer {
+  flex: 1;
+}
 
 .header__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--k-space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-2);
 }
 
 .header__sync-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--k-secondary);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--k-secondary);
 }
 ```
 
@@ -200,6 +205,7 @@ pub fn Header() -> Element {
 - [ ] **Step 3: Update `packages/ui/src/lib.rs`**
 
 Remove `mod navbar;` and `pub use navbar::Navbar;`. Add:
+
 ```rust
 mod header;
 pub use header::Header;
@@ -229,6 +235,7 @@ git commit -m "feat(dioxus_music): add Header component, remove Navbar"
 ## Task 3: Rebuild Sidebar
 
 **Files:**
+
 - Rewrite: `packages/ui/src/sidebar.rs`
 - Create: `packages/ui/assets/styling/sidebar.css` (new version, replacing old)
 
@@ -249,6 +256,7 @@ The Sidebar no longer accepts `children`. It renders its own nav items.
 Actually, simpler: accept `children: Element` like before but style the container differently. Platform crates provide the nav links. The Sidebar just provides the chrome (brand, layout, footer).
 
 Revised approach:
+
 ```rust
 #[component]
 pub fn Sidebar(children: Element) -> Element {
@@ -288,6 +296,7 @@ git commit -m "feat(dioxus_music): rebuild Sidebar with MONOLITH branding and ki
 ## Task 4: Rebuild AppShell with new grid layout
 
 **Files:**
+
 - Rewrite: `packages/ui/src/app_shell.rs`
 - Create: `packages/ui/assets/styling/app-shell.css` (new)
 - Delete: `packages/ui/assets/styling/app_shell.css` (old)
@@ -298,32 +307,34 @@ git commit -m "feat(dioxus_music): rebuild Sidebar with MONOLITH branding and ki
 
 ```css
 .app-shell {
-    display: grid;
-    grid-template-columns: 256px 1fr;
-    grid-template-rows: 56px 1fr;
-    grid-template-areas:
-        "sidebar  header"
-        "sidebar  content";
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background: var(--k-surface);
+  display: grid;
+  grid-template-columns: 256px 1fr;
+  grid-template-rows: 56px 1fr;
+  grid-template-areas:
+    "sidebar  header"
+    "sidebar  content";
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--k-surface);
 }
 
 .app-shell__content {
-    grid-area: content;
-    overflow-y: auto;
-    padding-bottom: 88px; /* space for floating player bar */
+  grid-area: content;
+  overflow-y: auto;
+  padding-bottom: 88px; /* space for floating player bar */
 }
 
 @media (max-width: 768px) {
-    .app-shell {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "header"
-            "content";
-    }
-    .app-shell .sidebar { display: none; }
+  .app-shell {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "content";
+  }
+  .app-shell .sidebar {
+    display: none;
+  }
 }
 ```
 
@@ -403,6 +414,7 @@ git commit -m "feat(dioxus_music): rebuild AppShell with 2-column grid layout"
 ## Task 5: Restyle PlayerBar as floating glassmorphic overlay
 
 **Files:**
+
 - Rewrite: `packages/ui/assets/styling/player-bar.css` (new, replacing `player_bar.css`)
 - Modify: `packages/ui/src/player_bar.rs`
 - Delete: `packages/ui/assets/styling/player_bar.css`
@@ -410,6 +422,7 @@ git commit -m "feat(dioxus_music): rebuild AppShell with 2-column grid layout"
 - [ ] **Step 1: Write new `packages/ui/assets/styling/player-bar.css`**
 
 Floating glassmorphic positioning. Centered pill style. Key classes:
+
 - `.player-bar` — `position: fixed`, `bottom: 16px`, `left: 50%`, `transform: translateX(-50%)`, `max-width: 800px`, `width: calc(100% - 288px)` (256px sidebar + 32px padding), `background: var(--k-glass-surface)`, `backdrop-filter: blur(24px)`, `border-radius: var(--k-radius-lg)`, `box-shadow: var(--k-shadow-float)`, `z-index: 500`, `display: flex`, `align-items: center`, `gap: var(--k-space-3)`, `padding: var(--k-space-2) var(--k-space-4)`
 - `.player-bar__art` — 40x40, rounded, surface-high bg
 - `.player-bar__info` — flex column, title in on-surface, artist in on-surface-variant
@@ -424,6 +437,7 @@ Floating glassmorphic positioning. Centered pill style. Key classes:
 - [ ] **Step 2: Modify `packages/ui/src/player_bar.rs`**
 
 Add `compact: Option<bool>` prop (defaults to None/false). Preserve ALL existing playback logic. Changes:
+
 - Update CSS asset path to new file
 - Add album art placeholder div
 - Restyle transport buttons with new CSS classes
@@ -451,6 +465,7 @@ git commit -m "feat(dioxus_music): restyle PlayerBar as floating glassmorphic ov
 ## Task 6: Restyle TrackList with kinetic tokens
 
 **Files:**
+
 - Create: `packages/ui/assets/styling/track-list.css` (new)
 - Modify: `packages/ui/src/track_list.rs`
 - Delete: `packages/ui/assets/styling/track_list.css`
@@ -458,6 +473,7 @@ git commit -m "feat(dioxus_music): restyle PlayerBar as floating glassmorphic ov
 - [ ] **Step 1: Write new `packages/ui/assets/styling/track-list.css`**
 
 Replace all hardcoded colors with kinetic tokens. Key rules:
+
 - `.track-list__header` — uppercase, `--k-on-surface-variant`, `font-size: 0.6875rem`, `letter-spacing: 0.05em`, monospace
 - `.track-list__row` — hover `background: var(--k-surface-low)`, transition 150ms
 - `.track-list__row--active` — `border-left: 2px solid var(--k-primary)`, title color `--k-primary`
@@ -492,6 +508,7 @@ git commit -m "feat(dioxus_music): restyle TrackList with kinetic tokens and dow
 ## Task 7: Restyle QueuePanel + PlaylistFormModal
 
 **Files:**
+
 - Create: `packages/ui/assets/styling/queue-panel.css` (new)
 - Create: `packages/ui/assets/styling/playlist-form.css` (new)
 - Modify: `packages/ui/src/queue_panel.rs`
@@ -535,6 +552,7 @@ git commit -m "feat(dioxus_music): restyle QueuePanel and PlaylistFormModal with
 ## Task 8: Build MobileLayout + MobileNav
 
 **Files:**
+
 - Create: `packages/mobile/src/views/mobile_nav.rs`
 - Create: `packages/mobile/assets/mobile-nav.css`
 - Modify: `packages/mobile/src/main.rs`
@@ -544,34 +562,34 @@ git commit -m "feat(dioxus_music): restyle QueuePanel and PlaylistFormModal with
 
 ```css
 .mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 56px;
-    background: var(--k-surface-low);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 400;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--k-surface-low);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 400;
 }
 
 .mobile-nav__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    color: var(--k-on-surface-variant);
-    font-size: 0.625rem;
-    cursor: pointer;
-    border: none;
-    background: transparent;
-    padding: var(--k-space-1);
-    transition: color 150ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--k-on-surface-variant);
+  font-size: 0.625rem;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: var(--k-space-1);
+  transition: color 150ms ease;
 }
 
 .mobile-nav__item[data-active="true"] {
-    color: var(--k-primary);
+  color: var(--k-primary);
 }
 ```
 
@@ -586,6 +604,7 @@ Add `pub mod mobile_nav;`.
 - [ ] **Step 4: Rebuild MobileLayout in `packages/mobile/src/main.rs`**
 
 The MobileLayout no longer uses AppShell's sidebar. It renders:
+
 ```rust
 KineticTheme {
     div { class: "app-shell--mobile",
@@ -618,6 +637,7 @@ git commit -m "feat(dioxus_music): add MobileLayout with MobileNav bottom tabs"
 ## Task 9: Update platform main.css files + cleanup
 
 **Files:**
+
 - Modify: `packages/web/assets/main.css`
 - Modify: `packages/desktop/assets/main.css`
 - Modify: `packages/mobile/assets/main.css`
@@ -628,11 +648,12 @@ Each platform's `main.css` should be minimal — just a body reset that defers t
 
 ```css
 /* Platform-specific overrides — kinetic theme handles most styling */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 ```
 
@@ -659,17 +680,17 @@ git commit -m "style(dioxus_music): simplify platform CSS, run clippy cleanup"
 
 ## Summary
 
-| Task | Description | Key Files |
-|---|---|---|
-| 1 | Add kinetic_ui dependency + KineticTheme | `packages/ui/Cargo.toml`, `app_shell.rs` |
-| 2 | Create Header, delete Navbar | `header.rs`, `header.css`, delete `navbar.rs` |
-| 3 | Rebuild Sidebar | `sidebar.rs`, `sidebar.css` |
-| 4 | Rebuild AppShell grid layout | `app_shell.rs`, `app-shell.css`, platform `main.rs` files |
-| 5 | Restyle PlayerBar (floating glassmorphic) | `player_bar.rs`, `player-bar.css` |
-| 6 | Restyle TrackList | `track_list.rs`, `track-list.css` |
-| 7 | Restyle QueuePanel + PlaylistFormModal | `queue_panel.rs`, `playlist_form.rs`, CSS files |
-| 8 | Build MobileLayout + MobileNav | `mobile/src/main.rs`, `mobile_nav.rs` |
-| 9 | Platform CSS cleanup + clippy | Platform `main.css` files |
+| Task | Description                               | Key Files                                                 |
+| ---- | ----------------------------------------- | --------------------------------------------------------- |
+| 1    | Add kinetic_ui dependency + KineticTheme  | `packages/ui/Cargo.toml`, `app_shell.rs`                  |
+| 2    | Create Header, delete Navbar              | `header.rs`, `header.css`, delete `navbar.rs`             |
+| 3    | Rebuild Sidebar                           | `sidebar.rs`, `sidebar.css`                               |
+| 4    | Rebuild AppShell grid layout              | `app_shell.rs`, `app-shell.css`, platform `main.rs` files |
+| 5    | Restyle PlayerBar (floating glassmorphic) | `player_bar.rs`, `player-bar.css`                         |
+| 6    | Restyle TrackList                         | `track_list.rs`, `track-list.css`                         |
+| 7    | Restyle QueuePanel + PlaylistFormModal    | `queue_panel.rs`, `playlist_form.rs`, CSS files           |
+| 8    | Build MobileLayout + MobileNav            | `mobile/src/main.rs`, `mobile_nav.rs`                     |
+| 9    | Platform CSS cleanup + clippy             | Platform `main.css` files                                 |
 
 Tasks 1-4 are sequential (each builds on the previous). Tasks 5-7 can be done in any order after Task 4. Task 8 depends on Task 5 (needs PlayerBar `compact` prop). Task 9 is cleanup after everything else.
 

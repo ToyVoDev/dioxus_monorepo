@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
-use dioxus_free_icons::icons::md_action_icons::MdSearch;
 use dioxus_free_icons::Icon;
+use dioxus_free_icons::icons::md_action_icons::MdSearch;
 
 #[component]
 pub fn KSearchInput(

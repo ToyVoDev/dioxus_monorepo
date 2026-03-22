@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use dioxus_primitives::select::{
-    self, SelectGroupLabelProps, SelectGroupProps, SelectListProps,
-    SelectOptionProps, SelectProps, SelectTriggerProps, SelectValueProps,
+    self, SelectGroupLabelProps, SelectGroupProps, SelectListProps, SelectOptionProps, SelectProps,
+    SelectTriggerProps, SelectValueProps,
 };
 
 #[component]

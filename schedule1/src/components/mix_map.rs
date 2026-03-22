@@ -1,7 +1,7 @@
 use crate::Effect;
+use crate::sellable::Sellable;
 use dioxus::prelude::*;
 use web_sys::wasm_bindgen::JsCast;
-use crate::sellable::Sellable;
 
 const SCALE: f64 = 100.;
 
@@ -115,7 +115,7 @@ pub fn MixMap(props: ComponentProps) -> Element {
             Effect::Toxic,
             Effect::TropicThunder,
             Effect::Zombifying,
-        ]; 
+        ];
         for effect in all_effects {
             let direction = effect.direction();
             let magnitude = effect.magnitude();
@@ -123,8 +123,15 @@ pub fn MixMap(props: ComponentProps) -> Element {
                 center.0 + direction.0 * magnitude * SCALE,
                 center.1 + direction.1 * magnitude * SCALE,
             );
-            let filled = previous_working_product.effects.contains(&effect) || working_product.effects.contains(&effect);
-            draw_circle(&context, circle_center, 0.5 * SCALE, &effect.color(), filled);
+            let filled = previous_working_product.effects.contains(&effect)
+                || working_product.effects.contains(&effect);
+            draw_circle(
+                &context,
+                circle_center,
+                0.5 * SCALE,
+                &effect.color(),
+                filled,
+            );
         }
         if let Some(added_effect) = *added_effect {
             previous_working_product.effects.iter().for_each(|effect| {
@@ -134,7 +141,13 @@ pub fn MixMap(props: ComponentProps) -> Element {
                     center.0 + direction.0 * magnitude * SCALE,
                     center.1 + direction.1 * magnitude * SCALE,
                 );
-                draw_vector(&context, circle_center, added_effect.magnitude() * SCALE, added_effect.direction(), &effect.color());
+                draw_vector(
+                    &context,
+                    circle_center,
+                    added_effect.magnitude() * SCALE,
+                    added_effect.direction(),
+                    &effect.color(),
+                );
             });
         }
         for effect in all_effects {
@@ -144,7 +157,8 @@ pub fn MixMap(props: ComponentProps) -> Element {
                 center.0 + direction.0 * magnitude * SCALE,
                 center.1 + direction.1 * magnitude * SCALE,
             );
-            let filled = previous_working_product.effects.contains(&effect) || working_product.effects.contains(&effect);
+            let filled = previous_working_product.effects.contains(&effect)
+                || working_product.effects.contains(&effect);
             if filled {
                 context.set_fill_style_str("#000");
             } else {
@@ -152,7 +166,13 @@ pub fn MixMap(props: ComponentProps) -> Element {
             }
             context.set_text_align("center");
             context.set_text_baseline("middle");
-            context.fill_text(format!("{effect:?}").as_str(), circle_center.0, circle_center.1).unwrap();
+            context
+                .fill_text(
+                    format!("{effect:?}").as_str(),
+                    circle_center.0,
+                    circle_center.1,
+                )
+                .unwrap();
         }
     });
 

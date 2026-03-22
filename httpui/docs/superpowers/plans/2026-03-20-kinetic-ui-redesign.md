@@ -13,6 +13,7 @@
 **No tests currently exist in this workspace.** The CLAUDE.md explicitly states "There are no tests currently configured in any project." Steps that would normally be TDD will instead use `cargo check --package` and `dx serve --package httpui` for visual verification. `cargo clippy` is configured with `pedantic` + `nursery` deny.
 
 **Reference files:**
+
 - Design system: `DESIGN.md` (repo root)
 - Stitch mockups: `httpui/docs/stitch/request_editor/code.html`, `httpui/docs/stitch/collections_environments/code.html`
 - Current httpui source: `httpui/src/`
@@ -26,88 +27,89 @@
 
 ### New files (kinetic_ui crate)
 
-| File | Responsibility |
-|---|---|
-| `kinetic_ui/Cargo.toml` | Crate manifest, workspace dependencies |
-| `kinetic_ui/src/lib.rs` | Re-exports theme + all components |
-| `kinetic_ui/src/theme/mod.rs` | `KineticTheme` component that loads CSS |
-| `kinetic_ui/src/theme/kinetic-theme.css` | Design tokens (CSS custom properties) |
-| `kinetic_ui/src/theme/typography.css` | Font imports + type scale classes |
-| `kinetic_ui/src/theme/utilities.css` | BEM utility classes |
-| `kinetic_ui/src/components/mod.rs` | Re-exports all components |
-| `kinetic_ui/src/components/button/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/button/component.rs` | Button + LinkButton components |
-| `kinetic_ui/src/components/button/style.css` | Button variants CSS |
-| `kinetic_ui/src/components/input/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/input/component.rs` | Input component |
-| `kinetic_ui/src/components/input/style.css` | Input CSS |
-| `kinetic_ui/src/components/badge/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/badge/component.rs` | Badge component (method, status) |
-| `kinetic_ui/src/components/badge/style.css` | Badge CSS |
-| `kinetic_ui/src/components/icon_button/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/icon_button/component.rs` | IconButton component |
-| `kinetic_ui/src/components/icon_button/style.css` | IconButton CSS |
-| `kinetic_ui/src/components/tabs/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/tabs/component.rs` | Tabs wrapping dioxus-primitives tabs |
-| `kinetic_ui/src/components/tabs/style.css` | Tabs CSS |
-| `kinetic_ui/src/components/select/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/select/component.rs` | Select wrapping dioxus-primitives |
-| `kinetic_ui/src/components/select/style.css` | Select CSS |
-| `kinetic_ui/src/components/separator/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/separator/component.rs` | Separator component |
-| `kinetic_ui/src/components/separator/style.css` | Separator CSS |
-| `kinetic_ui/src/components/table/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/table/component.rs` | Key-value editable table |
-| `kinetic_ui/src/components/table/style.css` | Table CSS |
-| `kinetic_ui/src/components/tooltip/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/tooltip/component.rs` | Tooltip wrapping dioxus-primitives |
-| `kinetic_ui/src/components/tooltip/style.css` | Tooltip CSS |
-| `kinetic_ui/src/components/search_input/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/search_input/component.rs` | Search input with icon |
-| `kinetic_ui/src/components/search_input/style.css` | Search input CSS |
-| `kinetic_ui/src/components/tree_view/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/tree_view/component.rs` | Expandable tree view |
-| `kinetic_ui/src/components/tree_view/style.css` | Tree view CSS |
-| `kinetic_ui/src/components/accordion/mod.rs` | Module declaration |
-| `kinetic_ui/src/components/accordion/component.rs` | Accordion wrapping dioxus-primitives |
-| `kinetic_ui/src/components/accordion/style.css` | Accordion CSS |
+| File                                                  | Responsibility                          |
+| ----------------------------------------------------- | --------------------------------------- |
+| `kinetic_ui/Cargo.toml`                               | Crate manifest, workspace dependencies  |
+| `kinetic_ui/src/lib.rs`                               | Re-exports theme + all components       |
+| `kinetic_ui/src/theme/mod.rs`                         | `KineticTheme` component that loads CSS |
+| `kinetic_ui/src/theme/kinetic-theme.css`              | Design tokens (CSS custom properties)   |
+| `kinetic_ui/src/theme/typography.css`                 | Font imports + type scale classes       |
+| `kinetic_ui/src/theme/utilities.css`                  | BEM utility classes                     |
+| `kinetic_ui/src/components/mod.rs`                    | Re-exports all components               |
+| `kinetic_ui/src/components/button/mod.rs`             | Module declaration                      |
+| `kinetic_ui/src/components/button/component.rs`       | Button + LinkButton components          |
+| `kinetic_ui/src/components/button/style.css`          | Button variants CSS                     |
+| `kinetic_ui/src/components/input/mod.rs`              | Module declaration                      |
+| `kinetic_ui/src/components/input/component.rs`        | Input component                         |
+| `kinetic_ui/src/components/input/style.css`           | Input CSS                               |
+| `kinetic_ui/src/components/badge/mod.rs`              | Module declaration                      |
+| `kinetic_ui/src/components/badge/component.rs`        | Badge component (method, status)        |
+| `kinetic_ui/src/components/badge/style.css`           | Badge CSS                               |
+| `kinetic_ui/src/components/icon_button/mod.rs`        | Module declaration                      |
+| `kinetic_ui/src/components/icon_button/component.rs`  | IconButton component                    |
+| `kinetic_ui/src/components/icon_button/style.css`     | IconButton CSS                          |
+| `kinetic_ui/src/components/tabs/mod.rs`               | Module declaration                      |
+| `kinetic_ui/src/components/tabs/component.rs`         | Tabs wrapping dioxus-primitives tabs    |
+| `kinetic_ui/src/components/tabs/style.css`            | Tabs CSS                                |
+| `kinetic_ui/src/components/select/mod.rs`             | Module declaration                      |
+| `kinetic_ui/src/components/select/component.rs`       | Select wrapping dioxus-primitives       |
+| `kinetic_ui/src/components/select/style.css`          | Select CSS                              |
+| `kinetic_ui/src/components/separator/mod.rs`          | Module declaration                      |
+| `kinetic_ui/src/components/separator/component.rs`    | Separator component                     |
+| `kinetic_ui/src/components/separator/style.css`       | Separator CSS                           |
+| `kinetic_ui/src/components/table/mod.rs`              | Module declaration                      |
+| `kinetic_ui/src/components/table/component.rs`        | Key-value editable table                |
+| `kinetic_ui/src/components/table/style.css`           | Table CSS                               |
+| `kinetic_ui/src/components/tooltip/mod.rs`            | Module declaration                      |
+| `kinetic_ui/src/components/tooltip/component.rs`      | Tooltip wrapping dioxus-primitives      |
+| `kinetic_ui/src/components/tooltip/style.css`         | Tooltip CSS                             |
+| `kinetic_ui/src/components/search_input/mod.rs`       | Module declaration                      |
+| `kinetic_ui/src/components/search_input/component.rs` | Search input with icon                  |
+| `kinetic_ui/src/components/search_input/style.css`    | Search input CSS                        |
+| `kinetic_ui/src/components/tree_view/mod.rs`          | Module declaration                      |
+| `kinetic_ui/src/components/tree_view/component.rs`    | Expandable tree view                    |
+| `kinetic_ui/src/components/tree_view/style.css`       | Tree view CSS                           |
+| `kinetic_ui/src/components/accordion/mod.rs`          | Module declaration                      |
+| `kinetic_ui/src/components/accordion/component.rs`    | Accordion wrapping dioxus-primitives    |
+| `kinetic_ui/src/components/accordion/style.css`       | Accordion CSS                           |
 
 ### New files (httpui views)
 
-| File | Responsibility |
-|---|---|
-| `httpui/src/views/sidenav/mod.rs` | Module declaration |
-| `httpui/src/views/sidenav/component.rs` | SideNav component |
-| `httpui/src/views/sidenav/style.css` | SideNav layout CSS |
-| `httpui/src/views/explorer/mod.rs` | Module declaration |
-| `httpui/src/views/explorer/component.rs` | Explorer panel component |
-| `httpui/src/views/explorer/style.css` | Explorer layout CSS |
-| `httpui/src/views/topbar/mod.rs` | Module declaration |
-| `httpui/src/views/topbar/component.rs` | TopBar component |
-| `httpui/src/views/topbar/style.css` | TopBar layout CSS |
-| `httpui/src/views/canvas/mod.rs` | Module declaration |
-| `httpui/src/views/canvas/component.rs` | Canvas (request editor, env view, etc.) |
-| `httpui/src/views/canvas/style.css` | Canvas layout CSS |
-| `httpui/src/views/statusbar/mod.rs` | Module declaration |
-| `httpui/src/views/statusbar/component.rs` | StatusBar stub component |
-| `httpui/src/views/statusbar/style.css` | StatusBar CSS |
+| File                                      | Responsibility                          |
+| ----------------------------------------- | --------------------------------------- |
+| `httpui/src/views/sidenav/mod.rs`         | Module declaration                      |
+| `httpui/src/views/sidenav/component.rs`   | SideNav component                       |
+| `httpui/src/views/sidenav/style.css`      | SideNav layout CSS                      |
+| `httpui/src/views/explorer/mod.rs`        | Module declaration                      |
+| `httpui/src/views/explorer/component.rs`  | Explorer panel component                |
+| `httpui/src/views/explorer/style.css`     | Explorer layout CSS                     |
+| `httpui/src/views/topbar/mod.rs`          | Module declaration                      |
+| `httpui/src/views/topbar/component.rs`    | TopBar component                        |
+| `httpui/src/views/topbar/style.css`       | TopBar layout CSS                       |
+| `httpui/src/views/canvas/mod.rs`          | Module declaration                      |
+| `httpui/src/views/canvas/component.rs`    | Canvas (request editor, env view, etc.) |
+| `httpui/src/views/canvas/style.css`       | Canvas layout CSS                       |
+| `httpui/src/views/statusbar/mod.rs`       | Module declaration                      |
+| `httpui/src/views/statusbar/component.rs` | StatusBar stub component                |
+| `httpui/src/views/statusbar/style.css`    | StatusBar CSS                           |
 
 ### Modified files
 
-| File | Changes |
-|---|---|
-| `Cargo.toml` (workspace root) | Add `kinetic_ui` to members + workspace deps |
-| `httpui/Cargo.toml` | Add `kinetic_ui` dependency, remove `dioxus-primitives` direct dep |
-| `httpui/src/main.rs` | Swap LayoutGrid + Navbar for new layout, use KineticTheme, update Route enum |
-| `httpui/src/state/models.rs` | Add `KeyValue`, `Response` structs, extend `Request`, add nav/tab enums |
-| `httpui/src/state/store.rs` | Add new signal fields to AppState |
-| `httpui/src/views/mod.rs` | Replace old view modules with new ones |
-| `httpui/src/views/layout_grid/component.rs` | Rewrite grid to 3-column layout |
-| `httpui/src/views/layout_grid/style.css` | New grid CSS |
+| File                                        | Changes                                                                      |
+| ------------------------------------------- | ---------------------------------------------------------------------------- |
+| `Cargo.toml` (workspace root)               | Add `kinetic_ui` to members + workspace deps                                 |
+| `httpui/Cargo.toml`                         | Add `kinetic_ui` dependency, remove `dioxus-primitives` direct dep           |
+| `httpui/src/main.rs`                        | Swap LayoutGrid + Navbar for new layout, use KineticTheme, update Route enum |
+| `httpui/src/state/models.rs`                | Add `KeyValue`, `Response` structs, extend `Request`, add nav/tab enums      |
+| `httpui/src/state/store.rs`                 | Add new signal fields to AppState                                            |
+| `httpui/src/views/mod.rs`                   | Replace old view modules with new ones                                       |
+| `httpui/src/views/layout_grid/component.rs` | Rewrite grid to 3-column layout                                              |
+| `httpui/src/views/layout_grid/style.css`    | New grid CSS                                                                 |
 
 ### Files to remove (after migration)
 
 Old views and components that are fully replaced:
+
 - `httpui/src/views/navbar/` — replaced by `sidenav/`
 - `httpui/src/views/library/` — replaced by `explorer/`
 - `httpui/src/views/tabbar/` — replaced by `topbar/`
@@ -122,6 +124,7 @@ Old views and components that are fully replaced:
 ## Task 1: Create `kinetic_ui` crate scaffold + theme CSS
 
 **Files:**
+
 - Create: `kinetic_ui/Cargo.toml`
 - Create: `kinetic_ui/src/lib.rs`
 - Create: `kinetic_ui/src/theme/mod.rs`
@@ -175,6 +178,7 @@ Import fonts from Google Fonts: Space Grotesk (300,400,500,600,700), Inter (300,
 - [ ] **Step 5: Create `kinetic_ui/src/theme/utilities.css`**
 
 Define BEM utility classes for common token applications:
+
 - Surface utilities: `.k-surface-lowest`, `.k-surface`, `.k-surface-low`, `.k-surface-container`, `.k-surface-high`, `.k-surface-highest` (set `background-color`)
 - Text utilities: `.k-text-primary`, `.k-text-secondary`, `.k-text-tertiary`, `.k-text-error`, `.k-text-on-surface`, `.k-text-on-surface-variant` (set `color`)
 - A `.k-mono` class that sets `font-family: var(--k-font-mono)`
@@ -199,6 +203,7 @@ pub fn KineticTheme(children: Element) -> Element {
 - [ ] **Step 7: Create `kinetic_ui/src/components/mod.rs`**
 
 Empty for now — components added in later tasks:
+
 ```rust
 // Components will be added as they are built
 ```
@@ -229,6 +234,7 @@ git commit -m "feat: scaffold kinetic_ui crate with Kinetic Obsidian theme token
 ## Task 2: Create core components — Button, Input, Badge, IconButton
 
 **Files:**
+
 - Create: `kinetic_ui/src/components/button/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/input/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/badge/{mod.rs,component.rs,style.css}`
@@ -299,6 +305,7 @@ git commit -m "feat(kinetic_ui): add Button, Input, Badge, IconButton components
 ## Task 3: Create Tabs, Select, Separator, Tooltip components
 
 **Files:**
+
 - Create: `kinetic_ui/src/components/tabs/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/select/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/separator/{mod.rs,component.rs,style.css}`
@@ -353,6 +360,7 @@ git commit -m "feat(kinetic_ui): add Tabs, Select, Separator, Tooltip components
 ## Task 4: Create Table, SearchInput, TreeView, Accordion components
 
 **Files:**
+
 - Create: `kinetic_ui/src/components/table/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/search_input/{mod.rs,component.rs,style.css}`
 - Create: `kinetic_ui/src/components/tree_view/{mod.rs,component.rs,style.css}`
@@ -380,6 +388,7 @@ Custom component (no primitives equivalent).
 `style.css`: `.k-tree` container. `.k-tree__node` — `padding-left` based on depth (CSS variable `--depth`). `.k-tree__branch` — expandable node with chevron icon. `.k-tree__branch-trigger` — `display: flex`, `align-items: center`, `gap: 8px`, `padding: 6px 8px`, `cursor: pointer`, `border-radius: var(--k-radius-sm)`, hover `background: var(--k-surface-highest)`. `.k-tree__branch-trigger[data-expanded]` rotates the chevron. `.k-tree__leaf` — terminal node, `display: flex`, `align-items: center`, `gap: 8px`, `padding: 6px 8px 6px 28px` (indented past chevron). `.k-tree__leaf[data-selected]` — `background: var(--k-surface-highest)`, `border-left: 2px solid var(--k-primary)`.
 
 `component.rs`: Two components:
+
 - `KTreeBranch` — expandable node. Props: `label: Element`, `initially_expanded: Option<bool>`, `children: Element`. Manages an `expanded` signal internally.
 - `KTreeLeaf` — terminal node. Props: `selected: Option<bool>`, `onclick: Option<EventHandler<MouseEvent>>`, `children: Element`.
 
@@ -409,6 +418,7 @@ git commit -m "feat(kinetic_ui): add Table, SearchInput, TreeView, Accordion com
 ## Task 5: Update httpui data models and state
 
 **Files:**
+
 - Modify: `httpui/src/state/models.rs`
 - Modify: `httpui/src/state/store.rs`
 
@@ -506,6 +516,7 @@ Search for `Request {` in httpui views (Library, Tabbar, etc.) and add the new f
 - [ ] **Step 5: Update `App` component in `main.rs`**
 
 Add signal initialization for new state fields:
+
 ```rust
 let active_sidebar_nav = use_signal(|| SideNavItem::Collections);
 let active_topbar_nav = use_signal(|| TopBarNav::Collections);
@@ -532,6 +543,7 @@ git commit -m "feat(httpui): update data models with KeyValue, HttpResponse, nav
 ## Task 6: Wire `kinetic_ui` into httpui + new layout grid
 
 **Files:**
+
 - Modify: `httpui/Cargo.toml`
 - Modify: `httpui/src/main.rs`
 - Modify: `httpui/src/views/layout_grid/component.rs`
@@ -549,17 +561,17 @@ Replace the current 6-area grid with:
 
 ```css
 #layout-grid {
-    display: grid;
-    grid-template-columns: 64px 288px 1fr;
-    grid-template-rows: 64px 1fr auto;
-    grid-template-areas:
-        "sidebar  explorer  topbar"
-        "sidebar  explorer  canvas"
-        "sidebar  explorer  statusbar";
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background: var(--k-surface);
+  display: grid;
+  grid-template-columns: 64px 288px 1fr;
+  grid-template-rows: 64px 1fr auto;
+  grid-template-areas:
+    "sidebar  explorer  topbar"
+    "sidebar  explorer  canvas"
+    "sidebar  explorer  statusbar";
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--k-surface);
 }
 ```
 
@@ -652,6 +664,7 @@ git commit -m "feat(httpui): wire kinetic_ui + new 3-column layout grid"
 ## Task 7: Build SideNav view
 
 **Files:**
+
 - Create: `httpui/src/views/sidenav/{mod.rs,component.rs,style.css}`
 - Modify: `httpui/src/views/mod.rs`
 - Modify: `httpui/src/views/layout_grid/component.rs`
@@ -660,92 +673,92 @@ git commit -m "feat(httpui): wire kinetic_ui + new 3-column layout grid"
 
 ```css
 .sidenav {
-    grid-area: sidebar;
-    display: flex;
-    flex-direction: column;
-    background: var(--k-surface-low);
-    padding: var(--k-space-2);
-    height: 100%;
-    overflow: hidden;
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  background: var(--k-surface-low);
+  padding: var(--k-space-2);
+  height: 100%;
+  overflow: hidden;
 }
 
 .sidenav__drag-region {
-    -webkit-app-region: drag;
-    height: 28px;
-    flex-shrink: 0;
+  -webkit-app-region: drag;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .sidenav__brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--k-space-1);
-    padding: var(--k-space-2) 0;
-    font-family: var(--k-font-display);
-    font-size: 0.625rem;
-    font-weight: 700;
-    color: var(--k-on-surface);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--k-space-1);
+  padding: var(--k-space-2) 0;
+  font-family: var(--k-font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--k-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
 }
 
 .sidenav__version {
-    font-family: var(--k-font-mono);
-    font-size: 0.5rem;
-    color: var(--k-on-surface-variant);
-    font-weight: 400;
+  font-family: var(--k-font-mono);
+  font-size: 0.5rem;
+  color: var(--k-on-surface-variant);
+  font-weight: 400;
 }
 
 .sidenav__nav {
-    display: flex;
-    flex-direction: column;
-    gap: var(--k-space-1);
-    flex: 1;
-    padding: var(--k-space-2) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-1);
+  flex: 1;
+  padding: var(--k-space-2) 0;
 }
 
 .sidenav__nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: var(--k-space-2) var(--k-space-1);
-    border-radius: var(--k-radius-default);
-    cursor: pointer;
-    color: var(--k-on-surface-variant);
-    font-size: 0.5625rem;
-    text-align: center;
-    border: none;
-    background: transparent;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--k-space-2) var(--k-space-1);
+  border-radius: var(--k-radius-default);
+  cursor: pointer;
+  color: var(--k-on-surface-variant);
+  font-size: 0.5625rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  position: relative;
 }
 
 .sidenav__nav-item:hover {
-    background: var(--k-surface-high);
+  background: var(--k-surface-high);
 }
 
 .sidenav__nav-item[data-active="true"] {
-    color: var(--k-primary);
-    background: var(--k-surface-high);
+  color: var(--k-primary);
+  background: var(--k-surface-high);
 }
 
 .sidenav__nav-item[data-active="true"]::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 25%;
-    bottom: 25%;
-    width: 2px;
-    background: var(--k-primary);
-    border-radius: 1px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 2px;
+  background: var(--k-primary);
+  border-radius: 1px;
 }
 
 .sidenav__footer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--k-space-1);
-    padding-bottom: var(--k-space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-1);
+  padding-bottom: var(--k-space-2);
 }
 ```
 
@@ -786,6 +799,7 @@ git commit -m "feat(httpui): implement SideNav with brand, nav items, and active
 ## Task 8: Build Explorer view
 
 **Files:**
+
 - Create: `httpui/src/views/explorer/{mod.rs,component.rs,style.css}`
 - Modify: `httpui/src/views/mod.rs`
 - Modify: `httpui/src/views/layout_grid/component.rs`
@@ -826,6 +840,7 @@ git commit -m "feat(httpui): implement Explorer panel with collections tree view
 ## Task 9: Build TopBar view
 
 **Files:**
+
 - Create: `httpui/src/views/topbar/{mod.rs,component.rs,style.css}`
 - Modify: `httpui/src/views/mod.rs`
 - Modify: `httpui/src/views/layout_grid/component.rs`
@@ -837,6 +852,7 @@ Horizontal flex layout. Background `--k-surface-low`. App name on left in Space 
 - [ ] **Step 2: Create `topbar/component.rs`**
 
 Read `active_topbar_nav` from context. Render:
+
 - App name from `env!("CARGO_PKG_NAME")` with `.k-headline-md` styling (but smaller, ~1rem)
 - Three nav links (Collections, Environment, History) — clicking sets `active_topbar_nav`
 - `SearchInput` component (non-functional placeholder — `oninput` is a no-op)
@@ -864,6 +880,7 @@ git commit -m "feat(httpui): implement TopBar with nav, search, and environment 
 ## Task 10: Build Canvas view (URL bar + editor tabs + response)
 
 **Files:**
+
 - Create: `httpui/src/views/canvas/{mod.rs,component.rs,style.css}`
 - Modify: `httpui/src/views/mod.rs`
 - Modify: `httpui/src/views/layout_grid/component.rs`
@@ -880,11 +897,13 @@ Response status badge colors: use `data-status` attribute — `[data-status="2xx
 This is the largest component. It reads `selected_request`, `active_editor_tab`, and `response` from context.
 
 **URL Bar section:**
+
 - `KSelect` for HTTP method (GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD) — use method color for the trigger text
 - `Input` (monospace) for URL
 - `Button` (Primary variant) for "Send →" — onclick dispatches the HTTP request using `reqwest` (port the logic from current `urlbar/component.rs`)
 
 **When sending a request:**
+
 - Capture start time with `web_time::Instant` or `std::time::Instant`
 - Build the `reqwest` request including params from the `params` Vec (append as query string)
 - Include custom headers from the `headers` Vec
@@ -893,6 +912,7 @@ This is the largest component. It reads `selected_request`, `active_editor_tab`,
 - Set `app_state.response` signal
 
 **Editor Tabs:**
+
 - Use `KTabs` with `KTabList` + `KTabTrigger` for each `EditorTab` variant
 - The Headers tab trigger shows a badge with `headers.len()` count
 - `KTabContent` renders based on `active_editor_tab`:
@@ -903,12 +923,14 @@ This is the largest component. It reads `selected_request`, `active_editor_tab`,
   - **Settings**: Placeholder div with "Request settings coming soon"
 
 **Response Section:**
+
 - Collapsible via a local signal `response_expanded: Signal<bool>`
 - Header row shows: collapse chevron, "Response" text, status badge (`Badge` component), response time, response size
 - Body area: `<pre>` with monospace, line numbers (enumerate lines), `--k-surface-lowest` background
 - If no response yet, show muted "No response yet — send a request" placeholder
 
 **When no request is selected** (e.g., at `/`):
+
 - Show a centered placeholder: "Select or create a request to get started"
 
 - [ ] **Step 3: Move Canvas outside the router**
@@ -918,6 +940,7 @@ The Canvas component is rendered directly in the layout grid — it reads `selec
 **Do NOT change the Route enum yet.** The existing routes (`RequestSection`, `SpaceSection`, `CollectionSection`, `SettingsSection`, `NewRequestSection`) and their view modules still exist. They will be cleaned up in Task 11. For now, the Router still renders in the layout grid, but the Canvas is placed alongside it (the Canvas shows when a request is selected, the Router handles non-request routes like `/settings`).
 
 In `layout_grid/component.rs`, render both:
+
 ```rust
 div { style: "grid-area: canvas;",
     Canvas {}
@@ -946,6 +969,7 @@ git commit -m "feat(httpui): implement Canvas with URL bar, editor tabs, and res
 ## Task 11: Build StatusBar + clean up old views
 
 **Files:**
+
 - Create: `httpui/src/views/statusbar/{mod.rs,component.rs,style.css}`
 - Delete: `httpui/src/views/navbar/`
 - Delete: `httpui/src/views/library/`
@@ -970,6 +994,7 @@ git commit -m "feat(httpui): implement Canvas with URL bar, editor tabs, and res
 - [ ] **Step 3: Delete old views**
 
 Remove all old view directories that are now replaced:
+
 - `httpui/src/views/navbar/` → replaced by `sidenav/`
 - `httpui/src/views/library/` → replaced by `explorer/`
 - `httpui/src/views/tabbar/` → replaced by `topbar/`
@@ -1045,11 +1070,13 @@ git commit -m "feat(httpui): remove old views/components, add StatusBar, complet
 ## Task 12: Visual polish pass
 
 **Files:**
+
 - Various CSS files in `kinetic_ui/src/` and `httpui/src/views/`
 
 - [ ] **Step 1: Run `dx serve --package httpui` and compare against Stitch mockups**
 
 Open both mockup screenshots side-by-side:
+
 - `httpui/docs/stitch/request_editor/screen.png`
 - `httpui/docs/stitch/collections_environments/screen.png`
 
@@ -1088,6 +1115,7 @@ git commit -m "style: visual polish pass — spacing, colors, typography, hover 
 ## Task 13: Seed data + final verification
 
 **Files:**
+
 - Modify: `httpui/src/main.rs`
 
 - [ ] **Step 1: Add seed data for visual testing**
@@ -1116,6 +1144,7 @@ let next_collection_id = use_signal(|| 3);
 Run: `dx serve --package httpui`
 
 Verify:
+
 - SideNav shows brand + version + nav items
 - Explorer shows "User Auth API" and "Billing Service" collections with requests inside
 - Clicking a request highlights it in Explorer and shows the editor in Canvas
@@ -1135,20 +1164,20 @@ git commit -m "feat(httpui): add seed data for visual testing of new layout"
 
 ## Summary
 
-| Task | Description | Key Files |
-|---|---|---|
-| 1 | kinetic_ui crate scaffold + theme CSS | `kinetic_ui/` scaffold, theme files |
-| 2 | Core components: Button, Input, Badge, IconButton | `kinetic_ui/src/components/{button,input,badge,icon_button}/` |
-| 3 | Tabs, Select, Separator, Tooltip | `kinetic_ui/src/components/{tabs,select,separator,tooltip}/` |
-| 4 | Table, SearchInput, TreeView, Accordion | `kinetic_ui/src/components/{table,search_input,tree_view,accordion}/` |
-| 5 | Data model + state updates | `httpui/src/state/{models,store}.rs` |
-| 6 | Wire kinetic_ui + new layout grid | `httpui/Cargo.toml`, layout_grid |
-| 7 | SideNav view | `httpui/src/views/sidenav/` |
-| 8 | Explorer view | `httpui/src/views/explorer/` |
-| 9 | TopBar view | `httpui/src/views/topbar/` |
-| 10 | Canvas view (request editor + response) | `httpui/src/views/canvas/` |
-| 11 | StatusBar + delete old views | Cleanup pass |
-| 12 | Visual polish | CSS adjustments |
-| 13 | Seed data + final verification | `main.rs` seed data |
+| Task | Description                                       | Key Files                                                             |
+| ---- | ------------------------------------------------- | --------------------------------------------------------------------- |
+| 1    | kinetic_ui crate scaffold + theme CSS             | `kinetic_ui/` scaffold, theme files                                   |
+| 2    | Core components: Button, Input, Badge, IconButton | `kinetic_ui/src/components/{button,input,badge,icon_button}/`         |
+| 3    | Tabs, Select, Separator, Tooltip                  | `kinetic_ui/src/components/{tabs,select,separator,tooltip}/`          |
+| 4    | Table, SearchInput, TreeView, Accordion           | `kinetic_ui/src/components/{table,search_input,tree_view,accordion}/` |
+| 5    | Data model + state updates                        | `httpui/src/state/{models,store}.rs`                                  |
+| 6    | Wire kinetic_ui + new layout grid                 | `httpui/Cargo.toml`, layout_grid                                      |
+| 7    | SideNav view                                      | `httpui/src/views/sidenav/`                                           |
+| 8    | Explorer view                                     | `httpui/src/views/explorer/`                                          |
+| 9    | TopBar view                                       | `httpui/src/views/topbar/`                                            |
+| 10   | Canvas view (request editor + response)           | `httpui/src/views/canvas/`                                            |
+| 11   | StatusBar + delete old views                      | Cleanup pass                                                          |
+| 12   | Visual polish                                     | CSS adjustments                                                       |
+| 13   | Seed data + final verification                    | `main.rs` seed data                                                   |
 
 Tasks 1-4 are `kinetic_ui` library work (can be parallelized somewhat). Tasks 5-6 are the bridge. Tasks 7-11 are httpui view rebuilding (sequential). Tasks 12-13 are polish.

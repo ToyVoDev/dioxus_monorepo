@@ -1,60 +1,60 @@
 /* Surface utilities */
 .k-surface-lowest {
-    background-color: var(--k-surface-lowest);
+  background-color: var(--k-surface-lowest);
 }
 
 .k-surface {
-    background-color: var(--k-surface);
+  background-color: var(--k-surface);
 }
 
 .k-surface-low {
-    background-color: var(--k-surface-low);
+  background-color: var(--k-surface-low);
 }
 
 .k-surface-container {
-    background-color: var(--k-surface-container);
+  background-color: var(--k-surface-container);
 }
 
 .k-surface-high {
-    background-color: var(--k-surface-high);
+  background-color: var(--k-surface-high);
 }
 
 .k-surface-highest {
-    background-color: var(--k-surface-highest);
+  background-color: var(--k-surface-highest);
 }
 
 /* Text utilities */
 .k-text-primary {
-    color: var(--k-primary);
+  color: var(--k-primary);
 }
 
 .k-text-secondary {
-    color: var(--k-secondary);
+  color: var(--k-secondary);
 }
 
 .k-text-tertiary {
-    color: var(--k-tertiary);
+  color: var(--k-tertiary);
 }
 
 .k-text-error {
-    color: var(--k-error);
+  color: var(--k-error);
 }
 
 .k-text-on-surface {
-    color: var(--k-on-surface);
+  color: var(--k-on-surface);
 }
 
 .k-text-on-surface-variant {
-    color: var(--k-on-surface-variant);
+  color: var(--k-on-surface-variant);
 }
 
 /* Font utilities */
 .k-mono {
-    font-family: var(--k-font-mono);
+  font-family: var(--k-font-mono);
 }
 
 /* Glass effect */
 .k-glass {
-    background: var(--k-glass-surface);
-    backdrop-filter: blur(24px);
+  background: var(--k-glass-surface);
+  backdrop-filter: blur(24px);
 }

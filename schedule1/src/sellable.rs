@@ -35,11 +35,7 @@ impl Sellable {
         // mimicking unity roundToInt which on 0.5, rounds towards the even number.
         if (price.fract() - 0.5).abs() < 0.001 {
             let int = price.floor();
-            if int % 2. == 0. {
-                int
-            } else {
-                int + 1.
-            }
+            if int % 2. == 0. { int } else { int + 1. }
         } else {
             price.round()
         }
@@ -506,7 +502,8 @@ impl Sellable {
     }
 
     pub fn addictiveness(&self) -> f32 {
-        let mut total_addictiveness = self.base.addictiveness() + self.effects.iter().map(|i| i.addictiveness()).sum::<f32>();
+        let mut total_addictiveness =
+            self.base.addictiveness() + self.effects.iter().map(|i| i.addictiveness()).sum::<f32>();
         if let Product::Marijuana(_) = self.base {
             if self.ingredients.is_empty() {
                 total_addictiveness -= self.base.addictiveness();
@@ -2154,8 +2151,8 @@ mod tests {
         assert_eq!(mix.addictiveness(), 100.);
     }
     #[test]
-    fn test_meth_flumedicine_battery_megabean_viagra_energydrink_megabean_battery_viagra_energydrink(
-    ) {
+    fn test_meth_flumedicine_battery_megabean_viagra_energydrink_megabean_battery_viagra_energydrink()
+     {
         let mix = Sellable::from_product(Product::Meth)
             .add_ingredient(Ingredient::FluMedicine)
             .add_ingredient(Ingredient::Battery)

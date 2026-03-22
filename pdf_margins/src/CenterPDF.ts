@@ -1,27 +1,34 @@
-import { PageSizes, PDFDocument } from 'pdf-lib';
+import { PageSizes, PDFDocument } from "pdf-lib";
 
-export const centerPdf = async (pdfBytes: string | Uint8Array | ArrayBuffer, options: {
-  drawAlignment?: boolean,
-  drawBorder?: boolean,
-  nudgeHeight?: number,
-  nudgeWidth?: number,
-  nudgeBorderWidth?: number,
-  nudgeBorderHeight?: number,
-  paperSize?: [number, number],
-}): Promise<Uint8Array> => {
+export const centerPdf = async (
+  pdfBytes: string | Uint8Array | ArrayBuffer,
+  options: {
+    drawAlignment?: boolean;
+    drawBorder?: boolean;
+    nudgeHeight?: number;
+    nudgeWidth?: number;
+    nudgeBorderWidth?: number;
+    nudgeBorderHeight?: number;
+    paperSize?: [number, number];
+  },
+): Promise<Uint8Array> => {
   const drawAlignment = options?.drawAlignment !== false;
   const drawBorder = options?.drawBorder !== false;
   const nudgeHeight = options?.nudgeHeight || 0;
   const nudgeWidth = options?.nudgeWidth || 0;
   const nudgeBorderWidth = options?.nudgeBorderWidth || 0;
   const nudgeBorderHeight = options?.nudgeBorderWidth || 0;
-  const paperSize = options?.paperSize?.length === 2 ? options.paperSize : PageSizes.Letter;
+  const paperSize =
+    options?.paperSize?.length === 2 ? options.paperSize : PageSizes.Letter;
   const oldPdfDoc = await PDFDocument.load(pdfBytes);
   const newPdfDoc = await PDFDocument.create();
 
   for (const oldPage of oldPdfDoc.getPages()) {
-    const bothLandscapeOrPortrait = oldPage.getWidth() > oldPage.getHeight() && paperSize[0] > paperSize[1];
-    const newPage = newPdfDoc.addPage(bothLandscapeOrPortrait ? paperSize : [paperSize[1], paperSize[0]]);
+    const bothLandscapeOrPortrait =
+      oldPage.getWidth() > oldPage.getHeight() && paperSize[0] > paperSize[1];
+    const newPage = newPdfDoc.addPage(
+      bothLandscapeOrPortrait ? paperSize : [paperSize[1], paperSize[0]],
+    );
 
     const widthOffset = (newPage.getWidth() - oldPage.getWidth()) / 2;
     const heightOffset = (newPage.getHeight() - oldPage.getHeight()) / 2;
@@ -51,8 +58,8 @@ export const centerPdf = async (pdfBytes: string | Uint8Array | ArrayBuffer, opt
       newPage.drawRectangle({
         x: widthOffset + nudgeBorderWidth + nudgeWidth,
         y: heightOffset + nudgeBorderHeight + nudgeHeight,
-        height: oldPage.getHeight() - (nudgeBorderHeight * 2),
-        width: oldPage.getWidth() - (nudgeBorderWidth * 2),
+        height: oldPage.getHeight() - nudgeBorderHeight * 2,
+        width: oldPage.getWidth() - nudgeBorderWidth * 2,
         opacity: 0,
         borderOpacity: 1,
         borderWidth: 2,
