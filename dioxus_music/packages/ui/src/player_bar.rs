@@ -4,7 +4,15 @@ use dioxus::prelude::*;
 const PLAYER_BAR_CSS: Asset = asset!("/assets/styling/player-bar.css");
 
 #[component]
-pub fn PlayerBar(#[props(default)] compact: bool) -> Element {
+pub fn PlayerBar(
+    #[props(default)] compact: bool,
+    #[props(default)] hidden: bool,
+    #[props(default)] on_expand: Option<EventHandler<()>>,
+) -> Element {
+    if hidden {
+        return rsx! {};
+    }
+
     let mut player = use_player_state();
 
     let track_info = player.read().current_track.clone();
@@ -32,16 +40,26 @@ pub fn PlayerBar(#[props(default)] compact: bool) -> Element {
         document::Link { rel: "stylesheet", href: PLAYER_BAR_CSS }
 
         div { class: "{bar_class}",
-            // Album art placeholder
-            div { class: "player-bar__art" }
+            // Clickable info area (album art + track info)
+            div {
+                class: "player-bar__info-area",
+                style: if on_expand.is_some() { "cursor: pointer;" } else { "" },
+                onclick: move |_| {
+                    if let Some(ref handler) = on_expand {
+                        handler.call(());
+                    }
+                },
+                // Album art placeholder
+                div { class: "player-bar__art" }
 
-            // Now playing info
-            div { class: "player-bar__info",
-                if let Some(track) = &track_info {
-                    div { class: "player-bar__title", "{track.title}" }
-                    div { class: "player-bar__artist", "{track.artist}" }
-                } else {
-                    div { class: "player-bar__title player-bar__title--empty", "No track selected" }
+                // Now playing info
+                div { class: "player-bar__info",
+                    if let Some(track) = &track_info {
+                        div { class: "player-bar__title", "{track.title}" }
+                        div { class: "player-bar__artist", "{track.artist}" }
+                    } else {
+                        div { class: "player-bar__title player-bar__title--empty", "No track selected" }
+                    }
                 }
             }
 
