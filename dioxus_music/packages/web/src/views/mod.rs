@@ -18,3 +18,6 @@ pub use playlist_sidebar::PlaylistSidebarSection;
 
 mod playlist_view;
 pub use playlist_view::PlaylistView;
+
+mod now_playing;
+pub use now_playing::NowPlaying;
