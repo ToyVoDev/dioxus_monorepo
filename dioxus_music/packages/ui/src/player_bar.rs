@@ -13,13 +13,7 @@ pub fn PlayerBar(#[props(default)] compact: bool) -> Element {
     let is_shuffled = player.read().is_shuffled;
     let show_queue = player.read().show_queue;
 
-    let audio_src = track_info
-        .as_ref()
-        .map(|t| format!("/stream/{}", t.id))
-        .unwrap_or_default();
-
     let has_track = track_info.is_some();
-    let is_looping = repeat_mode == RepeatMode::One;
 
     let repeat_label = match repeat_mode {
         RepeatMode::Off => "R",
@@ -143,23 +137,6 @@ pub fn PlayerBar(#[props(default)] compact: bool) -> Element {
                 }
             }
 
-            // Hidden audio element
-            if has_track {
-                audio {
-                    id: "main-audio",
-                    src: "{audio_src}",
-                    autoplay: true,
-                    r#loop: is_looping,
-                    onended: move |_| {
-                        // onended only fires when not looping
-                        player.with_mut(|p| p.next_track());
-                        let _ = document::eval(r#"
-                            let a = document.getElementById('main-audio');
-                            if (a && a.src) { a.load(); a.play(); }
-                        "#);
-                    },
-                }
-            }
         }
     }
 }
