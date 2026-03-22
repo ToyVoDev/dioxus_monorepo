@@ -1,99 +1,73 @@
 .sidebar {
+  grid-area: sidebar;
+  width: 256px;
+  background: var(--k-surface-low);
   display: flex;
   flex-direction: column;
-  padding: 16px;
   height: 100%;
+  padding: var(--k-space-4);
+  overflow: hidden;
   box-sizing: border-box;
 }
 
-.sidebar__logo {
-  font-size: 1.4rem;
+.sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-1);
+}
+
+.sidebar__brand-name {
+  font-family: var(--k-font-display);
+  font-size: 1.25rem;
   font-weight: 700;
-  padding: 8px 12px;
-  margin-bottom: 24px;
-  color: #ffffff;
-  letter-spacing: 0.02em;
+  color: var(--k-primary);
+  letter-spacing: 0.05em;
+}
+
+.sidebar__subtitle {
+  font-family: var(--k-font-mono);
+  font-size: 0.625rem;
+  color: var(--k-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .sidebar__nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--k-space-1);
+  margin-top: var(--k-space-6);
+  flex: 1;
 }
 
-.sidebar__nav a {
-  display: block;
-  padding: 10px 12px;
-  color: #a0a4b8;
+.sidebar__nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-3);
+  padding: var(--k-space-2) var(--k-space-3);
+  border-radius: var(--k-radius-default);
+  color: var(--k-on-surface-variant);
+  font-size: 0.875rem;
   text-decoration: none;
-  border-radius: 6px;
-  font-size: 0.95rem;
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+    background 150ms ease,
+    color 150ms ease;
 }
 
-.sidebar__nav a:hover {
-  background-color: #1a1d28;
-  color: #ffffff;
+.sidebar__nav-item:hover {
+  background: var(--k-surface-high);
 }
 
-.sidebar__nav a.active {
-  background-color: #1e2230;
-  color: #ffffff;
+.sidebar__nav-item[aria-current="page"] {
+  background: var(--k-surface-highest);
+  color: var(--k-primary);
+  font-weight: 500;
 }
 
-/* Playlist sidebar section */
-.sidebar-section {
-  margin-top: 20px;
-}
-
-.sidebar-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  margin-bottom: 8px;
-}
-
-.sidebar-section__title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #6b6f82;
-}
-
-.sidebar-section__actions {
-  display: flex;
-  gap: 4px;
-}
-
-.sidebar-section__btn {
-  padding: 2px 8px;
-  border-radius: 4px;
-  border: none;
-  background: #1a1d28;
-  color: #a0a4b8;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-}
-
-.sidebar-section__btn:hover {
-  background: #2a2d3a;
-  color: #ffffff;
-}
-
-.sidebar-playlist-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sidebar-playlist-link__icon {
-  font-size: 0.85rem;
-  opacity: 0.7;
+.sidebar__footer {
+  margin-top: auto;
+  font-family: var(--k-font-mono);
+  font-size: 0.625rem;
+  color: var(--k-on-surface-variant);
+  padding: var(--k-space-2) 0;
 }

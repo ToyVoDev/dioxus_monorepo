@@ -1,392 +1,682 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Kinetic Shell | HTTP Client</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #131313;
-            color: #e4e2e1;
-            margin: 0;
-            overflow: hidden;
-        }
-        .font-headline { font-family: 'Space Grotesk', sans-serif; }
-        .font-mono { font-family: 'Fira Code', monospace; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: #131313; }
-        ::-webkit-scrollbar-thumb { background: #353535; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ffb3ad; }
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kinetic Shell | HTTP Client</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Fira+Code:wght@400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #131313;
+        color: #e4e2e1;
+        margin: 0;
+        overflow: hidden;
+      }
+      .font-headline {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .font-mono {
+        font-family: "Fira Code", monospace;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #131313;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #353535;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ffb3ad;
+      }
     </style>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-error": "#690005",
-                        "tertiary": "#f9bd22",
-                        "on-error-container": "#ffdad6",
-                        "background": "#131313",
-                        "on-primary-container": "#5c0008",
-                        "on-surface-variant": "#e4beba",
-                        "tertiary-fixed": "#ffdf9f",
-                        "surface-container": "#1f2020",
-                        "surface": "#131313",
-                        "primary-fixed-dim": "#ffb3ad",
-                        "secondary-container": "#03c6b2",
-                        "primary-fixed": "#ffdad7",
-                        "on-tertiary": "#402d00",
-                        "on-primary": "#68000a",
-                        "surface-container-lowest": "#0e0e0e",
-                        "outline": "#ab8986",
-                        "surface-tint": "#ffb3ad",
-                        "on-tertiary-fixed-variant": "#5c4300",
-                        "tertiary-fixed-dim": "#f9bd22",
-                        "secondary": "#44e2cd",
-                        "primary": "#ffb3ad",
-                        "inverse-primary": "#b91a24",
-                        "inverse-on-surface": "#303030",
-                        "secondary-fixed": "#62fae3",
-                        "secondary-fixed-dim": "#3cddc7",
-                        "on-tertiary-fixed": "#261a00",
-                        "surface-container-low": "#1b1c1c",
-                        "on-primary-fixed-variant": "#930013",
-                        "on-secondary": "#003731",
-                        "outline-variant": "#5b403e",
-                        "surface-variant": "#353535",
-                        "on-secondary-container": "#004d44",
-                        "on-primary-fixed": "#410004",
-                        "on-secondary-fixed": "#00201c",
-                        "error": "#ffb4ab",
-                        "on-secondary-fixed-variant": "#005047",
-                        "surface-bright": "#393939",
-                        "inverse-surface": "#e4e2e1",
-                        "error-container": "#93000a",
-                        "surface-container-highest": "#353535",
-                        "on-tertiary-container": "#372700",
-                        "surface-container-high": "#2a2a2a",
-                        "tertiary-container": "#b88900",
-                        "surface-dim": "#131313",
-                        "primary-container": "#ff5451",
-                        "on-surface": "#e4e2e1",
-                        "on-background": "#e4e2e1"
-                    },
-                    fontFamily: {
-                        "headline": ["Space Grotesk"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-                },
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error": "#690005",
+              tertiary: "#f9bd22",
+              "on-error-container": "#ffdad6",
+              background: "#131313",
+              "on-primary-container": "#5c0008",
+              "on-surface-variant": "#e4beba",
+              "tertiary-fixed": "#ffdf9f",
+              "surface-container": "#1f2020",
+              surface: "#131313",
+              "primary-fixed-dim": "#ffb3ad",
+              "secondary-container": "#03c6b2",
+              "primary-fixed": "#ffdad7",
+              "on-tertiary": "#402d00",
+              "on-primary": "#68000a",
+              "surface-container-lowest": "#0e0e0e",
+              outline: "#ab8986",
+              "surface-tint": "#ffb3ad",
+              "on-tertiary-fixed-variant": "#5c4300",
+              "tertiary-fixed-dim": "#f9bd22",
+              secondary: "#44e2cd",
+              primary: "#ffb3ad",
+              "inverse-primary": "#b91a24",
+              "inverse-on-surface": "#303030",
+              "secondary-fixed": "#62fae3",
+              "secondary-fixed-dim": "#3cddc7",
+              "on-tertiary-fixed": "#261a00",
+              "surface-container-low": "#1b1c1c",
+              "on-primary-fixed-variant": "#930013",
+              "on-secondary": "#003731",
+              "outline-variant": "#5b403e",
+              "surface-variant": "#353535",
+              "on-secondary-container": "#004d44",
+              "on-primary-fixed": "#410004",
+              "on-secondary-fixed": "#00201c",
+              error: "#ffb4ab",
+              "on-secondary-fixed-variant": "#005047",
+              "surface-bright": "#393939",
+              "inverse-surface": "#e4e2e1",
+              "error-container": "#93000a",
+              "surface-container-highest": "#353535",
+              "on-tertiary-container": "#372700",
+              "surface-container-high": "#2a2a2a",
+              "tertiary-container": "#b88900",
+              "surface-dim": "#131313",
+              "primary-container": "#ff5451",
+              "on-surface": "#e4e2e1",
+              "on-background": "#e4e2e1",
             },
-        }
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
     </script>
-</head>
-<body class="dark bg-background text-on-background h-screen flex overflow-hidden">
-<!-- SideNavBar (from Shared Components JSON) -->
-<aside class="bg-[#1B1C1C] dark:bg-[#1B1C1C] flex flex-col h-screen p-4 gap-y-4 font-['Inter'] text-sm docked left-0 h-full w-64 shrink-0 transition-all duration-150">
-<div class="flex items-center gap-3 px-2 mb-2">
-<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary-container font-bold">K</div>
-<div>
-<h1 class="text-lg font-bold text-[#FFB3AD] font-headline">HTTP CLIENT</h1>
-<p class="text-[10px] text-gray-500 tracking-widest uppercase">v1.0.4-beta</p>
-</div>
-</div>
-<button class="w-full py-2.5 px-4 bg-primary-container text-on-primary-container rounded-lg font-semibold flex items-center justify-center gap-2 transition-transform active:scale-95">
-<span class="material-symbols-outlined text-[20px]">add</span>
-            New Request
-        </button>
-<nav class="flex-1 mt-4 flex flex-col gap-1">
-<!-- Active: Collections -->
-<a class="bg-[#353535] text-[#FFB3AD] rounded-lg flex items-center gap-3 px-3 py-2.5 transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="folder">folder</span>
-                Collections
-            </a>
-<a class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="history">history</span>
-                History
-            </a>
-<a class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="api">api</span>
-                APIs
-            </a>
-<a class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="dns">dns</span>
-                Mock Servers
-            </a>
-</nav>
-<div class="mt-auto pt-4 flex flex-col gap-1 border-t border-surface-container-highest">
-<a class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-                Settings
-            </a>
-<a class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-                Help
-            </a>
-</div>
-</aside>
-<!-- Main Workspace -->
-<main class="flex-1 flex flex-col min-w-0 bg-surface">
-<!-- TopAppBar (from Shared Components JSON) -->
-<header class="bg-[#131313] dark:bg-[#131313] flex justify-between items-center px-6 h-16 w-full shrink-0 font-['Space_Grotesk'] tracking-tight docked full-width top-0">
-<div class="flex items-center gap-8">
-<span class="text-xl font-bold text-[#FFB3AD]">Kinetic Shell</span>
-<nav class="hidden md:flex gap-6 items-center h-full text-sm font-medium">
-<a class="text-[#FFB3AD] border-b-2 border-[#FFB3AD] pb-1 hover:text-white transition-colors" href="#">Collections</a>
-<a class="text-gray-400 hover:text-white transition-colors" href="#">Environment</a>
-<a class="text-gray-400 hover:text-white transition-colors" href="#">History</a>
-</nav>
-</div>
-<div class="flex items-center gap-4">
-<div class="relative group">
-<button class="bg-surface-container-high px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm border border-outline-variant/20 hover:border-primary/40 transition-all">
-<span class="w-2 h-2 rounded-full bg-secondary"></span>
-<span class="text-on-surface">Production</span>
-<span class="material-symbols-outlined text-[18px]">expand_more</span>
-</button>
-</div>
-<div class="flex items-center gap-2">
-<button class="p-2 text-gray-400 hover:text-white transition-colors scale-95 duration-200">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-<button class="p-2 text-gray-400 hover:text-white transition-colors scale-95 duration-200">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-</div>
-</header>
-<!-- Content Area: Split View -->
-<section class="flex-1 flex overflow-hidden">
-<!-- Sidebar: Collections Tree -->
-<div class="w-72 bg-surface-container-low border-r border-outline-variant/10 flex flex-col">
-<div class="p-4 flex items-center justify-between">
-<h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Collections</h2>
-<button class="text-gray-500 hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-[18px]">search</span>
-</button>
-</div>
-<div class="flex-1 overflow-y-auto px-2 pb-4">
-<!-- Collection Item -->
-<div class="mb-4">
-<div class="flex items-center gap-2 p-2 hover:bg-surface-container-high rounded cursor-pointer group">
-<span class="material-symbols-outlined text-[18px] text-tertiary">folder_open</span>
-<span class="text-sm font-medium text-on-surface flex-1">User Auth API</span>
-<span class="material-symbols-outlined text-[14px] text-gray-500 opacity-0 group-hover:opacity-100">more_vert</span>
-</div>
-<!-- Folder Structure -->
-<div class="ml-4 border-l border-outline-variant/20 mt-1 flex flex-col gap-0.5">
-<div class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer group">
-<span class="material-symbols-outlined text-[16px] text-gray-500">expand_more</span>
-<span class="material-symbols-outlined text-[16px] text-gray-500">folder</span>
-<span class="text-[13px] text-on-surface-variant flex-1">Authentication</span>
-</div>
-<!-- Nested Requests -->
-<div class="ml-6 flex flex-col gap-0.5">
-<div class="flex items-center gap-2 p-1.5 bg-surface-container-highest/50 rounded cursor-pointer border-l-2 border-primary">
-<span class="text-[9px] font-bold text-secondary w-8">POST</span>
-<span class="text-[13px] text-primary truncate">Login User</span>
-</div>
-<div class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer">
-<span class="text-[9px] font-bold text-tertiary w-8">PUT</span>
-<span class="text-[13px] text-on-surface-variant truncate">Reset Password</span>
-</div>
-</div>
-<div class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer group mt-1">
-<span class="material-symbols-outlined text-[16px] text-gray-500">chevron_right</span>
-<span class="material-symbols-outlined text-[16px] text-gray-500">folder</span>
-<span class="text-[13px] text-on-surface-variant flex-1">Account Management</span>
-</div>
-</div>
-</div>
-<!-- Another Collection -->
-<div class="flex items-center gap-2 p-2 hover:bg-surface-container-high rounded cursor-pointer group">
-<span class="material-symbols-outlined text-[18px] text-secondary">folder</span>
-<span class="text-sm font-medium text-on-surface-variant flex-1">Billing Service</span>
-</div>
-</div>
-</div>
-<!-- Detailed Content Canvas: Environment Management -->
-<div class="flex-1 bg-surface flex flex-col overflow-hidden">
-<!-- Tab Bar / Header -->
-<div class="px-8 py-6 border-b border-outline-variant/10 bg-surface-container-lowest/30">
-<div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
-<span>Environments</span>
-<span class="material-symbols-outlined text-[12px]">chevron_right</span>
-<span class="text-primary font-medium">Production</span>
-</div>
-<div class="flex justify-between items-end">
-<div>
-<h2 class="text-3xl font-headline font-bold text-on-surface">Production Environment</h2>
-<p class="text-sm text-on-surface-variant mt-1">Define shared variables for your production stack. These are injected into all collection requests.</p>
-</div>
-<div class="flex gap-3">
-<button class="px-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded text-sm hover:border-primary/50 transition-colors">Duplicate</button>
-<button class="px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded text-sm hover:bg-primary/20 transition-colors font-medium">Save Changes</button>
-</div>
-</div>
-</div>
-<!-- Environment Variable Table -->
-<div class="flex-1 overflow-y-auto p-8">
-<div class="bg-surface-container-low rounded-xl border border-outline-variant/10 overflow-hidden">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-high/50 text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-outline-variant/10">
-<th class="px-6 py-4 font-medium w-12 text-center">
-<input class="rounded bg-background border-outline-variant text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
-</th>
-<th class="px-6 py-4 font-medium w-1/4">Variable Name</th>
-<th class="px-6 py-4 font-medium w-1/4">Initial Value</th>
-<th class="px-6 py-4 font-medium w-1/4">Current Value</th>
-<th class="px-6 py-4 font-medium w-24">Type</th>
-<th class="px-6 py-4 font-medium w-16"></th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/5">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-high/30 transition-colors group">
-<td class="px-6 py-4 text-center">
-<input checked="" class="rounded bg-background border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0" type="text" value="base_url"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0" type="text" value="https://api.kinetic.sh/v1"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0" type="text" value="https://api.kinetic.sh/v1"/>
-</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">String</span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
-<span class="material-symbols-outlined text-[18px]">delete</span>
-</button>
-</td>
-</tr>
-<!-- Row 2 (Secret) -->
-<tr class="hover:bg-surface-container-high/30 transition-colors group">
-<td class="px-6 py-4 text-center">
-<input checked="" class="rounded bg-background border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0" type="text" value="api_key"/>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-2">
-<span class="text-gray-600 font-mono text-sm tracking-tighter">••••••••••••••••</span>
-<span class="material-symbols-outlined text-[14px] text-gray-500 cursor-pointer hover:text-white">visibility_off</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-2">
-<span class="text-gray-600 font-mono text-sm tracking-tighter">••••••••••••••••</span>
-<span class="material-symbols-outlined text-[14px] text-gray-500 cursor-pointer hover:text-white">visibility_off</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase">Secret</span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
-<span class="material-symbols-outlined text-[18px]">delete</span>
-</button>
-</td>
-</tr>
-<!-- Row 3 (Port) -->
-<tr class="hover:bg-surface-container-high/30 transition-colors group">
-<td class="px-6 py-4 text-center">
-<input checked="" class="rounded bg-background border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0" type="text" value="port_number"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0" type="text" value="443"/>
-</td>
-<td class="px-6 py-4">
-<input class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0" type="text" value="443"/>
-</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded-full uppercase">Number</span>
-</td>
-<td class="px-6 py-4 text-right">
-<button class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all">
-<span class="material-symbols-outlined text-[18px]">delete</span>
-</button>
-</td>
-</tr>
-<!-- Empty Add Row -->
-<tr class="hover:bg-surface-container-high/20 transition-colors">
-<td class="px-6 py-4 text-center"></td>
-<td class="px-6 py-4" colspan="4">
-<button class="flex items-center gap-2 text-xs text-primary font-medium hover:underline">
-<span class="material-symbols-outlined text-[16px]">add</span>
-                                            Add New Variable
-                                        </button>
-</td>
-<td class="px-6 py-4"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Usage Stats/Bento Grid Hint -->
-<div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between">
-<span class="text-xs font-bold text-gray-500 uppercase">Variable Coverage</span>
-<div class="mt-4 flex items-end justify-between">
-<span class="text-4xl font-headline font-bold text-secondary">88%</span>
-<div class="w-16 h-8 flex items-end gap-1">
-<div class="w-2 bg-secondary h-[40%] rounded-t-sm"></div>
-<div class="w-2 bg-secondary h-[60%] rounded-t-sm"></div>
-<div class="w-2 bg-secondary h-[90%] rounded-t-sm"></div>
-<div class="w-2 bg-secondary h-[80%] rounded-t-sm"></div>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between">
-<span class="text-xs font-bold text-gray-500 uppercase">Active References</span>
-<div class="mt-4 flex items-end justify-between">
-<span class="text-4xl font-headline font-bold text-tertiary">24</span>
-<span class="text-[10px] text-gray-500 mb-1">Across 3 Collections</span>
-</div>
-</div>
-<div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between">
-<span class="text-xs font-bold text-gray-500 uppercase">Last Modified</span>
-<div class="mt-4">
-<span class="text-lg font-medium text-on-surface">24 mins ago</span>
-<p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
-<span class="material-symbols-outlined text-[12px]">person</span>
-                                    Sarah Jenkins (DevOps)
-                                </p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Status Bar -->
-<footer class="h-8 bg-surface-container-lowest border-t border-outline-variant/5 px-4 flex items-center justify-between text-[10px] text-gray-500 uppercase tracking-widest font-mono">
-<div class="flex items-center gap-4">
-<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Connected: aws-us-east-1</span>
-<span>Branch: main</span>
-</div>
-<div class="flex items-center gap-4">
-<span>UTF-8</span>
-<span>Insomnia Import: v4.2</span>
-<span class="text-primary font-bold">Kinetic Obsidian Engine</span>
-</div>
-</footer>
-</main>
-</body></html>
+  </head>
+  <body
+    class="dark bg-background text-on-background h-screen flex overflow-hidden"
+  >
+    <!-- SideNavBar (from Shared Components JSON) -->
+    <aside
+      class="bg-[#1B1C1C] dark:bg-[#1B1C1C] flex flex-col h-screen p-4 gap-y-4 font-['Inter'] text-sm docked left-0 h-full w-64 shrink-0 transition-all duration-150"
+    >
+      <div class="flex items-center gap-3 px-2 mb-2">
+        <div
+          class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary-container font-bold"
+        >
+          K
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-[#FFB3AD] font-headline">
+            HTTP CLIENT
+          </h1>
+          <p class="text-[10px] text-gray-500 tracking-widest uppercase">
+            v1.0.4-beta
+          </p>
+        </div>
+      </div>
+      <button
+        class="w-full py-2.5 px-4 bg-primary-container text-on-primary-container rounded-lg font-semibold flex items-center justify-center gap-2 transition-transform active:scale-95"
+      >
+        <span class="material-symbols-outlined text-[20px]">add</span>
+        New Request
+      </button>
+      <nav class="flex-1 mt-4 flex flex-col gap-1">
+        <!-- Active: Collections -->
+        <a
+          class="bg-[#353535] text-[#FFB3AD] rounded-lg flex items-center gap-3 px-3 py-2.5 transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="folder"
+            >folder</span
+          >
+          Collections
+        </a>
+        <a
+          class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="history"
+            >history</span
+          >
+          History
+        </a>
+        <a
+          class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="api">api</span>
+          APIs
+        </a>
+        <a
+          class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="dns">dns</span>
+          Mock Servers
+        </a>
+      </nav>
+      <div
+        class="mt-auto pt-4 flex flex-col gap-1 border-t border-surface-container-highest"
+      >
+        <a
+          class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="settings"
+            >settings</span
+          >
+          Settings
+        </a>
+        <a
+          class="text-gray-500 hover:bg-[#2A2A2A] hover:text-white flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          href="#"
+        >
+          <span class="material-symbols-outlined" data-icon="help">help</span>
+          Help
+        </a>
+      </div>
+    </aside>
+    <!-- Main Workspace -->
+    <main class="flex-1 flex flex-col min-w-0 bg-surface">
+      <!-- TopAppBar (from Shared Components JSON) -->
+      <header
+        class="bg-[#131313] dark:bg-[#131313] flex justify-between items-center px-6 h-16 w-full shrink-0 font-['Space_Grotesk'] tracking-tight docked full-width top-0"
+      >
+        <div class="flex items-center gap-8">
+          <span class="text-xl font-bold text-[#FFB3AD]">Kinetic Shell</span>
+          <nav
+            class="hidden md:flex gap-6 items-center h-full text-sm font-medium"
+          >
+            <a
+              class="text-[#FFB3AD] border-b-2 border-[#FFB3AD] pb-1 hover:text-white transition-colors"
+              href="#"
+              >Collections</a
+            >
+            <a class="text-gray-400 hover:text-white transition-colors" href="#"
+              >Environment</a
+            >
+            <a class="text-gray-400 hover:text-white transition-colors" href="#"
+              >History</a
+            >
+          </nav>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative group">
+            <button
+              class="bg-surface-container-high px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm border border-outline-variant/20 hover:border-primary/40 transition-all"
+            >
+              <span class="w-2 h-2 rounded-full bg-secondary"></span>
+              <span class="text-on-surface">Production</span>
+              <span class="material-symbols-outlined text-[18px]"
+                >expand_more</span
+              >
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              class="p-2 text-gray-400 hover:text-white transition-colors scale-95 duration-200"
+            >
+              <span class="material-symbols-outlined" data-icon="settings"
+                >settings</span
+              >
+            </button>
+            <button
+              class="p-2 text-gray-400 hover:text-white transition-colors scale-95 duration-200"
+            >
+              <span class="material-symbols-outlined" data-icon="account_circle"
+                >account_circle</span
+              >
+            </button>
+          </div>
+        </div>
+      </header>
+      <!-- Content Area: Split View -->
+      <section class="flex-1 flex overflow-hidden">
+        <!-- Sidebar: Collections Tree -->
+        <div
+          class="w-72 bg-surface-container-low border-r border-outline-variant/10 flex flex-col"
+        >
+          <div class="p-4 flex items-center justify-between">
+            <h2
+              class="text-xs font-bold text-gray-400 uppercase tracking-widest"
+            >
+              Collections
+            </h2>
+            <button class="text-gray-500 hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-[18px]">search</span>
+            </button>
+          </div>
+          <div class="flex-1 overflow-y-auto px-2 pb-4">
+            <!-- Collection Item -->
+            <div class="mb-4">
+              <div
+                class="flex items-center gap-2 p-2 hover:bg-surface-container-high rounded cursor-pointer group"
+              >
+                <span
+                  class="material-symbols-outlined text-[18px] text-tertiary"
+                  >folder_open</span
+                >
+                <span class="text-sm font-medium text-on-surface flex-1"
+                  >User Auth API</span
+                >
+                <span
+                  class="material-symbols-outlined text-[14px] text-gray-500 opacity-0 group-hover:opacity-100"
+                  >more_vert</span
+                >
+              </div>
+              <!-- Folder Structure -->
+              <div
+                class="ml-4 border-l border-outline-variant/20 mt-1 flex flex-col gap-0.5"
+              >
+                <div
+                  class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer group"
+                >
+                  <span
+                    class="material-symbols-outlined text-[16px] text-gray-500"
+                    >expand_more</span
+                  >
+                  <span
+                    class="material-symbols-outlined text-[16px] text-gray-500"
+                    >folder</span
+                  >
+                  <span class="text-[13px] text-on-surface-variant flex-1"
+                    >Authentication</span
+                  >
+                </div>
+                <!-- Nested Requests -->
+                <div class="ml-6 flex flex-col gap-0.5">
+                  <div
+                    class="flex items-center gap-2 p-1.5 bg-surface-container-highest/50 rounded cursor-pointer border-l-2 border-primary"
+                  >
+                    <span class="text-[9px] font-bold text-secondary w-8"
+                      >POST</span
+                    >
+                    <span class="text-[13px] text-primary truncate"
+                      >Login User</span
+                    >
+                  </div>
+                  <div
+                    class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer"
+                  >
+                    <span class="text-[9px] font-bold text-tertiary w-8"
+                      >PUT</span
+                    >
+                    <span class="text-[13px] text-on-surface-variant truncate"
+                      >Reset Password</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-2 p-1.5 hover:bg-surface-container-high rounded cursor-pointer group mt-1"
+                >
+                  <span
+                    class="material-symbols-outlined text-[16px] text-gray-500"
+                    >chevron_right</span
+                  >
+                  <span
+                    class="material-symbols-outlined text-[16px] text-gray-500"
+                    >folder</span
+                  >
+                  <span class="text-[13px] text-on-surface-variant flex-1"
+                    >Account Management</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Another Collection -->
+            <div
+              class="flex items-center gap-2 p-2 hover:bg-surface-container-high rounded cursor-pointer group"
+            >
+              <span class="material-symbols-outlined text-[18px] text-secondary"
+                >folder</span
+              >
+              <span class="text-sm font-medium text-on-surface-variant flex-1"
+                >Billing Service</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Detailed Content Canvas: Environment Management -->
+        <div class="flex-1 bg-surface flex flex-col overflow-hidden">
+          <!-- Tab Bar / Header -->
+          <div
+            class="px-8 py-6 border-b border-outline-variant/10 bg-surface-container-lowest/30"
+          >
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-2">
+              <span>Environments</span>
+              <span class="material-symbols-outlined text-[12px]"
+                >chevron_right</span
+              >
+              <span class="text-primary font-medium">Production</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <div>
+                <h2 class="text-3xl font-headline font-bold text-on-surface">
+                  Production Environment
+                </h2>
+                <p class="text-sm text-on-surface-variant mt-1">
+                  Define shared variables for your production stack. These are
+                  injected into all collection requests.
+                </p>
+              </div>
+              <div class="flex gap-3">
+                <button
+                  class="px-4 py-2 bg-surface-container-highest border border-outline-variant/30 rounded text-sm hover:border-primary/50 transition-colors"
+                >
+                  Duplicate
+                </button>
+                <button
+                  class="px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded text-sm hover:bg-primary/20 transition-colors font-medium"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Environment Variable Table -->
+          <div class="flex-1 overflow-y-auto p-8">
+            <div
+              class="bg-surface-container-low rounded-xl border border-outline-variant/10 overflow-hidden"
+            >
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr
+                    class="bg-surface-container-high/50 text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-outline-variant/10"
+                  >
+                    <th class="px-6 py-4 font-medium w-12 text-center">
+                      <input
+                        class="rounded bg-background border-outline-variant text-primary focus:ring-primary focus:ring-offset-background"
+                        type="checkbox"
+                      />
+                    </th>
+                    <th class="px-6 py-4 font-medium w-1/4">Variable Name</th>
+                    <th class="px-6 py-4 font-medium w-1/4">Initial Value</th>
+                    <th class="px-6 py-4 font-medium w-1/4">Current Value</th>
+                    <th class="px-6 py-4 font-medium w-24">Type</th>
+                    <th class="px-6 py-4 font-medium w-16"></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/5">
+                  <!-- Row 1 -->
+                  <tr
+                    class="hover:bg-surface-container-high/30 transition-colors group"
+                  >
+                    <td class="px-6 py-4 text-center">
+                      <input
+                        checked=""
+                        class="rounded bg-background border-outline-variant text-primary focus:ring-primary"
+                        type="checkbox"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0"
+                        type="text"
+                        value="base_url"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0"
+                        type="text"
+                        value="https://api.kinetic.sh/v1"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0"
+                        type="text"
+                        value="https://api.kinetic.sh/v1"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase"
+                        >String</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all"
+                      >
+                        <span class="material-symbols-outlined text-[18px]"
+                          >delete</span
+                        >
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Row 2 (Secret) -->
+                  <tr
+                    class="hover:bg-surface-container-high/30 transition-colors group"
+                  >
+                    <td class="px-6 py-4 text-center">
+                      <input
+                        checked=""
+                        class="rounded bg-background border-outline-variant text-primary focus:ring-primary"
+                        type="checkbox"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0"
+                        type="text"
+                        value="api_key"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="text-gray-600 font-mono text-sm tracking-tighter"
+                          >••••••••••••••••</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-[14px] text-gray-500 cursor-pointer hover:text-white"
+                          >visibility_off</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="text-gray-600 font-mono text-sm tracking-tighter"
+                          >••••••••••••••••</span
+                        >
+                        <span
+                          class="material-symbols-outlined text-[14px] text-gray-500 cursor-pointer hover:text-white"
+                          >visibility_off</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase"
+                        >Secret</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all"
+                      >
+                        <span class="material-symbols-outlined text-[18px]"
+                          >delete</span
+                        >
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Row 3 (Port) -->
+                  <tr
+                    class="hover:bg-surface-container-high/30 transition-colors group"
+                  >
+                    <td class="px-6 py-4 text-center">
+                      <input
+                        checked=""
+                        class="rounded bg-background border-outline-variant text-primary focus:ring-primary"
+                        type="checkbox"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-secondary w-full p-0"
+                        type="text"
+                        value="port_number"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0"
+                        type="text"
+                        value="443"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <input
+                        class="bg-transparent border-none focus:ring-0 text-sm font-mono text-on-surface-variant w-full p-0"
+                        type="text"
+                        value="443"
+                      />
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded-full uppercase"
+                        >Number</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <button
+                        class="text-gray-500 hover:text-error opacity-0 group-hover:opacity-100 transition-all"
+                      >
+                        <span class="material-symbols-outlined text-[18px]"
+                          >delete</span
+                        >
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Empty Add Row -->
+                  <tr
+                    class="hover:bg-surface-container-high/20 transition-colors"
+                  >
+                    <td class="px-6 py-4 text-center"></td>
+                    <td class="px-6 py-4" colspan="4">
+                      <button
+                        class="flex items-center gap-2 text-xs text-primary font-medium hover:underline"
+                      >
+                        <span class="material-symbols-outlined text-[16px]"
+                          >add</span
+                        >
+                        Add New Variable
+                      </button>
+                    </td>
+                    <td class="px-6 py-4"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Usage Stats/Bento Grid Hint -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div
+                class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between"
+              >
+                <span class="text-xs font-bold text-gray-500 uppercase"
+                  >Variable Coverage</span
+                >
+                <div class="mt-4 flex items-end justify-between">
+                  <span class="text-4xl font-headline font-bold text-secondary"
+                    >88%</span
+                  >
+                  <div class="w-16 h-8 flex items-end gap-1">
+                    <div class="w-2 bg-secondary h-[40%] rounded-t-sm"></div>
+                    <div class="w-2 bg-secondary h-[60%] rounded-t-sm"></div>
+                    <div class="w-2 bg-secondary h-[90%] rounded-t-sm"></div>
+                    <div class="w-2 bg-secondary h-[80%] rounded-t-sm"></div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between"
+              >
+                <span class="text-xs font-bold text-gray-500 uppercase"
+                  >Active References</span
+                >
+                <div class="mt-4 flex items-end justify-between">
+                  <span class="text-4xl font-headline font-bold text-tertiary"
+                    >24</span
+                  >
+                  <span class="text-[10px] text-gray-500 mb-1"
+                    >Across 3 Collections</span
+                  >
+                </div>
+              </div>
+              <div
+                class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 flex flex-col justify-between"
+              >
+                <span class="text-xs font-bold text-gray-500 uppercase"
+                  >Last Modified</span
+                >
+                <div class="mt-4">
+                  <span class="text-lg font-medium text-on-surface"
+                    >24 mins ago</span
+                  >
+                  <p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px]"
+                      >person</span
+                    >
+                    Sarah Jenkins (DevOps)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Status Bar -->
+      <footer
+        class="h-8 bg-surface-container-lowest border-t border-outline-variant/5 px-4 flex items-center justify-between text-[10px] text-gray-500 uppercase tracking-widest font-mono"
+      >
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1"
+            ><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            Connected: aws-us-east-1</span
+          >
+          <span>Branch: main</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span>UTF-8</span>
+          <span>Insomnia Import: v4.2</span>
+          <span class="text-primary font-bold">Kinetic Obsidian Engine</span>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

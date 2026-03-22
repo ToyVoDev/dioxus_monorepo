@@ -1,0 +1,197 @@
+.sync-manager {
+    padding: var(--k-space-6);
+}
+
+.sync-manager__header {
+    margin-bottom: var(--k-space-6);
+}
+
+.sync-manager__title {
+    font-family: var(--k-font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--k-on-surface);
+    margin-bottom: var(--k-space-1);
+}
+
+.sync-manager__status {
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-2);
+    font-family: var(--k-font-mono);
+    font-size: 0.75rem;
+    color: var(--k-on-surface-variant);
+}
+
+.sync-manager__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--k-on-surface-variant);
+}
+
+/* Bento grid */
+.sync-manager__bento {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--k-space-3);
+    margin-bottom: var(--k-space-6);
+}
+
+@media (max-width: 768px) {
+    .sync-manager__bento {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sync-manager__card {
+    background: var(--k-surface-low);
+    border-radius: var(--k-radius-lg);
+    padding: var(--k-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--k-space-2);
+}
+
+.sync-manager__card--wide {
+    background: var(--k-surface-low);
+    border-radius: var(--k-radius-lg);
+    padding: var(--k-space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--k-space-2);
+}
+
+.sync-manager__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.sync-manager__card-title {
+    font-family: var(--k-font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--k-on-surface);
+}
+
+.sync-manager__card-subtitle {
+    font-size: 0.75rem;
+    color: var(--k-on-surface-variant);
+}
+
+.sync-manager__card-icon {
+    color: var(--k-on-surface-variant);
+}
+
+.sync-manager__card-value {
+    font-family: var(--k-font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--k-on-surface);
+}
+
+.sync-manager__card-label {
+    font-size: 0.75rem;
+    color: var(--k-on-surface-variant);
+}
+
+/* Storage bar */
+.sync-manager__storage-bar {
+    height: 8px;
+    background: var(--k-surface-highest);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.sync-manager__storage-fill {
+    height: 100%;
+    background: var(--k-primary);
+    border-radius: 4px;
+    transition: width 300ms ease;
+}
+
+.sync-manager__storage-legend {
+    display: flex;
+    gap: var(--k-space-4);
+    margin-top: var(--k-space-1);
+}
+
+.sync-manager__legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-1);
+    font-size: 0.6875rem;
+    color: var(--k-on-surface-variant);
+}
+
+.sync-manager__legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.sync-manager__legend-dot--music {
+    background: var(--k-primary);
+}
+
+.sync-manager__legend-dot--cache {
+    background: var(--k-secondary);
+}
+
+/* Sections */
+.sync-manager__section {
+    margin-bottom: var(--k-space-6);
+}
+
+.sync-manager__section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--k-space-2);
+    margin-bottom: var(--k-space-3);
+}
+
+.sync-manager__section-accent {
+    width: 3px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+.sync-manager__section-accent--secondary {
+    background: var(--k-secondary);
+}
+
+.sync-manager__section-title {
+    font-family: var(--k-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--k-on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* Empty state */
+.sync-manager__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--k-space-8);
+    border: 1px dashed rgba(91, 64, 62, 0.2);
+    border-radius: var(--k-radius-lg);
+    text-align: center;
+    color: var(--k-on-surface-variant);
+    gap: var(--k-space-2);
+}
+
+.sync-manager__empty-title {
+    font-size: 1rem;
+    color: var(--k-on-surface);
+    margin-top: var(--k-space-2);
+}
+
+.sync-manager__empty-hint {
+    font-size: 0.8125rem;
+    max-width: 400px;
+    line-height: 1.5;
+}

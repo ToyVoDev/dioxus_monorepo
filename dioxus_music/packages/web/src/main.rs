@@ -2,7 +2,10 @@ use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
 use uuid::Uuid;
-use views::{Library, PlaylistSidebarSection, PlaylistView};
+use views::{
+    AlbumDetail, Artists, Downloads, Library, NowPlaying, PlaylistSidebarSection, PlaylistView,
+    Playlists,
+};
 
 mod views;
 
@@ -12,8 +15,18 @@ enum Route {
     #[layout(AppLayout)]
         #[route("/")]
         Library {},
+        #[route("/album/:name")]
+        AlbumDetail { name: String },
+        #[route("/artists")]
+        Artists {},
+        #[route("/playlists")]
+        Playlists {},
         #[route("/playlist/:id")]
         PlaylistView { id: Uuid },
+        #[route("/downloads")]
+        Downloads {},
+        #[route("/now-playing")]
+        NowPlaying {},
 }
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
@@ -69,12 +82,20 @@ fn App() -> Element {
 #[component]
 fn AppLayout() -> Element {
     use_player_state_provider();
+    let nav = navigator();
+    let current_route = use_route::<Route>();
+    let is_now_playing = matches!(current_route, Route::NowPlaying {});
 
     rsx! {
         AppShell {
+            player_bar_hidden: is_now_playing,
+            on_player_expand: move |_| { nav.push(Route::NowPlaying {}); },
             sidebar: rsx! {
                 Sidebar {
-                    Link { to: Route::Library {}, "All Songs" }
+                    Link { class: "sidebar__nav-item", to: Route::Artists {}, "Artists" }
+                    Link { class: "sidebar__nav-item", to: Route::Library {}, "Albums" }
+                    Link { class: "sidebar__nav-item", to: Route::Playlists {}, "Playlists" }
+                    Link { class: "sidebar__nav-item", to: Route::Downloads {}, "Downloads" }
                     PlaylistSidebarSection {}
                 }
             },

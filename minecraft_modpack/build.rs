@@ -1,6 +1,6 @@
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::env::var;
@@ -98,10 +98,8 @@ async fn get_curseforge_mods(mod_ids: Vec<i64>) -> Result<Vec<ModpackInfo>, anyh
                 "modIds": mod_ids,
             }))
             .send()
-            .await
-            ?
-            .error_for_status()
-            ?;
+            .await?
+            .error_for_status()?;
         let response = response.json::<Value>().await?;
         let data = response.get("data").unwrap().as_array().unwrap();
         for item in data {
@@ -271,9 +269,9 @@ async fn main() {
         Ok(mods) => {
             let zips = get_prism_zips();
             let json = json!({
-        "mods": mods,
-        "zips": zips,
-    });
+                "mods": mods,
+                "zips": zips,
+            });
             let json_string = serde_json::to_string(&json).unwrap();
             fs::write("assets/modpack_generated.json", json_string).unwrap();
         }

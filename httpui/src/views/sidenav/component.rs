@@ -1,8 +1,8 @@
 use crate::state::{AppState, SideNavItem};
 use dioxus::prelude::*;
+use dioxus_free_icons::Icon;
 use dioxus_free_icons::icons::md_action_icons::{MdDns, MdHelp, MdHistory, MdSettings};
 use dioxus_free_icons::icons::md_file_icons::MdFolder;
-use dioxus_free_icons::Icon;
 use kinetic_ui::{Button, ButtonVariant};
 
 #[component]

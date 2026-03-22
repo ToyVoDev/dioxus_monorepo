@@ -4,8 +4,8 @@
   right: 0;
   bottom: 0;
   width: 320px;
-  background-color: #12141a;
-  border-left: 1px solid #1e2230;
+  background: var(--k-surface-high);
+  border-left: 1px solid var(--k-border);
   display: flex;
   flex-direction: column;
   z-index: 10;
@@ -26,19 +26,30 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid #1e2230;
+  border-bottom: 1px solid var(--k-border);
   flex-shrink: 0;
 }
 
 .queue-panel__title {
+  font-family: var(--k-font-display);
   font-size: 1.1rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 600;
+  color: var(--k-on-surface);
 }
 
 .queue-panel__count {
+  font-family: var(--k-font-mono);
   font-size: 0.8rem;
-  color: #6b6f80;
+  color: var(--k-on-surface-variant);
+  background: var(--k-surface-highest);
+  padding: 2px 8px;
+  border-radius: var(--k-radius-full);
+}
+
+.queue-panel__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .queue-panel__list {
@@ -58,28 +69,30 @@
 }
 
 .queue-panel__item:hover {
-  background-color: #1a1d26;
+  background: var(--k-surface-highest);
 }
 
 .queue-panel__item--active {
-  background-color: #1a1d26;
+  background: var(--k-surface-highest);
 }
 
 .queue-panel__item--active .queue-panel__item-index {
-  color: #6d85c6;
+  color: var(--k-primary);
 }
 
 .queue-panel__item--active .queue-panel__item-title {
-  color: #6d85c6;
+  color: var(--k-primary);
 }
 
 .queue-panel__item--drag-over {
-  border-top: 2px solid #6d85c6;
+  background: var(--k-surface-highest);
+  border-top: 2px solid var(--k-primary);
 }
 
 .queue-panel__item-index {
+  font-family: var(--k-font-mono);
   font-size: 0.8rem;
-  color: #6b6f80;
+  color: var(--k-on-surface-variant);
   min-width: 24px;
   text-align: right;
   flex-shrink: 0;
@@ -92,7 +105,7 @@
 
 .queue-panel__item-title {
   font-size: 0.9rem;
-  color: #ffffff;
+  color: var(--k-on-surface);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -100,7 +113,7 @@
 
 .queue-panel__item-artist {
   font-size: 0.75rem;
-  color: #a0a4b8;
+  color: var(--k-on-surface-variant);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -4,7 +4,7 @@ has gone from react to yew to dioxus
 
 # Development
 
-Your new jumpstart project includes basic organization with an organized `assets` folder and a `components` folder. 
+Your new jumpstart project includes basic organization with an organized `assets` folder and a `components` folder.
 If you chose to develop with the router feature, you will also have a `views` folder.
 
 ### Serving Your App
@@ -16,7 +16,7 @@ dx serve
 ```
 
 To run for a different platform, use the `--platform platform` flag. E.g.
+
 ```bash
 dx serve --platform desktop
 ```
-

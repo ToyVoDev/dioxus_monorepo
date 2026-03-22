@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_primitives::tabs::{self, TabContentProps, TabListProps, TabTriggerProps, TabsProps};
 
 /// Standalone component that only loads the tabs CSS stylesheet.
-/// Use when consuming dioxus_primitives::tabs directly with k-tabs classes.
+/// Use when consuming `dioxus_primitives::tabs` directly with k-tabs classes.
 #[component]
 pub fn TabsStylesheet() -> Element {
     rsx! {
@@ -36,10 +36,7 @@ pub fn KTabList(props: TabListProps) -> Element {
 }
 
 #[component]
-pub fn KTabTrigger(
-    #[props(default)] badge: Option<u32>,
-    props: TabTriggerProps,
-) -> Element {
+pub fn KTabTrigger(#[props(default)] badge: Option<u32>, props: TabTriggerProps) -> Element {
     rsx! {
         tabs::TabTrigger {
             class: "k-tabs__trigger",

@@ -1,4 +1,11 @@
+pub mod audio;
 pub mod player_state;
+
+mod album_utils;
+pub use album_utils::{AlbumSummary, group_tracks_into_albums};
+
+mod header;
+pub use header::Header;
 
 mod app_shell;
 pub use app_shell::AppShell;

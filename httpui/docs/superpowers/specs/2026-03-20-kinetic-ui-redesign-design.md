@@ -76,6 +76,7 @@ strum = { workspace = true }
 ### 3.3 Component Patterns
 
 Each component:
+
 - Wraps a `dioxus-primitives` headless primitive where one exists
 - Has its own `component.rs` (Rust) + `style.css` (BEM-scoped CSS)
 - Loads its CSS via `document::Link` in its render function
@@ -89,93 +90,94 @@ Each component:
 
 The spec uses shortened `--k-` prefixed names that map to the Material Design token names in `DESIGN.md`. The mapping is:
 
-| DESIGN.md Name | Spec Token | Notes |
-|---|---|---|
-| `surface-container-lowest` | `--k-surface-lowest` | "container" dropped for brevity |
-| `surface` | `--k-surface` | Same |
-| `surface-container-low` | `--k-surface-low` | |
-| `surface-container` | `--k-surface-container` | Middle tier |
-| `surface-container-high` | `--k-surface-high` | |
-| `surface-container-highest` | `--k-surface-highest` | |
+| DESIGN.md Name              | Spec Token              | Notes                           |
+| --------------------------- | ----------------------- | ------------------------------- |
+| `surface-container-lowest`  | `--k-surface-lowest`    | "container" dropped for brevity |
+| `surface`                   | `--k-surface`           | Same                            |
+| `surface-container-low`     | `--k-surface-low`       |                                 |
+| `surface-container`         | `--k-surface-container` | Middle tier                     |
+| `surface-container-high`    | `--k-surface-high`      |                                 |
+| `surface-container-highest` | `--k-surface-highest`   |                                 |
 
 When consulting `DESIGN.md`, use this mapping. The spec tokens are authoritative for implementation.
 
 ### 4.1 Surfaces
 
-| Token | Hex | Usage |
-|---|---|---|
-| `--k-surface-lowest` | `#0E0E0E` | Inset fields, deepest recesses |
-| `--k-surface` | `#131313` | Base canvas background |
-| `--k-surface-low` | `#1B1C1C` | Sectioning, sidebar backgrounds |
-| `--k-surface-container` | `#1F2020` | Middle tier, subtle separation |
-| `--k-surface-high` | `#2A2A2A` | Explorer panel, elevated sections |
-| `--k-surface-highest` | `#353535` | Cards, buttons, highest elevation |
-| `--k-glass-surface` | `rgba(227,225,224,0.08)` | Glassmorphism base for floating elements |
+| Token                   | Hex                      | Usage                                    |
+| ----------------------- | ------------------------ | ---------------------------------------- |
+| `--k-surface-lowest`    | `#0E0E0E`                | Inset fields, deepest recesses           |
+| `--k-surface`           | `#131313`                | Base canvas background                   |
+| `--k-surface-low`       | `#1B1C1C`                | Sectioning, sidebar backgrounds          |
+| `--k-surface-container` | `#1F2020`                | Middle tier, subtle separation           |
+| `--k-surface-high`      | `#2A2A2A`                | Explorer panel, elevated sections        |
+| `--k-surface-highest`   | `#353535`                | Cards, buttons, highest elevation        |
+| `--k-glass-surface`     | `rgba(227,225,224,0.08)` | Glassmorphism base for floating elements |
 
 ### 4.2 Brand Colors
 
-| Token | Hex | Usage |
-|---|---|---|
-| `--k-primary` | `#FFB3AD` | Primary actions, active indicators, links |
-| `--k-primary-container` | `#FF5451` | Gradient endpoints, badges |
-| `--k-on-primary-container` | `#5C0008` | Text on primary containers/gradient buttons |
-| `--k-secondary` | `#44E2CD` | Success states, GET method badges, tech accents |
-| `--k-secondary-container` | `#03C6B2` | Muted secondary backgrounds |
-| `--k-tertiary` | `#F9BD22` | Warnings, DELETE method badges, utility accents |
-| `--k-error` | `#FFB4AB` | Error states, 5xx status codes |
-| `--k-on-surface` | `#E4E2E1` | Primary text on dark surfaces |
-| `--k-on-surface-variant` | `#E4BEBA` | Secondary/muted text (warm tone) |
-| `--k-outline-variant` | `#5B403E` | Ghost borders — apply opacity contextually (10-40%) |
+| Token                      | Hex       | Usage                                               |
+| -------------------------- | --------- | --------------------------------------------------- |
+| `--k-primary`              | `#FFB3AD` | Primary actions, active indicators, links           |
+| `--k-primary-container`    | `#FF5451` | Gradient endpoints, badges                          |
+| `--k-on-primary-container` | `#5C0008` | Text on primary containers/gradient buttons         |
+| `--k-secondary`            | `#44E2CD` | Success states, GET method badges, tech accents     |
+| `--k-secondary-container`  | `#03C6B2` | Muted secondary backgrounds                         |
+| `--k-tertiary`             | `#F9BD22` | Warnings, DELETE method badges, utility accents     |
+| `--k-error`                | `#FFB4AB` | Error states, 5xx status codes                      |
+| `--k-on-surface`           | `#E4E2E1` | Primary text on dark surfaces                       |
+| `--k-on-surface-variant`   | `#E4BEBA` | Secondary/muted text (warm tone)                    |
+| `--k-outline-variant`      | `#5B403E` | Ghost borders — apply opacity contextually (10-40%) |
 
 **Note on `--k-outline-variant`:** Stored at full opacity. Apply CSS opacity per context: 20% for default ghost borders, 10% for subtle dividers, 40% for focus rings. Example: `border: 1px solid rgba(91, 64, 62, 0.2)` or use `border-color: var(--k-outline-variant); opacity: 0.2`.
 
 ### 4.3 Typography
 
-| Token | Value | Usage |
-|---|---|---|
-| `--k-font-display` | `'Space Grotesk', sans-serif` | Headlines, branding |
-| `--k-font-body` | `'Inter', sans-serif` | UI text, body copy |
-| `--k-font-mono` | `'JetBrains Mono', monospace` | Code, URLs, HTTP data |
+| Token              | Value                         | Usage                 |
+| ------------------ | ----------------------------- | --------------------- |
+| `--k-font-display` | `'Space Grotesk', sans-serif` | Headlines, branding   |
+| `--k-font-body`    | `'Inter', sans-serif`         | UI text, body copy    |
+| `--k-font-mono`    | `'JetBrains Mono', monospace` | Code, URLs, HTTP data |
 
 **Note:** The `collections_environments` mockup uses Fira Code; JetBrains Mono is the canonical choice per `request_editor` mockup and this spec. Mockup font inconsistency is not authoritative.
 
 **Type Scale:**
 
-| Class | Size | Font | Usage |
-|---|---|---|---|
-| `.k-display-lg` | 3.5rem | Space Grotesk | Hero headers (not used in httpui) |
-| `.k-headline-md` | 1.75rem | Space Grotesk | Section titles |
-| `.k-title-md` | 1.125rem | Inter | Grouping titles |
-| `.k-body-md` | 0.875rem | Inter | Default text |
-| `.k-label-md` | 0.75rem | JetBrains Mono | Technical data, monospace labels |
-| `.k-label-sm` | 0.6875rem | Inter | Small labels, badges |
+| Class            | Size      | Font           | Usage                             |
+| ---------------- | --------- | -------------- | --------------------------------- |
+| `.k-display-lg`  | 3.5rem    | Space Grotesk  | Hero headers (not used in httpui) |
+| `.k-headline-md` | 1.75rem   | Space Grotesk  | Section titles                    |
+| `.k-title-md`    | 1.125rem  | Inter          | Grouping titles                   |
+| `.k-body-md`     | 0.875rem  | Inter          | Default text                      |
+| `.k-label-md`    | 0.75rem   | JetBrains Mono | Technical data, monospace labels  |
+| `.k-label-sm`    | 0.6875rem | Inter          | Small labels, badges              |
 
 ### 4.4 Spacing
 
-| Token | Value |
-|---|---|
-| `--k-space-1` | 0.25rem (4px) |
-| `--k-space-2` | 0.5rem (8px) |
+| Token         | Value          |
+| ------------- | -------------- |
+| `--k-space-1` | 0.25rem (4px)  |
+| `--k-space-2` | 0.5rem (8px)   |
 | `--k-space-3` | 0.75rem (12px) |
-| `--k-space-4` | 1rem (16px) |
-| `--k-space-6` | 1.5rem (24px) |
-| `--k-space-8` | 2rem (32px) |
+| `--k-space-4` | 1rem (16px)    |
+| `--k-space-6` | 1.5rem (24px)  |
+| `--k-space-8` | 2rem (32px)    |
 
 ### 4.5 Rounding
 
-| Token | Value | Usage |
-|---|---|---|
-| `--k-radius-sm` | 0.25rem | Small elements, minor rounding |
-| `--k-radius-default` | 0.5rem | Buttons, inputs (per DESIGN.md) |
-| `--k-radius-lg` | 1rem | Cards, containers |
-| `--k-radius-xl` | 1.5rem | Album art (music app) |
-| `--k-radius-full` | 9999px | Chips, pills |
+| Token                | Value   | Usage                           |
+| -------------------- | ------- | ------------------------------- |
+| `--k-radius-sm`      | 0.25rem | Small elements, minor rounding  |
+| `--k-radius-default` | 0.5rem  | Buttons, inputs (per DESIGN.md) |
+| `--k-radius-lg`      | 1rem    | Cards, containers               |
+| `--k-radius-xl`      | 1.5rem  | Album art (music app)           |
+| `--k-radius-full`    | 9999px  | Chips, pills                    |
 
 **Note:** The mockup Tailwind configs use `DEFAULT: 0.25rem` and `lg: 0.5rem` which differs from DESIGN.md. The spec tokens are authoritative — they match DESIGN.md Section 5 ("Buttons/Inputs: DEFAULT (0.5rem)", "Cards/Containers: lg (1rem)").
 
 ### 4.6 Shadows
 
 Ambient shadow for floating elements:
+
 ```css
 --k-shadow-float: 0 4px 40px rgba(228, 226, 225, 0.06);
 ```
@@ -207,13 +209,13 @@ Full height viewport: `height: 100vh; overflow: hidden;`
 
 ### 5.2 Component Mapping
 
-| Grid Area | New Component | Replaces | Surface Token |
-|---|---|---|---|
-| `sidebar` | `SideNav` | `Navbar` | `surface-low` |
-| `explorer` | `Explorer` | `Library` | `surface-high` |
-| `topbar` | `TopBar` | `Tabbar` (partial) | `surface-low` |
-| `canvas` | `Canvas` | `Urlbar` + `RequestEditor` + `ResponseViewer` | `surface` |
-| `statusbar` | `StatusBar` | — | `surface-low` |
+| Grid Area   | New Component | Replaces                                      | Surface Token  |
+| ----------- | ------------- | --------------------------------------------- | -------------- |
+| `sidebar`   | `SideNav`     | `Navbar`                                      | `surface-low`  |
+| `explorer`  | `Explorer`    | `Library`                                     | `surface-high` |
+| `topbar`    | `TopBar`      | `Tabbar` (partial)                            | `surface-low`  |
+| `canvas`    | `Canvas`      | `Urlbar` + `RequestEditor` + `ResponseViewer` | `surface`      |
+| `statusbar` | `StatusBar`   | —                                             | `surface-low`  |
 
 ---
 
@@ -222,6 +224,7 @@ Full height viewport: `height: 100vh; overflow: hidden;`
 ### 6.1 SideNav (sidebar, 64px)
 
 **Structure (top to bottom):**
+
 1. **Drag region** — macOS titlebar (carried from current Navbar)
 2. **Brand** — "HTTP CLIENT" text + version badge (`env!("CARGO_PKG_VERSION")`)
 3. **Primary CTA** — "+ New Request" button (gradient, compact)
@@ -235,6 +238,7 @@ Full height viewport: `height: 100vh; overflow: hidden;`
    - Help
 
 **Behavior:**
+
 - Clicking a nav item sets the active SideNav item (signal state)
 - Active item: left border accent (`--k-primary`) + `surface-high` background
 - The active item determines what the Explorer panel shows
@@ -243,6 +247,7 @@ Full height viewport: `height: 100vh; overflow: hidden;`
 ### 6.2 Explorer (explorer, 288px)
 
 **Structure:**
+
 1. **Header** — Title reflecting active SideNav item (e.g., "ACTIVE COLLECTION") + filter button
 2. **Content** — varies by active SideNav item:
    - **Collections** (default): Tree view of collections → folders → requests
@@ -267,6 +272,7 @@ The `collections_environments` mockup is authoritative for the Explorer's tree h
 ### 6.3 TopBar (topbar, 64px)
 
 **Structure (left to right):**
+
 1. **App name** — `env!("CARGO_PKG_NAME")` in Space Grotesk (will display "httpui" until renamed)
 2. **Horizontal nav** — Collections, Environment, History (these switch the Canvas view)
 3. **Search input** — with search icon, `surface-highest` background, rounded
@@ -285,6 +291,7 @@ The Canvas is the main content area. It shows different views depending on navig
 **Request Editor mode (primary, when a request is selected):**
 
 Vertical stack:
+
 1. **URL Bar** — method dropdown (colored by method type) + URL input (monospace, `surface-lowest` inset) + gradient "Send →" button
 2. **Editor Tabs** — Params | Authorization | Headers (count badge) | Body | Settings — active tab has `primary`-colored bottom border
 3. **Tab Content** — context-dependent:
@@ -298,12 +305,14 @@ Vertical stack:
    - Body: Syntax-highlighted JSON/text, line numbers, monospace, `surface-lowest` background
 
 **Environment view mode** (when Environment nav selected in TopBar):
+
 - Breadcrumb, title, description
 - Variable table: checkbox, name, initial value, current value, type, delete
 - Metrics cards (variable coverage, active references, last modified)
 - Mostly placeholder/future work
 
 **Collection view mode** (when collection selected):
+
 - Collection details/overview — placeholder
 
 ### 6.5 StatusBar (statusbar, auto height)
@@ -380,6 +389,7 @@ pub enum EditorTab { Params, Authorization, Headers, Body, Settings }
 The current `AppState` has `open_requests: Signal<Vec<i32>>` and `selected_request: Signal<Option<i32>>` for multi-tab request editing. The Stitch mockups don't show a tabbar for multiple open requests — the Explorer serves as the request switcher.
 
 For this redesign:
+
 - **`selected_request`** is preserved — clicking a request in the Explorer sets it, and the Canvas shows that request's editor.
 - **`open_requests`** is preserved but the visible tabbar is removed. The open requests list can be used internally to track unsaved state or restored later as a feature. This avoids data loss from the current multi-tab workflow while the UI focuses on the single-request-at-a-time pattern shown in the mockups.
 
@@ -389,25 +399,25 @@ For this redesign:
 
 ### 8.1 Migrated from httpui (restyled)
 
-| Component | Primitives Base | Key Changes |
-|---|---|---|
-| **Button** | — | Gradient primary variant, ghost border secondary, BEM classes |
-| **Input** | — | `surface-lowest` inset, ghost border focus ring, monospace variant |
-| **Select** | `dioxus-primitives` select | Restyle trigger + dropdown to Kinetic Obsidian |
-| **Accordion** | `dioxus-primitives` accordion | Restyle, used in Explorer for collection folders |
-| **Separator** | — | Restyle to use spacing/tonal shift instead of lines where possible |
+| Component     | Primitives Base               | Key Changes                                                        |
+| ------------- | ----------------------------- | ------------------------------------------------------------------ |
+| **Button**    | —                             | Gradient primary variant, ghost border secondary, BEM classes      |
+| **Input**     | —                             | `surface-lowest` inset, ghost border focus ring, monospace variant |
+| **Select**    | `dioxus-primitives` select    | Restyle trigger + dropdown to Kinetic Obsidian                     |
+| **Accordion** | `dioxus-primitives` accordion | Restyle, used in Explorer for collection folders                   |
+| **Separator** | —                             | Restyle to use spacing/tonal shift instead of lines where possible |
 
 ### 8.2 New Components
 
-| Component | Primitives Base | Purpose |
-|---|---|---|
-| **TreeView** | — | Nested expandable tree for collections/folders/requests |
-| **Tabs** | `dioxus-primitives` tabs | Horizontal tab bar with active indicator, count badges |
-| **Table** | — | Inline-editable key-value table with add/delete rows |
-| **Badge** | — | Colored pill for HTTP methods, status codes |
-| **IconButton** | — | Icon-only button with tooltip, for SideNav and TopBar |
-| **SearchInput** | — | Input with search icon prefix, rounded |
-| **Tooltip** | — | Hover tooltip for icon buttons |
+| Component       | Primitives Base          | Purpose                                                 |
+| --------------- | ------------------------ | ------------------------------------------------------- |
+| **TreeView**    | —                        | Nested expandable tree for collections/folders/requests |
+| **Tabs**        | `dioxus-primitives` tabs | Horizontal tab bar with active indicator, count badges  |
+| **Table**       | —                        | Inline-editable key-value table with add/delete rows    |
+| **Badge**       | —                        | Colored pill for HTTP methods, status codes             |
+| **IconButton**  | —                        | Icon-only button with tooltip, for SideNav and TopBar   |
+| **SearchInput** | —                        | Input with search icon prefix, rounded                  |
+| **Tooltip**     | —                        | Hover tooltip for icon buttons                          |
 
 ### 8.3 Theme Component
 
@@ -447,15 +457,15 @@ These rules apply to all components and views:
 
 ## 10. HTTP Method Color Mapping
 
-| Method | Color Token | Hex |
-|---|---|---|
-| GET | `--k-secondary` | `#44E2CD` |
-| POST | `--k-primary` | `#FFB3AD` |
-| PUT | `--k-tertiary` | `#F9BD22` |
-| PATCH | `--k-tertiary` | `#F9BD22` |
-| DELETE | `--k-tertiary` | `#F9BD22` |
+| Method  | Color Token              | Hex       |
+| ------- | ------------------------ | --------- |
+| GET     | `--k-secondary`          | `#44E2CD` |
+| POST    | `--k-primary`            | `#FFB3AD` |
+| PUT     | `--k-tertiary`           | `#F9BD22` |
+| PATCH   | `--k-tertiary`           | `#F9BD22` |
+| DELETE  | `--k-tertiary`           | `#F9BD22` |
 | OPTIONS | `--k-on-surface-variant` | `#E4BEBA` |
-| HEAD | `--k-on-surface-variant` | `#E4BEBA` |
+| HEAD    | `--k-on-surface-variant` | `#E4BEBA` |
 
 **Note:** DELETE uses `--k-tertiary` (amber) rather than `--k-error` (red) per the color-blind accessibility rule (#8) and matching the Stitch mockup's `text-tertiary` treatment. This ensures destructive actions are distinguishable without relying on red alone.
 
@@ -463,12 +473,12 @@ These rules apply to all components and views:
 
 ## 11. Response Status Color Mapping
 
-| Range | Color Token | Example |
-|---|---|---|
-| 2xx | `--k-secondary` | 200 OK badge with `secondary-container` background |
-| 3xx | `--k-tertiary` | 301 Redirect |
-| 4xx | `--k-primary` | 404 Not Found |
-| 5xx | `--k-error` | 500 Internal Server Error |
+| Range | Color Token     | Example                                            |
+| ----- | --------------- | -------------------------------------------------- |
+| 2xx   | `--k-secondary` | 200 OK badge with `secondary-container` background |
+| 3xx   | `--k-tertiary`  | 301 Redirect                                       |
+| 4xx   | `--k-primary`   | 404 Not Found                                      |
+| 5xx   | `--k-error`     | 500 Internal Server Error                          |
 
 ---
 

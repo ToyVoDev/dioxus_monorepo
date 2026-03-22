@@ -2028,8 +2028,14 @@ dependencies = [
 name = "dioxus_music_desktop"
 version = "0.1.0"
 dependencies = [
+ "axum 0.8.8",
  "dioxus",
+ "dioxus_music_api",
  "dioxus_music_ui",
+ "dotenvy",
+ "kinetic_ui",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -2038,6 +2044,7 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus_music_ui",
+ "kinetic_ui",
 ]
 
 [[package]]
@@ -2047,6 +2054,7 @@ dependencies = [
  "dioxus",
  "dioxus_music_api",
  "fastrand",
+ "kinetic_ui",
  "serde",
 ]
 
@@ -2059,6 +2067,7 @@ dependencies = [
  "dioxus_music_api",
  "dioxus_music_ui",
  "dotenvy",
+ "kinetic_ui",
  "tokio",
  "uuid",
 ]
