@@ -1,8 +1,9 @@
 use dioxus::prelude::*;
 use dioxus_music_ui::PlayerBar;
+use dioxus_music_ui::audio::render_audio_element;
 use kinetic_ui::KineticTheme;
-use views::mobile_nav::MobileNav;
 use views::Home;
+use views::mobile_nav::MobileNav;
 
 mod views;
 
@@ -38,6 +39,7 @@ fn MobileLayout() -> Element {
             }
             PlayerBar { compact: true }
             MobileNav {}
+            {render_audio_element()}
         }
     }
 }
