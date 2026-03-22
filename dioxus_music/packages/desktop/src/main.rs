@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, Sidebar};
 use uuid::Uuid;
-use views::{AlbumDetail, Artists, Downloads, Home, Library, PlaylistView, Playlists};
+use views::{AlbumDetail, Artists, Downloads, Home, Library, NowPlaying, PlaylistView, Playlists};
 
 mod views;
 
@@ -24,6 +24,8 @@ enum Route {
         Downloads {},
         #[route("/home")]
         Home {},
+        #[route("/now-playing")]
+        NowPlaying {},
 }
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
@@ -120,10 +122,15 @@ fn drag_regions() -> Element {
 #[component]
 fn DesktopLayout() -> Element {
     use_player_state_provider();
+    let route = use_route::<Route>();
+    let on_now_playing = matches!(route, Route::NowPlaying {});
+    let nav = navigator();
     rsx! {
         // Drag regions for macOS window dragging
         {drag_regions()}
         AppShell {
+            player_bar_hidden: on_now_playing,
+            on_player_expand: move |_| { nav.push(Route::NowPlaying {}); },
             sidebar: rsx! {
                 Sidebar {
                     Link { class: "sidebar__nav-item", to: Route::Artists {}, "Artists" }

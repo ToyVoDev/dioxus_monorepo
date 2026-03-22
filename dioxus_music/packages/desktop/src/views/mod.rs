@@ -18,3 +18,6 @@ pub use playlist_view::PlaylistView;
 
 mod downloads;
 pub use downloads::Downloads;
+
+mod now_playing;
+pub use now_playing::NowPlaying;
