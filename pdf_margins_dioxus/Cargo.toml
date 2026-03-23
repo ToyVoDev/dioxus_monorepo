@@ -1,0 +1,27 @@
+[package]
+name = "pdf_margins_dioxus"
+version = "0.1.0"
+authors = ["Collin Diekvoss <Collin@Diekvoss.com>"]
+edition = "2024"
+
+[dependencies]
+dioxus = { workspace = true }
+lopdf = { version = "0.40", default-features = false, features = ["wasm_js"] }
+web-sys = { workspace = true, features = [
+    "Blob",
+    "BlobPropertyBag",
+    "File",
+    "FileList",
+    "FileReader",
+    "HtmlInputElement",
+    "Url",
+] }
+js-sys = "0.3"
+gloo-file = { version = "0.3", features = ["futures"] }
+wasm-bindgen-futures = "0.4"
+tracing = { workspace = true }
+dioxus-logger = { workspace = true }
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
