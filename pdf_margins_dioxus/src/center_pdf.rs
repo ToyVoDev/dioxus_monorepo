@@ -185,7 +185,7 @@ pub fn center_pdf(pdf_bytes: &[u8], options: &CenterOptions) -> Result<Vec<u8>, 
 
         // Build content stream that places the XObject
         let mut content_ops = format!(
-            "q {x} {y} cm /SourcePage Do Q",
+            "q 1 0 0 1 {x} {y} cm /SourcePage Do Q",
             x = x_offset as f32,
             y = y_offset as f32,
         );
