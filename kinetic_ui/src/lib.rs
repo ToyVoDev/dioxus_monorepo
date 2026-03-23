@@ -4,7 +4,7 @@ pub mod components;
 pub mod theme;
 
 pub use components::{
-    Badge, BadgeVariant, Button, ButtonVariant, IconButton, Input, KAccordion, KAccordionContent,
+    Badge, BadgeVariant, Button, ButtonVariant, Checkbox, IconButton, Input, KAccordion, KAccordionContent,
     KAccordionItem, KAccordionTrigger, KSearchInput, KSelect, KSelectGroup, KSelectGroupLabel,
     KSelectItemIndicator, KSelectList, KSelectOption, KSelectTrigger, KSelectValue, KSeparator,
     KTabContent, KTabList, KTabTrigger, KTable, KTableAddRow, KTableCell, KTableHeader,

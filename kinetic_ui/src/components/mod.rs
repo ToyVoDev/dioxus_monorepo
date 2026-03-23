@@ -1,6 +1,7 @@
 pub mod accordion;
 pub mod badge;
 pub mod button;
+pub mod checkbox;
 pub mod icon_button;
 pub mod input;
 pub mod search_input;
@@ -14,6 +15,7 @@ pub mod tree_view;
 pub use accordion::*;
 pub use badge::*;
 pub use button::*;
+pub use checkbox::*;
 pub use icon_button::*;
 pub use input::*;
 pub use search_input::*;
