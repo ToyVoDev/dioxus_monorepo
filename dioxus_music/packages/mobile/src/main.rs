@@ -34,7 +34,7 @@ fn MobileLayout() -> Element {
     rsx! {
         KineticTheme {
             main {
-                style: "padding-bottom: 128px; min-height: 100vh; background: var(--k-surface);",
+                style: "padding-bottom: 128px; min-height: 100vh; background: var(--primary-color-3);",
                 Outlet::<Route> {}
             }
             PlayerBar { compact: true }

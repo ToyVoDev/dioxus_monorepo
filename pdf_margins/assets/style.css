@@ -9,8 +9,6 @@ html, body {
     padding: 16px;
     box-sizing: border-box;
     gap: 12px;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
 }
 
 .title-row {

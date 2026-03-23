@@ -23,7 +23,7 @@ pub fn AlbumDetail(name: String) -> Element {
         div {
             style: "padding: var(--k-space-6);",
             Link {
-                style: "color: var(--k-on-surface-variant); text-decoration: none; font-size: 0.875rem; display: inline-flex; align-items: center; gap: var(--k-space-1); margin-bottom: var(--k-space-4);",
+                style: "color: var(--secondary-color-4); text-decoration: none; font-size: 0.875rem; display: inline-flex; align-items: center; gap: var(--k-space-1); margin-bottom: var(--k-space-4);",
                 to: Route::Library {},
                 "← Back"
             }
@@ -35,7 +35,7 @@ pub fn AlbumDetail(name: String) -> Element {
                         .collect();
 
                     if album_tracks.is_empty() {
-                        rsx! { p { style: "color: var(--k-on-surface-variant);", "No tracks found for this album." } }
+                        rsx! { p { style: "color: var(--secondary-color-4);", "No tracks found for this album." } }
                     } else {
                         let artist = {
                             let first = &album_tracks[0].artist;
@@ -54,7 +54,7 @@ pub fn AlbumDetail(name: String) -> Element {
                             div {
                                 style: "display: grid; grid-template-columns: 200px 1fr; gap: var(--k-space-6); margin-bottom: var(--k-space-6);",
                                 div {
-                                    style: "aspect-ratio: 1; background: var(--k-surface-highest); border-radius: var(--k-radius-xl); display: flex; align-items: center; justify-content: center; font-family: var(--k-font-display); font-size: 3rem; color: var(--k-on-surface-variant);",
+                                    style: "aspect-ratio: 1; background: var(--primary-color-7); border-radius: var(--k-radius-xl); display: flex; align-items: center; justify-content: center; font-family: var(--k-font-display); font-size: 3rem; color: var(--secondary-color-4);",
                                     "{initial}"
                                 }
                                 div {
@@ -64,11 +64,11 @@ pub fn AlbumDetail(name: String) -> Element {
                                         "NOW VIEWING"
                                     }
                                     h1 {
-                                        style: "font-family: var(--k-font-display); font-size: 2rem; font-weight: 700; color: var(--k-on-surface);",
+                                        style: "font-family: var(--k-font-display); font-size: 2rem; font-weight: 700; color: var(--secondary-color-3);",
                                         "{name}"
                                     }
                                     div {
-                                        style: "display: flex; align-items: center; gap: var(--k-space-2); color: var(--k-on-surface-variant);",
+                                        style: "display: flex; align-items: center; gap: var(--k-space-2); color: var(--secondary-color-4);",
                                         span { "{artist}" }
                                         Badge { variant: BadgeVariant::Muted, "{genre}" }
                                     }
@@ -87,14 +87,14 @@ pub fn AlbumDetail(name: String) -> Element {
                                 TrackList { tracks: album_tracks, show_download_status: true }
                             }
                             div {
-                                style: "font-family: var(--k-font-mono); color: var(--k-on-surface-variant); font-size: 0.75rem; margin-top: var(--k-space-4);",
+                                style: "font-family: var(--k-font-mono); color: var(--secondary-color-4); font-size: 0.75rem; margin-top: var(--k-space-4);",
                                 "{track_count} tracks • {format_duration_minutes(total_secs)}"
                             }
                         }
                     }
                 },
                 Some(Err(e)) => rsx! { p { style: "color: var(--k-error);", "Error: {e}" } },
-                None => rsx! { p { style: "color: var(--k-on-surface-variant);", "Loading..." } },
+                None => rsx! { p { style: "color: var(--secondary-color-4);", "Loading..." } },
             }
         }
     }

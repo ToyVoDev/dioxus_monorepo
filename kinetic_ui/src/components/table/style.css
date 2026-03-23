@@ -1,13 +1,13 @@
 .k-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
   border-radius: var(--k-radius-lg);
   overflow: hidden;
 }
 
 .k-table__header {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -15,7 +15,7 @@
   border-bottom: 1px solid rgba(91, 64, 62, 0.1);
   text-align: left;
   font-weight: 500;
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 .k-table__row {
@@ -24,7 +24,7 @@
 }
 
 .k-table__row:hover {
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
 }
 
 .k-table__cell {
@@ -35,7 +35,7 @@
   background: transparent;
   border: none;
   width: 100%;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   font-family: var(--k-font-mono);
   font-size: 0.8125rem;
   outline: none;
@@ -48,7 +48,7 @@
 }
 
 .k-table__input::placeholder {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   opacity: 0.5;
 }
 

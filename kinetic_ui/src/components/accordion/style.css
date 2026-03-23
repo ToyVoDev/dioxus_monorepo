@@ -20,7 +20,7 @@
   padding: 10px 8px;
   border: none;
   background-color: transparent;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   outline: none;
   text-align: left;
   font-family: inherit;
@@ -33,7 +33,7 @@
 }
 
 .k-accordion__trigger:hover {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 .k-accordion__trigger:focus-visible {
@@ -44,7 +44,7 @@
   width: 18px;
   height: 18px;
   fill: none;
-  stroke: var(--k-on-surface-variant);
+  stroke: var(--secondary-color-4);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;

@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   gap: var(--k-space-4);
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
   padding: 0 var(--k-space-4);
   height: 64px;
   overflow: visible;
@@ -29,7 +29,7 @@
   font-family: var(--k-font-body);
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   cursor: pointer;
   padding: var(--k-space-2) 0;
   border: none;
@@ -42,7 +42,7 @@
 }
 
 .topbar__nav-link:hover {
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .topbar__nav-link[data-active="true"] {

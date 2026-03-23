@@ -1,7 +1,7 @@
 .sidebar {
   grid-area: sidebar;
   width: 256px;
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -27,7 +27,7 @@
 .sidebar__subtitle {
   font-family: var(--k-font-mono);
   font-size: 0.625rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -46,7 +46,7 @@
   gap: var(--k-space-3);
   padding: var(--k-space-2) var(--k-space-3);
   border-radius: var(--k-radius-default);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.875rem;
   text-decoration: none;
   transition:
@@ -55,11 +55,11 @@
 }
 
 .sidebar__nav-item:hover {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 .sidebar__nav-item[aria-current="page"] {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
   color: var(--k-primary);
   font-weight: 500;
 }
@@ -68,6 +68,6 @@
   margin-top: auto;
   font-family: var(--k-font-mono);
   font-size: 0.625rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   padding: var(--k-space-2) 0;
 }

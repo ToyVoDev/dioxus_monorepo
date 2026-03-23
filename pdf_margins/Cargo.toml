@@ -1,5 +1,5 @@
 [package]
-name = "pdf_margins_dioxus"
+name = "pdf_margins"
 version = "0.1.0"
 authors = ["Collin Diekvoss <Collin@Diekvoss.com>"]
 edition = "2024"

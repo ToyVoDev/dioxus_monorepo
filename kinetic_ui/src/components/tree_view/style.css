@@ -11,7 +11,7 @@
   padding: 6px 8px;
   cursor: pointer;
   border-radius: var(--k-radius-sm);
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   font-size: 0.875rem;
   border: none;
   background: transparent;
@@ -24,7 +24,7 @@
 }
 
 .k-tree__branch-trigger:hover {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
 }
 
 .k-tree__branch-trigger .k-tree__chevron {
@@ -60,7 +60,7 @@
   width: 100%;
   text-align: left;
   font-family: inherit;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   box-sizing: border-box;
   transition:
     background 150ms ease,
@@ -68,11 +68,11 @@
 }
 
 .k-tree__leaf:hover {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
 }
 
 .k-tree__leaf[data-selected="true"] {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
   border-left: 2px solid var(--k-primary);
   padding-left: 10px;
 }

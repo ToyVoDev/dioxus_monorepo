@@ -1,5 +1,5 @@
 [application]
-name = "pdf_margins_dioxus"
+name = "pdf_margins"
 
 [web.app]
 title = "PDF Margins"

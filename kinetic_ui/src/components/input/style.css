@@ -1,8 +1,8 @@
 .k-input {
   width: 100%;
   padding: 6px 10px;
-  background: var(--k-surface-lowest);
-  color: var(--k-on-surface);
+  background: var(--primary-color-1);
+  color: var(--secondary-color-3);
   border: 1px solid transparent;
   border-radius: var(--k-radius-default);
   font-family: var(--k-font-body);
@@ -13,7 +13,7 @@
 }
 
 .k-input::placeholder {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
 }
 
 .k-input:focus {

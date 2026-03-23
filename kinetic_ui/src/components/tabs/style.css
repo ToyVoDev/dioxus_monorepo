@@ -13,7 +13,7 @@
 
 .k-tabs__trigger {
   padding: var(--k-space-3) var(--k-space-1);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -31,7 +31,7 @@
 }
 
 .k-tabs__trigger:hover {
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .k-tabs__trigger[data-state="active"] {

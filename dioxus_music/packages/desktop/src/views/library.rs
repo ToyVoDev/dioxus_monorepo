@@ -16,11 +16,11 @@ pub fn Library() -> Element {
                 style: "display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--k-space-6);",
                 div {
                     h1 {
-                        style: "font-family: var(--k-font-display); font-size: 1.75rem; font-weight: 700; color: var(--k-on-surface);",
+                        style: "font-family: var(--k-font-display); font-size: 1.75rem; font-weight: 700; color: var(--secondary-color-3);",
                         "Library"
                     }
                     p {
-                        style: "color: var(--k-on-surface-variant); font-size: 0.875rem; margin-top: var(--k-space-1);",
+                        style: "color: var(--secondary-color-4); font-size: 0.875rem; margin-top: var(--k-space-1);",
                         "Your high-fidelity audio repository"
                     }
                 }
@@ -49,15 +49,15 @@ pub fn Library() -> Element {
                                                 style: "cursor: pointer; text-decoration: none; color: inherit; display: block; transition: transform 150ms ease;",
                                                 to: Route::AlbumDetail { name: album_name },
                                                 div {
-                                                    style: "aspect-ratio: 1; background: var(--k-surface-highest); border-radius: var(--k-radius-lg); display: flex; align-items: center; justify-content: center; font-family: var(--k-font-display); font-size: 2rem; color: var(--k-on-surface-variant); margin-bottom: var(--k-space-2);",
+                                                    style: "aspect-ratio: 1; background: var(--primary-color-7); border-radius: var(--k-radius-lg); display: flex; align-items: center; justify-content: center; font-family: var(--k-font-display); font-size: 2rem; color: var(--secondary-color-4); margin-bottom: var(--k-space-2);",
                                                     "{initial}"
                                                 }
                                                 div {
-                                                    style: "font-size: 0.875rem; color: var(--k-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;",
+                                                    style: "font-size: 0.875rem; color: var(--secondary-color-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;",
                                                     "{album.name}"
                                                 }
                                                 div {
-                                                    style: "font-size: 0.75rem; color: var(--k-on-surface-variant); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;",
+                                                    style: "font-size: 0.75rem; color: var(--secondary-color-4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;",
                                                     "{album.artist}"
                                                 }
                                             }
@@ -69,7 +69,7 @@ pub fn Library() -> Element {
                     }
                 },
                 Some(Err(e)) => rsx! { p { style: "color: var(--k-error);", "Error loading library: {e}" } },
-                None => rsx! { p { style: "color: var(--k-on-surface-variant);", "Loading..." } },
+                None => rsx! { p { style: "color: var(--secondary-color-4);", "Loading..." } },
             }
         }
     }

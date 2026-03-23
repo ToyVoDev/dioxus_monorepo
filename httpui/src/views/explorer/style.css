@@ -2,7 +2,7 @@
   grid-area: explorer;
   display: flex;
   flex-direction: column;
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
   height: 100%;
   overflow: hidden;
 }
@@ -20,7 +20,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
 }
 
 .explorer__content {
@@ -38,7 +38,7 @@
 
 .explorer__request-name {
   font-size: 0.8125rem;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -47,7 +47,7 @@
 .explorer__request-url {
   font-family: var(--k-font-mono);
   font-size: 0.6875rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -58,7 +58,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.875rem;
   padding: var(--k-space-4);
   text-align: center;

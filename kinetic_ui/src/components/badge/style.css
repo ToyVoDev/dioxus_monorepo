@@ -27,5 +27,5 @@
 }
 
 .k-badge[data-variant="muted"] {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
 }

@@ -1,26 +1,26 @@
 /* Surface utilities */
 .k-surface-lowest {
-  background-color: var(--k-surface-lowest);
+  background-color: var(--primary-color-1);
 }
 
 .k-surface {
-  background-color: var(--k-surface);
+  background-color: var(--primary-color-3);
 }
 
 .k-surface-low {
-  background-color: var(--k-surface-low);
+  background-color: var(--primary-color-4);
 }
 
 .k-surface-container {
-  background-color: var(--k-surface-container);
+  background-color: var(--primary-color-5);
 }
 
 .k-surface-high {
-  background-color: var(--k-surface-high);
+  background-color: var(--primary-color-6);
 }
 
 .k-surface-highest {
-  background-color: var(--k-surface-highest);
+  background-color: var(--primary-color-7);
 }
 
 /* Text utilities */
@@ -41,11 +41,11 @@
 }
 
 .k-text-on-surface {
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .k-text-on-surface-variant {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
 }
 
 /* Font utilities */

@@ -7,7 +7,7 @@
   top: 100%;
   right: 0;
   margin-top: var(--k-space-1);
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
   border-radius: var(--k-radius-lg);
   box-shadow: var(--k-shadow-float);
   padding: var(--k-space-1);
@@ -21,7 +21,7 @@
   gap: var(--k-space-2);
   padding: var(--k-space-2) var(--k-space-3);
   border-radius: var(--k-radius-sm);
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   font-size: 0.875rem;
   cursor: pointer;
   border: none;
@@ -32,5 +32,5 @@
 }
 
 .settings-dropdown__item:hover {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }

@@ -38,8 +38,8 @@
 
 /* Secondary */
 .k-button--secondary {
-  background: var(--k-surface-highest);
-  color: var(--k-on-surface);
+  background: var(--primary-color-7);
+  color: var(--secondary-color-3);
   border: 1px solid rgba(91, 64, 62, 0.2);
 }
 
@@ -50,11 +50,11 @@
 /* Ghost */
 .k-button--ghost {
   background: transparent;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .k-button--ghost:hover {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 /* Destructive */

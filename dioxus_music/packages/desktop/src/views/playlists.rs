@@ -16,13 +16,13 @@ pub fn Playlists() -> Element {
             div {
                 style: "display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--k-space-4);",
                 h2 {
-                    style: "font-family: var(--k-font-display); font-size: 1.75rem; color: var(--k-on-surface);",
+                    style: "font-family: var(--k-font-display); font-size: 1.75rem; color: var(--secondary-color-3);",
                     "Playlists"
                 }
                 div {
                     style: "display: flex; gap: var(--k-space-2);",
                     button {
-                        style: "background: var(--k-surface-highest); border: none; color: var(--k-on-surface); padding: var(--k-space-2) var(--k-space-3); border-radius: var(--k-radius-default); cursor: pointer; font-size: 0.875rem;",
+                        style: "background: var(--primary-color-7); border: none; color: var(--secondary-color-3); padding: var(--k-space-2) var(--k-space-3); border-radius: var(--k-radius-default); cursor: pointer; font-size: 0.875rem;",
                         title: "New manual playlist",
                         onclick: move |_| {
                             show_modal.set(Some(PlaylistFormMode::CreateManual));
@@ -30,7 +30,7 @@ pub fn Playlists() -> Element {
                         "+ Manual"
                     }
                     button {
-                        style: "background: var(--k-surface-highest); border: none; color: var(--k-on-surface); padding: var(--k-space-2) var(--k-space-3); border-radius: var(--k-radius-default); cursor: pointer; font-size: 0.875rem;",
+                        style: "background: var(--primary-color-7); border: none; color: var(--secondary-color-3); padding: var(--k-space-2) var(--k-space-3); border-radius: var(--k-radius-default); cursor: pointer; font-size: 0.875rem;",
                         title: "New smart playlist",
                         onclick: move |_| async move {
                             if let Ok(g) = dioxus_music_api::get_genres().await {
@@ -54,7 +54,7 @@ pub fn Playlists() -> Element {
                                 span {
                                     style: "display: flex; align-items: center; gap: var(--k-space-2);",
                                     span {
-                                        style: "font-family: var(--k-font-mono); font-size: 0.625rem; color: var(--k-on-surface-variant); background: var(--k-surface-highest); padding: 1px 4px; border-radius: var(--k-radius-sm);",
+                                        style: "font-family: var(--k-font-mono); font-size: 0.625rem; color: var(--secondary-color-4); background: var(--primary-color-7); padding: 1px 4px; border-radius: var(--k-radius-sm);",
                                         if pl.playlist_type == "smart" { "S" } else { "M" }
                                     }
                                     "{pl.name}"
@@ -63,8 +63,8 @@ pub fn Playlists() -> Element {
                         }
                     }
                 },
-                Some(Err(_)) => rsx! { p { style: "color: var(--k-on-surface-variant);", "Error loading playlists" } },
-                None => rsx! { p { style: "color: var(--k-on-surface-variant);", "Loading..." } },
+                Some(Err(_)) => rsx! { p { style: "color: var(--secondary-color-4);", "Error loading playlists" } },
+                None => rsx! { p { style: "color: var(--secondary-color-4);", "Loading..." } },
             }
         }
 

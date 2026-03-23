@@ -4,7 +4,7 @@
   right: 0;
   bottom: 0;
   width: 320px;
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
   border-left: 1px solid var(--k-border);
   display: flex;
   flex-direction: column;
@@ -34,14 +34,14 @@
   font-family: var(--k-font-display);
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .queue-panel__count {
   font-family: var(--k-font-mono);
   font-size: 0.8rem;
-  color: var(--k-on-surface-variant);
-  background: var(--k-surface-highest);
+  color: var(--secondary-color-4);
+  background: var(--primary-color-7);
   padding: 2px 8px;
   border-radius: var(--k-radius-full);
 }
@@ -69,11 +69,11 @@
 }
 
 .queue-panel__item:hover {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
 }
 
 .queue-panel__item--active {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
 }
 
 .queue-panel__item--active .queue-panel__item-index {
@@ -85,14 +85,14 @@
 }
 
 .queue-panel__item--drag-over {
-  background: var(--k-surface-highest);
+  background: var(--primary-color-7);
   border-top: 2px solid var(--k-primary);
 }
 
 .queue-panel__item-index {
   font-family: var(--k-font-mono);
   font-size: 0.8rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   min-width: 24px;
   text-align: right;
   flex-shrink: 0;
@@ -105,7 +105,7 @@
 
 .queue-panel__item-title {
   font-size: 0.9rem;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -113,7 +113,7 @@
 
 .queue-panel__item-artist {
   font-size: 0.75rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

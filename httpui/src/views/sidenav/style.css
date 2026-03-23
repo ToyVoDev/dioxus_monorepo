@@ -2,7 +2,7 @@
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
   padding: var(--k-space-2);
   padding-top: 31px;
   height: 100%;
@@ -32,7 +32,7 @@
 .sidenav__version {
   font-family: var(--k-font-mono);
   font-size: 0.5rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-weight: 400;
 }
 
@@ -58,7 +58,7 @@
   padding: var(--k-space-2) var(--k-space-1);
   border-radius: var(--k-radius-default);
   cursor: pointer;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.5625rem;
   text-align: center;
   border: none;
@@ -71,12 +71,12 @@
 }
 
 .sidenav__nav-item:hover {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 .sidenav__nav-item[data-active="true"] {
   color: var(--k-primary);
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
 }
 
 .sidenav__nav-item[data-active="true"]::before {

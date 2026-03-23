@@ -4,8 +4,8 @@
 }
 
 .k-tooltip__content {
-  background: var(--k-surface-highest);
-  color: var(--k-on-surface);
+  background: var(--primary-color-7);
+  color: var(--secondary-color-3);
   padding: 4px 8px;
   border-radius: var(--k-radius-sm);
   font-size: 0.75rem;

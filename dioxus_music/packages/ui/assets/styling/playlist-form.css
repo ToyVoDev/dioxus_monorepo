@@ -11,7 +11,7 @@
 }
 
 .playlist-form-card {
-  background: var(--k-surface-high);
+  background: var(--primary-color-6);
   border-radius: var(--k-radius-lg);
   padding: 28px 32px;
   width: 420px;
@@ -26,7 +26,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 20px;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .playlist-form-card__field {
@@ -36,7 +36,7 @@
 .playlist-form-card__field label {
   display: block;
   font-size: 0.85rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   margin-bottom: 6px;
 }
 
@@ -50,8 +50,8 @@
   padding: 5px 12px;
   border-radius: var(--k-radius-full);
   border: 1px solid var(--k-border);
-  background: var(--k-surface-lowest);
-  color: var(--k-on-surface-variant);
+  background: var(--primary-color-1);
+  color: var(--secondary-color-4);
   font-size: 0.82rem;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -59,7 +59,7 @@
 
 .genre-chip:hover {
   border-color: var(--k-primary);
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
 }
 
 .genre-chip--active {

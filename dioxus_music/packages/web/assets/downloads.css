@@ -10,7 +10,7 @@
     font-family: var(--k-font-display);
     font-size: 2rem;
     font-weight: 700;
-    color: var(--k-on-surface);
+    color: var(--secondary-color-3);
     margin-bottom: var(--k-space-1);
 }
 
@@ -20,14 +20,14 @@
     gap: var(--k-space-2);
     font-family: var(--k-font-mono);
     font-size: 0.75rem;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
 }
 
 .sync-manager__status-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--k-on-surface-variant);
+    background: var(--secondary-color-4);
 }
 
 /* Bento grid */
@@ -45,7 +45,7 @@
 }
 
 .sync-manager__card {
-    background: var(--k-surface-low);
+    background: var(--primary-color-4);
     border-radius: var(--k-radius-lg);
     padding: var(--k-space-4);
     display: flex;
@@ -54,7 +54,7 @@
 }
 
 .sync-manager__card--wide {
-    background: var(--k-surface-low);
+    background: var(--primary-color-4);
     border-radius: var(--k-radius-lg);
     padding: var(--k-space-4);
     display: flex;
@@ -72,34 +72,34 @@
     font-family: var(--k-font-display);
     font-size: 1rem;
     font-weight: 600;
-    color: var(--k-on-surface);
+    color: var(--secondary-color-3);
 }
 
 .sync-manager__card-subtitle {
     font-size: 0.75rem;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
 }
 
 .sync-manager__card-icon {
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
 }
 
 .sync-manager__card-value {
     font-family: var(--k-font-display);
     font-size: 2rem;
     font-weight: 700;
-    color: var(--k-on-surface);
+    color: var(--secondary-color-3);
 }
 
 .sync-manager__card-label {
     font-size: 0.75rem;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
 }
 
 /* Storage bar */
 .sync-manager__storage-bar {
     height: 8px;
-    background: var(--k-surface-highest);
+    background: var(--primary-color-7);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -122,7 +122,7 @@
     align-items: center;
     gap: var(--k-space-1);
     font-size: 0.6875rem;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
 }
 
 .sync-manager__legend-dot {
@@ -165,7 +165,7 @@
     font-family: var(--k-font-mono);
     font-size: 0.6875rem;
     font-weight: 600;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
     text-transform: uppercase;
     letter-spacing: 0.08em;
 }
@@ -180,13 +180,13 @@
     border: 1px dashed rgba(91, 64, 62, 0.2);
     border-radius: var(--k-radius-lg);
     text-align: center;
-    color: var(--k-on-surface-variant);
+    color: var(--secondary-color-4);
     gap: var(--k-space-2);
 }
 
 .sync-manager__empty-title {
     font-size: 1rem;
-    color: var(--k-on-surface);
+    color: var(--secondary-color-3);
     margin-top: var(--k-space-2);
 }
 

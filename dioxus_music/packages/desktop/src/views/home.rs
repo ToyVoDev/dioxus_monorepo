@@ -10,7 +10,7 @@ pub fn Home() -> Element {
                 {env!("CARGO_PKG_NAME")}
             }
             p {
-                style: "font-family: var(--k-font-mono); font-size: 0.75rem; color: var(--k-on-surface-variant); text-transform: uppercase; letter-spacing: 0.1em;",
+                style: "font-family: var(--k-font-mono); font-size: 0.75rem; color: var(--secondary-color-4); text-transform: uppercase; letter-spacing: 0.1em;",
                 "v{env!(\"CARGO_PKG_VERSION\")}"
             }
         }

@@ -10,7 +10,7 @@ members = [
     "httpui",
     "kinetic_ui",
     "minecraft_modpack",
-    "pdf_margins_dioxus",
+    "pdf_margins",
     "portfolio",
     "schedule1",
 ]

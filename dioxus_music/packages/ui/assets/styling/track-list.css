@@ -7,7 +7,7 @@
   grid-template-columns: 40px 1fr 1fr 1fr 60px;
   padding: var(--k-space-2) var(--k-space-3);
   border-bottom: 1px solid rgba(91, 64, 62, 0.1);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -33,12 +33,12 @@
 }
 
 .track-list__row:hover {
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
 }
 
 .track-list__row--active {
   border-left-color: var(--k-primary);
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
 }
 
 .track-list__row--active .track-list__col--title {
@@ -53,12 +53,12 @@
 
 .track-list__col--num {
   font-family: var(--k-font-mono);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   text-align: center;
 }
 
 .track-list__col--title {
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -66,7 +66,7 @@
 
 .track-list__col--artist,
 .track-list__col--album {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -74,7 +74,7 @@
 
 .track-list__col--duration {
   font-family: var(--k-font-mono);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   text-align: right;
 }
 

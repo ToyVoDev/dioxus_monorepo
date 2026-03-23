@@ -2,7 +2,7 @@
   grid-area: canvas;
   display: flex;
   flex-direction: column;
-  background: var(--k-surface);
+  background: var(--primary-color-3);
   height: 100%;
   overflow: hidden;
 }
@@ -32,7 +32,7 @@
 }
 
 .canvas__response {
-  background: var(--k-surface-low);
+  background: var(--primary-color-4);
 }
 
 .canvas__response-header {
@@ -45,14 +45,14 @@
 }
 
 .canvas__response-header:hover {
-  background: var(--k-surface-container);
+  background: var(--primary-color-5);
 }
 
 .canvas__response-label {
   font-family: var(--k-font-display);
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   letter-spacing: 0.02em;
 }
 
@@ -62,12 +62,12 @@
   gap: var(--k-space-3);
   margin-left: auto;
   font-size: 0.75rem;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-family: var(--k-font-mono);
 }
 
 .canvas__response-body {
-  background: var(--k-surface-lowest);
+  background: var(--primary-color-1);
   padding: var(--k-space-4) var(--k-space-6);
   margin: var(--k-space-3) var(--k-space-4);
   border-radius: var(--k-radius-lg);
@@ -75,14 +75,14 @@
   font-family: var(--k-font-mono);
   font-size: 0.75rem;
   line-height: 1.6;
-  color: var(--k-on-surface);
+  color: var(--secondary-color-3);
   overflow: auto;
   max-height: 400px;
   white-space: pre;
 }
 
 .canvas__response-line-num {
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   user-select: none;
   display: inline-block;
   width: 3ch;
@@ -96,7 +96,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 1rem;
 }
 
@@ -105,13 +105,13 @@
   align-items: center;
   justify-content: center;
   padding: var(--k-space-8);
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
   font-size: 0.875rem;
 }
 
 .canvas__chevron {
   transition: transform 150ms ease;
-  color: var(--k-on-surface-variant);
+  color: var(--secondary-color-4);
 }
 
 .canvas__chevron[data-expanded="true"] {
