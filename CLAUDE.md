@@ -7,10 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This repo uses a Nix flake for development dependencies. Enter the devshell with:
 
 ```bash
-nix develop --impure
+nix develop
 ```
-
-The `--impure` flag is needed for the Android SDK's unfree license. You may also need `NIXPKGS_ALLOW_UNFREE=1` and `NIXPKGS_ACCEPT_ANDROID_SDK_LICENSE=1`.
 
 The devshell provides: Rust nightly toolchain, Dioxus CLI (`dx`), Android SDK/NDK, wasm-bindgen, diesel CLI, and other build dependencies. Without Nix, install these manually (see README.md).
 

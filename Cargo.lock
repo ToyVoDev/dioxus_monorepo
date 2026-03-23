@@ -4644,8 +4644,10 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus-logger",
+ "dioxus-primitives",
  "gloo-file",
  "js-sys",
+ "kinetic_ui",
  "lopdf",
  "tracing",
  "wasm-bindgen-futures",

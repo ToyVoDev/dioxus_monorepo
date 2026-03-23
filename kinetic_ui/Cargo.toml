@@ -12,7 +12,7 @@ dioxus-free-icons = { workspace = true, features = [
     "material-design-icons-action",
     "material-design-icons-content",
 ] }
-dioxus-primitives = { workspace = true, default-features = false }
+dioxus-primitives = { default-features = false, git = "https://github.com/DioxusLabs/components", version = "0.0.1" }
 strum = { workspace = true, features = ["derive"] }
 
 [lints.clippy]

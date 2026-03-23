@@ -1,3 +1,33 @@
+/* This file contains the global styles for the styled dioxus components. You only
+ * need to import this file once in your project root.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--primary-color);
+  color: var(--secondary-color-4);
+  font-family: Inter, sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dark: initial;
+    --light: ;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --dark: ;
+    --light: initial;
+  }
+}
+
 :root {
   /* Primary colors */
   --primary-color: var(--dark, #000) var(--light, #fff);
@@ -32,88 +62,6 @@
     var(--light, var(--primary-color));
   --secondary-info-color: var(--dark, var(--primary-color-7))
     var(--light, var(--secondary-color-3));
-
-  /* Surfaces */
-  --k-surface-lowest: #0e0e0e;
-  --k-surface: #131313;
-  --k-surface-low: #1b1c1c;
-  --k-surface-container: #1f2020;
-  --k-surface-high: #2a2a2a;
-  --k-surface-highest: #353535;
-  --k-glass-surface: rgba(227, 225, 224, 0.08);
-
-  /* Brand colors */
-  --k-primary: #ffb3ad;
-  --k-primary-container: #ff5451;
-  --k-on-primary-container: #5c0008;
-  --k-secondary: #44e2cd;
-  --k-secondary-container: #03c6b2;
-  --k-tertiary: #f9bd22;
-  --k-error: #ffb4ab;
-  --k-error-container: #93000a;
-  --k-on-error: #690005;
-  --k-on-surface: #e4e2e1;
-  --k-on-surface-variant: #e4beba;
-  --k-outline-variant: #5b403e;
-
-  /* Spacing */
-  --k-space-1: 0.25rem;
-  --k-space-2: 0.5rem;
-  --k-space-3: 0.75rem;
-  --k-space-4: 1rem;
-  --k-space-6: 1.5rem;
-  --k-space-8: 2rem;
-
-  /* Rounding */
-  --k-radius-sm: 0.25rem;
-  --k-radius-default: 0.5rem;
-  --k-radius-lg: 1rem;
-  --k-radius-xl: 1.5rem;
-  --k-radius-full: 9999px;
-
-  /* Shadow */
-  --k-shadow-float: 0 4px 40px rgba(228, 226, 225, 0.06);
-
-  /* Typography */
-  --k-font-display: "Space Grotesk", sans-serif;
-  --k-font-body: "Inter", sans-serif;
-  --k-font-mono: "JetBrains Mono", monospace;
-}
-
-/* Base reset */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  background: var(--k-surface);
-  color: var(--k-on-surface);
-  font-family: var(--k-font-body);
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --dark: initial;
-    --light: ;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --dark: ;
-    --light: initial;
-  }
 }
 
 /* Modern browsers with `scrollbar-*` support */
@@ -132,23 +80,4 @@ body {
   :root::-webkit-scrollbar-track {
     background: transparent;
   }
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--k-surface-highest);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--k-outline-variant);
 }

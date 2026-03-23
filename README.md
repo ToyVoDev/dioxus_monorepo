@@ -20,14 +20,7 @@ Monorepo of my various Dioxus projects.
 This project uses a Nix flake for development dependencies. Enter the devshell:
 
 ```bash
-nix develop --impure
-```
-
-The `--impure` flag is required because the Android SDK has an unfree license. You may also need:
-
-```bash
-export NIXPKGS_ALLOW_UNFREE=1
-export NIXPKGS_ACCEPT_ANDROID_SDK_LICENSE=1
+nix develop
 ```
 
 The devshell provides: Rust toolchain, Dioxus CLI (`dx`), Android SDK/NDK, wasm-bindgen, diesel CLI, and other build dependencies.
