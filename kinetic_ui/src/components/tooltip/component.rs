@@ -2,15 +2,15 @@ use dioxus::prelude::*;
 use dioxus_primitives::tooltip::{self, TooltipContentProps, TooltipProps, TooltipTriggerProps};
 
 #[component]
-pub fn KTooltip(props: TooltipProps) -> Element {
+pub fn Tooltip(props: TooltipProps) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         tooltip::Tooltip {
-            class: "k-tooltip",
+            class: "tooltip",
+            disabled: props.disabled,
             open: props.open,
             default_open: props.default_open,
             on_open_change: props.on_open_change,
-            disabled: props.disabled,
             attributes: props.attributes,
             {props.children}
         }
@@ -18,11 +18,11 @@ pub fn KTooltip(props: TooltipProps) -> Element {
 }
 
 #[component]
-pub fn KTooltipTrigger(props: TooltipTriggerProps) -> Element {
+pub fn TooltipTrigger(props: TooltipTriggerProps) -> Element {
     rsx! {
         tooltip::TooltipTrigger {
+            class: "tooltip-trigger",
             id: props.id,
-            r#as: props.r#as,
             attributes: props.attributes,
             {props.children}
         }
@@ -30,10 +30,10 @@ pub fn KTooltipTrigger(props: TooltipTriggerProps) -> Element {
 }
 
 #[component]
-pub fn KTooltipContent(props: TooltipContentProps) -> Element {
+pub fn TooltipContent(props: TooltipContentProps) -> Element {
     rsx! {
         tooltip::TooltipContent {
-            class: "k-tooltip__content",
+            class: "tooltip-content",
             id: props.id,
             side: props.side,
             align: props.align,

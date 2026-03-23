@@ -5,11 +5,11 @@ use dioxus_primitives::select::{
 };
 
 #[component]
-pub fn KSelect<T: Clone + PartialEq + 'static>(props: SelectProps<T>) -> Element {
+pub fn Select<T: Clone + PartialEq + 'static>(props: SelectProps<T>) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         select::Select {
-            class: "k-select",
+            class: "select",
             value: props.value,
             default_value: props.default_value,
             on_value_change: props.on_value_change,
@@ -25,14 +25,12 @@ pub fn KSelect<T: Clone + PartialEq + 'static>(props: SelectProps<T>) -> Element
 }
 
 #[component]
-pub fn KSelectTrigger(props: SelectTriggerProps) -> Element {
+pub fn SelectTrigger(props: SelectTriggerProps) -> Element {
     rsx! {
-        select::SelectTrigger {
-            class: "k-select__trigger",
-            attributes: props.attributes,
+        select::SelectTrigger { class: "select-trigger", attributes: props.attributes,
             {props.children}
             svg {
-                class: "k-select__expand-icon",
+                class: "select-expand-icon",
                 view_box: "0 0 24 24",
                 xmlns: "http://www.w3.org/2000/svg",
                 polyline { points: "6 9 12 15 18 9" }
@@ -42,17 +40,17 @@ pub fn KSelectTrigger(props: SelectTriggerProps) -> Element {
 }
 
 #[component]
-pub fn KSelectValue(props: SelectValueProps) -> Element {
+pub fn SelectValue(props: SelectValueProps) -> Element {
     rsx! {
         select::SelectValue { attributes: props.attributes }
     }
 }
 
 #[component]
-pub fn KSelectList(props: SelectListProps) -> Element {
+pub fn SelectList(props: SelectListProps) -> Element {
     rsx! {
         select::SelectList {
-            class: "k-select__list",
+            class: "select-list",
             id: props.id,
             attributes: props.attributes,
             {props.children}
@@ -61,10 +59,10 @@ pub fn KSelectList(props: SelectListProps) -> Element {
 }
 
 #[component]
-pub fn KSelectGroup(props: SelectGroupProps) -> Element {
+pub fn SelectGroup(props: SelectGroupProps) -> Element {
     rsx! {
         select::SelectGroup {
-            class: "k-select__group",
+            class: "select-group",
             disabled: props.disabled,
             id: props.id,
             attributes: props.attributes,
@@ -74,10 +72,10 @@ pub fn KSelectGroup(props: SelectGroupProps) -> Element {
 }
 
 #[component]
-pub fn KSelectGroupLabel(props: SelectGroupLabelProps) -> Element {
+pub fn SelectGroupLabel(props: SelectGroupLabelProps) -> Element {
     rsx! {
         select::SelectGroupLabel {
-            class: "k-select__group-label",
+            class: "select-group-label",
             id: props.id,
             attributes: props.attributes,
             {props.children}
@@ -86,10 +84,10 @@ pub fn KSelectGroupLabel(props: SelectGroupLabelProps) -> Element {
 }
 
 #[component]
-pub fn KSelectOption<T: Clone + PartialEq + 'static>(props: SelectOptionProps<T>) -> Element {
+pub fn SelectOption<T: Clone + PartialEq + 'static>(props: SelectOptionProps<T>) -> Element {
     rsx! {
         select::SelectOption::<T> {
-            class: "k-select__option",
+            class: "select-option",
             value: props.value,
             text_value: props.text_value,
             disabled: props.disabled,
@@ -104,18 +102,14 @@ pub fn KSelectOption<T: Clone + PartialEq + 'static>(props: SelectOptionProps<T>
 }
 
 #[component]
-pub fn KSelectItemIndicator(children: Element) -> Element {
+pub fn SelectItemIndicator() -> Element {
     rsx! {
         select::SelectItemIndicator {
-            if children == VNode::empty() {
-                svg {
-                    class: "k-select__check-icon",
-                    view_box: "0 0 24 24",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    path { d: "M5 13l4 4L19 7" }
-                }
-            } else {
-                {children}
+            svg {
+                class: "select-check-icon",
+                view_box: "0 0 24 24",
+                xmlns: "http://www.w3.org/2000/svg",
+                path { d: "M5 13l4 4L19 7" }
             }
         }
     }

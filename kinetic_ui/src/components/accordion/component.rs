@@ -4,11 +4,12 @@ use dioxus_primitives::accordion::{
 };
 
 #[component]
-pub fn KAccordion(props: AccordionProps) -> Element {
+pub fn Accordion(props: AccordionProps) -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         accordion::Accordion {
-            class: "k-accordion",
+            class: "accordion",
+            width: "15rem",
             id: props.id,
             allow_multiple_open: props.allow_multiple_open,
             disabled: props.disabled,
@@ -21,10 +22,10 @@ pub fn KAccordion(props: AccordionProps) -> Element {
 }
 
 #[component]
-pub fn KAccordionItem(props: AccordionItemProps) -> Element {
+pub fn AccordionItem(props: AccordionItemProps) -> Element {
     rsx! {
         accordion::AccordionItem {
-            class: "k-accordion__item",
+            class: "accordion-item",
             disabled: props.disabled,
             default_open: props.default_open,
             on_change: props.on_change,
@@ -37,15 +38,15 @@ pub fn KAccordionItem(props: AccordionItemProps) -> Element {
 }
 
 #[component]
-pub fn KAccordionTrigger(props: AccordionTriggerProps) -> Element {
+pub fn AccordionTrigger(props: AccordionTriggerProps) -> Element {
     rsx! {
         accordion::AccordionTrigger {
-            class: "k-accordion__trigger",
+            class: "accordion-trigger",
             id: props.id,
             attributes: props.attributes,
             {props.children}
             svg {
-                class: "k-accordion__expand-icon",
+                class: "accordion-expand-icon",
                 view_box: "0 0 24 24",
                 xmlns: "http://www.w3.org/2000/svg",
                 polyline { points: "6 9 12 15 18 9" }
@@ -55,10 +56,10 @@ pub fn KAccordionTrigger(props: AccordionTriggerProps) -> Element {
 }
 
 #[component]
-pub fn KAccordionContent(props: AccordionContentProps) -> Element {
+pub fn AccordionContent(props: AccordionContentProps) -> Element {
     rsx! {
         accordion::AccordionContent {
-            class: "k-accordion__content",
+            class: "accordion-content",
             style: "--collapsible-content-width: 140px",
             id: props.id,
             attributes: props.attributes,
