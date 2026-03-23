@@ -9,6 +9,7 @@ diesel::table! {
         genre -> Text,
         duration_secs -> Int4,
         file_path -> Text,
+        updated_at -> Timestamptz,
     }
 }
 
@@ -18,6 +19,7 @@ diesel::table! {
         name -> Text,
         playlist_type -> Text,
         rules -> Nullable<Jsonb>,
+        updated_at -> Timestamptz,
     }
 }
 

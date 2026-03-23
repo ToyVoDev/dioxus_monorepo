@@ -56,6 +56,12 @@
 - [ ] Real codec/bitrate/source in Now Playing (currently hardcoded "FLAC" / "— kbps" / "Local")
 - [ ] Track metadata editing
 
+### Desktop as Pure Client (DONE — uses `set_server_url`)
+- [x] Desktop uses `dioxus::fullstack::set_server_url()` to point server function calls at the remote web server
+- [x] No embedded Axum server, no DB pool, no migrations
+- [x] `SERVER_URL` env var configures the server (defaults to `http://localhost:8080`)
+- [ ] Settings UI for server URL (currently env var only)
+
 ### Offline Sync (architecture designed, not implemented)
 - [ ] Server health endpoint + incremental sync
 - [ ] Desktop connectivity detection + download manager

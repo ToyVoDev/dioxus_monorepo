@@ -14,6 +14,7 @@ pub struct TrackSummary {
     pub album: String,
     pub genre: String,
     pub duration_secs: i32,
+    pub updated_at: chrono::DateTime<chrono::Utc>,
 }
 
 #[cfg(feature = "server")]

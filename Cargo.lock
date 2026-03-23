@@ -2008,6 +2008,7 @@ name = "dioxus_music_api"
 version = "0.1.0"
 dependencies = [
  "axum 0.8.8",
+ "chrono",
  "diesel",
  "diesel-async",
  "diesel_migrations",
@@ -2028,13 +2029,10 @@ dependencies = [
 name = "dioxus_music_desktop"
 version = "0.1.0"
 dependencies = [
- "axum 0.8.8",
  "dioxus",
  "dioxus_music_api",
  "dioxus_music_ui",
- "dotenvy",
  "kinetic_ui",
- "tokio",
  "uuid",
 ]
 

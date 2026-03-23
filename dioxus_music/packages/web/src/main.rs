@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 use dioxus_music_ui::player_state::use_player_state_provider;
-use dioxus_music_ui::{AppShell, Sidebar};
+use dioxus_music_ui::{AppShell, ServerConfig, Sidebar};
 use uuid::Uuid;
 use views::{
     AlbumDetail, Artists, Downloads, Library, NowPlaying, PlaylistSidebarSection, PlaylistView,
@@ -81,6 +81,9 @@ fn App() -> Element {
 
 #[component]
 fn AppLayout() -> Element {
+    use_context_provider(|| ServerConfig {
+        base_url: String::new(),
+    });
     use_player_state_provider();
     let nav = navigator();
     let current_route = use_route::<Route>();

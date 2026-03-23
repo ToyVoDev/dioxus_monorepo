@@ -1,6 +1,11 @@
 pub mod audio;
 pub mod player_state;
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct ServerConfig {
+    pub base_url: String,
+}
+
 mod album_utils;
 pub use album_utils::{AlbumSummary, group_tracks_into_albums};
 

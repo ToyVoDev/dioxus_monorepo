@@ -5,13 +5,14 @@ edition = "2024"
 
 [dependencies]
 axum = { workspace = true, optional = true }
-diesel = { workspace = true, optional = true, features = ["postgres", "uuid", "serde_json"] }
+diesel = { workspace = true, optional = true, features = ["postgres", "uuid", "serde_json", "chrono"] }
 diesel-async = { workspace = true, optional = true, features = ["postgres", "bb8"] }
 diesel_migrations = { workspace = true, optional = true, features = ["postgres"] }
 dioxus = { workspace = true, features = ["fullstack"] }
 dirs = { workspace = true, optional = true }
 dotenvy = { workspace = true, optional = true }
 lofty = { workspace = true, optional = true }
+chrono = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tokio = { workspace = true, features = ["fs"], optional = true }

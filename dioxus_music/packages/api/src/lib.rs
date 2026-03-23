@@ -431,3 +431,31 @@ pub async fn get_genres() -> Result<Vec<String>, ServerFnError> {
 
     Ok(genres)
 }
+
+#[server]
+pub async fn get_library_version() -> Result<Option<chrono::DateTime<chrono::Utc>>, ServerFnError> {
+    use diesel::dsl::max;
+    use diesel::prelude::*;
+    use diesel_async::RunQueryDsl;
+    use axum::Extension;
+
+    let Extension(pool): Extension<db::DbPool> =
+        dioxus::fullstack::FullstackContext::extract().await?;
+    let mut conn = pool
+        .get()
+        .await
+        .map_err(|e| server_err(format!("DB pool error: {e}")))?;
+
+    let result: Option<chrono::DateTime<chrono::Utc>> = schema::tracks::table
+        .select(max(schema::tracks::updated_at))
+        .first(&mut conn)
+        .await
+        .map_err(|e| server_err(format!("DB query error: {e}")))?;
+
+    Ok(result)
+}
+
+#[server]
+pub async fn get_health() -> Result<String, ServerFnError> {
+    Ok("ok".to_string())
+}

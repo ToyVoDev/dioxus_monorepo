@@ -29,7 +29,7 @@ inherits = "dev"
 anyhow = "1"
 axum = "0.8"
 axum-extra = "0.9"
-chrono = "0"
+chrono = { version = "0", features = ["serde"] }
 deadpool-diesel = "0"
 diesel = "2"
 diesel-async = "0.5"
