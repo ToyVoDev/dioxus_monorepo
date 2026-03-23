@@ -1,6 +1,6 @@
-use crate::components::Button;
 use crate::sellable::Sellable;
 use dioxus::prelude::*;
+use kinetic_ui::{KButton, KButtonVariant};
 use std::collections::HashMap;
 
 #[derive(Clone, PartialEq, Props)]
@@ -14,12 +14,13 @@ pub struct ComponentProps {
 pub fn SavedRecipes(props: ComponentProps) -> Element {
     rsx! {
         if !props.saved_recipes.is_empty() {
-            div { class: "col-span-full", "Saved Recipes" }
+            div { grid_column: "1 / -1", "Saved Recipes" }
             {props.saved_recipes.iter().map(|(key, recipe)| {
                 let recipe_clone = recipe.clone();
                 rsx! {
-                    Button {
+                    KButton {
                         key: "{key}",
+                        variant: KButtonVariant::Ghost,
                         onclick: move |_| {
                             props.set_working_product.call(recipe_clone.clone());
                         },

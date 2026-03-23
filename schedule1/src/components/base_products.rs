@@ -1,6 +1,6 @@
-use crate::components::Button;
 use crate::sellable::{Effect, Product};
 use dioxus::prelude::*;
+use kinetic_ui::{KButton, KButtonVariant};
 
 #[derive(PartialEq, Clone, Props)]
 pub struct ComponentProps {
@@ -11,12 +11,12 @@ pub struct ComponentProps {
 pub fn BaseProducts(props: ComponentProps) -> Element {
     use Product::*;
     rsx! {
-        div { class: "col-span-full", "Base Product" }
-        Button { onclick: move |_| props.set_working_product.call(Marijuana(Effect::Calming)), "OG Kush" }
-        Button { onclick: move |_| props.set_working_product.call(Marijuana(Effect::Energizing)), "Sour Diesel" }
-        Button { onclick: move |_| props.set_working_product.call(Marijuana(Effect::Refreshing)), "Green Crack" }
-        Button { onclick: move |_| props.set_working_product.call(Marijuana(Effect::Sedating)), "Granddaddy Purple" }
-        Button { onclick: move |_| props.set_working_product.call(Meth), "Meth" }
-        Button { onclick: move |_| props.set_working_product.call(Cocaine), "Cocaine" }
+        div { grid_column: "1 / -1", "Base Product" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Marijuana(Effect::Calming)), "OG Kush" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Marijuana(Effect::Energizing)), "Sour Diesel" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Marijuana(Effect::Refreshing)), "Green Crack" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Marijuana(Effect::Sedating)), "Granddaddy Purple" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Meth), "Meth" }
+        KButton { variant: KButtonVariant::Ghost, onclick: move |_| props.set_working_product.call(Cocaine), "Cocaine" }
     }
 }

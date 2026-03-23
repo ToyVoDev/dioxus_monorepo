@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use kinetic_ui::{Badge, BadgeVariant, KineticTheme, ThemeToggle};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize, Default)]
@@ -43,6 +44,7 @@ fn App() -> Element {
         document::Link { rel: "icon", r#type: "image/png", sizes: "16x16", href: asset!("/assets/favicon-16x16.png") }
         document::Link { rel: "manifest", href: asset!("/assets/site.webmanifest") }
 
+        KineticTheme {
         div {
             width: "100vw",
             height: "100vh",
@@ -52,26 +54,41 @@ fn App() -> Element {
             font_family: "'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
             div {
                 margin: "20px",
-                div { "Modpack info" }
-                div { "Import the appropriate zip file into prism and packwiz will take care of the rest" }
-                div { "Files hosted "
-                    ul {
-                        for zip in info.cloned().unwrap_or_default().zips {
-                            li {
-                                a {
-                                    href: "{zip}",
-                                    "{zip}"
+                div {
+                    display: "flex",
+                    justify_content: "space-between",
+                    align_items: "center",
+                    "Modpack info"
+                    ThemeToggle {}
+                }
+                {
+                    let zips = info.cloned().unwrap_or_default().zips;
+                    if !zips.is_empty() {
+                        rsx! {
+                            div { "Import the appropriate zip file into prism and packwiz will take care of the rest" }
+                            div { "Files hosted "
+                                ul {
+                                    for zip in zips {
+                                        li {
+                                            a {
+                                                href: "{zip}",
+                                                "{zip}"
+                                            }
+                                        }
+                                    }
                                 }
                             }
+                            img {
+                                max_height: "512px",
+                                max_width: "100%",
+                                height: "auto",
+                                src: asset!("/assets/prism-import.png"),
+                                alt: "import prism instance"
+                            }
                         }
+                    } else {
+                        rsx! {}
                     }
-                }
-                img {
-                    max_height: "512px",
-                    max_width: "100%",
-                    height: "auto",
-                    src: asset!("/assets/prism-import.png"),
-                    alt: "import prism instance"
                 }
                 div {
                     "To do this your self, download the packwiz bootstrap jar from "
@@ -79,7 +96,7 @@ fn App() -> Element {
                         href: "https://github.com/packwiz/packwiz-installer-bootstrap/releases",
                         "Github Releases"
                     }
-                    " and place it within the (.)minecraft directory of a newly created prism instance."
+                    " and place it within the minecraft directory of a newly created prism instance."
                 }
                 div {"Go to Edit Instance -> Settings -> Custom commands, then check the Custom Commands box and paste the following command into the pre-launch command field:"}
                 div {
@@ -129,13 +146,7 @@ fn App() -> Element {
                                 align_content: "start",
                                 gap: "4px",
                                 for version in &item.game_versions {
-                                   div {
-                                        background: "grey",
-                                        border_radius: "100px",
-                                        padding: "4px",
-                                        text_wrap: "nowrap",
-                                        "{version}"
-                                   }
+                                    Badge { variant: BadgeVariant::Primary, "{version}" }
                                 }
                             }
                             div {
@@ -144,19 +155,14 @@ fn App() -> Element {
                                 align_content: "start",
                                 gap: "4px",
                                 for loader in &item.loaders {
-                                   div {
-                                        background: "grey",
-                                        border_radius: "100px",
-                                        padding: "4px",
-                                        text_wrap: "nowrap",
-                                        "{loader}"
-                                    }
+                                    Badge { variant: BadgeVariant::Primary, "{loader}" }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
         }
     }
 }

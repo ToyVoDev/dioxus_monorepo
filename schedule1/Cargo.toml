@@ -9,7 +9,8 @@ edition = "2021"
 [dependencies]
 dioxus = { workspace = true, features = [] }
 dioxus-free-icons = { workspace = true, features = ["octicons"] }
-web-sys = { workspace = true, features = ["Document", "HtmlCanvasElement", "CanvasRenderingContext2d"]}
+dioxus-primitives = { workspace = true }
+kinetic_ui = { workspace = true }
 
 [features]
 default = ["web"]

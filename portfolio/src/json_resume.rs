@@ -4,6 +4,7 @@ use serde_json::Value;
 // This refers to the json_resume schema of gitconnected
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Resume {
     pub basics: Basics,
     pub work: Vec<Work>,
@@ -21,7 +22,7 @@ pub struct Resume {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Basics {
     pub name: String,
     pub label: String,
@@ -31,12 +32,12 @@ pub struct Basics {
     pub url: String,
     pub summary: String,
     pub location_as_string: String,
+    pub location: Location,
     pub profiles: Vec<Profile>,
     pub region: String,
     pub username: String,
     pub headline: String,
     pub years_of_experience: u8,
-    // I've never seen this populated so value so I don't get errors
     pub blog: Option<Value>,
     pub karma: i64,
     pub id: String,
@@ -47,6 +48,14 @@ pub struct Basics {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
+pub struct Location {
+    pub city: String,
+    pub region: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Profile {
     pub network: String,
     pub username: String,
@@ -54,7 +63,7 @@ pub struct Profile {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Work {
     pub name: String,
     pub position: String,
@@ -73,7 +82,7 @@ pub struct Work {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Volunteer {
     pub organization: String,
     pub position: String,
@@ -89,7 +98,7 @@ pub struct Volunteer {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Education {
     pub institution: String,
     pub url: String,
@@ -108,7 +117,7 @@ pub struct Education {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Award {
     pub title: String,
     pub date: String,
@@ -118,7 +127,7 @@ pub struct Award {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Certificate {
     pub name: String,
     pub date: String,
@@ -130,7 +139,7 @@ pub struct Certificate {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Publication {
     pub name: String,
     pub publisher: String,
@@ -142,6 +151,7 @@ pub struct Publication {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Skill {
     pub name: String,
     pub level: String,
@@ -152,25 +162,28 @@ pub struct Skill {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Language {
     pub language: String,
     pub fluency: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Interest {
     pub name: String,
     pub keywords: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Reference {
     pub name: String,
     pub reference: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
+#[serde(default, rename_all = "camelCase")]
 pub struct Project {
     pub name: String,
     pub description: String,
@@ -179,7 +192,6 @@ pub struct Project {
     pub start_date: String,
     pub end_date: String,
     pub url: String,
-    // when unset shows up as an array, but when populated is a string
     pub roles: Value,
     pub entity: String,
     #[serde(rename = "type")]
@@ -194,17 +206,20 @@ pub struct Project {
     pub repository_url: String,
     pub start: Date,
     pub end: Date,
-    pub images: Vec<Image>,
-    pub videos: Vec<Video>,
+    // API returns these as maps, not arrays
+    pub images: Value,
+    pub videos: Value,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct ShortDate {
     pub year: Option<i64>,
     pub month: Option<i64>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Date {
     pub year: Option<i64>,
     pub month: Option<i64>,
@@ -212,6 +227,7 @@ pub struct Date {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Video {
     pub url: String,
     pub source: String,
@@ -220,6 +236,7 @@ pub struct Video {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct ImageSource {
     pub url: String,
     pub size: i64,
@@ -228,6 +245,7 @@ pub struct ImageSource {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Resolutions {
     pub micro: ImageSource,
     pub thumbnail: ImageSource,
@@ -236,11 +254,13 @@ pub struct Resolutions {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Image {
     pub resolutions: Resolutions,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
+#[serde(default)]
 pub struct Meta {
     pub note: String,
     pub canonical: String,

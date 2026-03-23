@@ -1,39 +1,39 @@
 use crate::Route;
 use crate::components::UserHeader;
 use dioxus::prelude::*;
+const NAVBAR_CSS: Asset = asset!("/assets/styling/navbar.css");
 
 #[component]
 pub fn Navbar() -> Element {
+    let route: Route = use_route();
     rsx! {
-        div { class: "d-flex",
-            div {
-                class: "sidebar",
-                Link {
-                    to: Route::Me {},
-                    active_class: "active",
-                    "Me"
-                }
-                Link {
-                    to: Route::Work { },
-                    active_class: "active",
-                    "Work"
-                }
-                Link {
-                    to: Route::Projects { },
-                    active_class: "active",
-                    "Projects"
-                }
-                Link {
-                    to: Route::Education { },
-                    active_class: "active",
-                    "Education"
+        document::Link { rel: "stylesheet", href: NAVBAR_CSS }
+        div { class: "layout",
+            nav { class: "sidebar",
+                div { class: "sidebar__nav",
+                    NavLink { to: Route::Me {}, current: route.clone(), "Me" }
+                    NavLink { to: Route::Work {}, current: route.clone(), "Work" }
+                    NavLink { to: Route::Projects {}, current: route.clone(), "Projects" }
+                    NavLink { to: Route::Education {}, current: route.clone(), "Education" }
                 }
             }
             div {
-                class: "p2 flex-grow-1",
+                class: "content",
                 UserHeader { }
                 Outlet::<Route> {}
             }
+        }
+    }
+}
+
+#[component]
+fn NavLink(to: Route, current: Route, children: Element) -> Element {
+    let is_active = current == to;
+    rsx! {
+        Link {
+            to: to,
+            class: if is_active { "nav-link nav-link--active" } else { "nav-link" },
+            {children}
         }
     }
 }

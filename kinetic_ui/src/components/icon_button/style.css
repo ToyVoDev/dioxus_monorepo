@@ -22,3 +22,9 @@
   color: var(--k-primary);
   background: var(--primary-color-6);
 }
+
+.k-icon-button[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

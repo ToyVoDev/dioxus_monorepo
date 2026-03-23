@@ -21,6 +21,7 @@ deadpool-diesel = { workspace = true, features = ["postgres"], optional = true }
 diesel = { workspace = true, features = ["postgres", "chrono", "uuid"], optional = true }
 diesel_migrations = { workspace = true, optional = true }
 dioxus = { workspace = true, features = ["router", "fullstack"] }
+kinetic_ui = { workspace = true }
 dioxus-cli-config = { workspace = true, optional = true }
 dioxus-logger = { workspace = true, optional = true }
 mc-query = { workspace = true, optional = true }

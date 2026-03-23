@@ -66,3 +66,10 @@
 .k-button--destructive:hover {
   filter: brightness(1.1);
 }
+
+/* Disabled */
+.k-button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

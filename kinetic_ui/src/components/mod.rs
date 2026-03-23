@@ -51,4 +51,5 @@ pub mod ktabs;
 pub mod ktooltip;
 pub mod search_input;
 pub mod table;
+pub mod theme_toggle;
 pub mod tree_view;

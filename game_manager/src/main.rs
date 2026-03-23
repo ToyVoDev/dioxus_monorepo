@@ -28,6 +28,7 @@ use {
 };
 use {
     dioxus::prelude::*,
+    kinetic_ui::KineticTheme,
     serde::{Deserialize, Serialize},
 };
 
@@ -237,7 +238,9 @@ pub fn App() -> Element {
     rsx! {
         document::Link { rel: "icon", href: FAVICON }
         document::Link { rel: "stylesheet", href: MAIN_CSS }
-        h1 { "game manager" }
+        KineticTheme {
+            h1 { "game manager" }
+        }
     }
 }
 

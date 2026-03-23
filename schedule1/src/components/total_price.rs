@@ -7,6 +7,6 @@ pub fn TotalPrice(props: ComponentProps) -> Element {
         div {
             "Total Price:"
         }
-        div { class: "justify-self-end", "${props.working_product.price(props.mix_state.clone()):.2}" }
+        div { justify_self: "end", "${props.working_product.price(props.mix_state.clone()):.2}" }
     }
 }

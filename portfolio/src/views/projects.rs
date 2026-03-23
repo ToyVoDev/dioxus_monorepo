@@ -1,5 +1,6 @@
 use crate::MyState;
 use dioxus::prelude::*;
+use kinetic_ui::{KBadge, KBadgeVariant};
 
 #[component]
 pub fn Projects() -> Element {
@@ -38,16 +39,10 @@ pub fn Projects() -> Element {
                         }
                         div { class: "chip-wrapper justify-content-start",
                             for item in project.languages {
-                                div {
-                                    class: "chip",
-                                    "{item}"
-                                }
+                                KBadge { variant: KBadgeVariant::Muted, "{item}" }
                             }
                             for item in project.libraries {
-                                div {
-                                    class: "chip",
-                                    "{item}"
-                                }
+                                KBadge { variant: KBadgeVariant::Muted, "{item}" }
                             }
                         }
                     }

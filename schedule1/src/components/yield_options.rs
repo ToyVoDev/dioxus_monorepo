@@ -1,6 +1,7 @@
-use crate::components::Button;
 use crate::sellable::{MixState, OneTimeIngredient, Sellable};
 use dioxus::prelude::*;
+use dioxus_primitives::checkbox::CheckboxState;
+use kinetic_ui::{Checkbox, KButton, KButtonVariant};
 
 #[derive(PartialEq, Clone, Props)]
 pub struct ComponentProps {
@@ -12,34 +13,37 @@ pub struct ComponentProps {
 
 #[component]
 pub fn YieldOptions(props: ComponentProps) -> Element {
+    let pgr_checked = props
+        .mix_state
+        .ingredients
+        .contains(&OneTimeIngredient::PGR);
     rsx! {
         div {
-            class: "flex justify-between col-span-full",
+            display: "flex", justify_content: "space-between", grid_column: "1 / -1",
             div {
-                class: "flex gap-2",
+                display: "flex", gap: "8px",
                 label {
-                    class: "flex gap-2 whitespace-nowrap items-center justify-between",
+                    display: "flex", gap: "8px", white_space: "nowrap", align_items: "center", justify_content: "space-between",
                     "Use PGR",
-                    input {
-                        r#type: "checkbox",
-                        checked: "{props.mix_state.ingredients.contains(&OneTimeIngredient::PGR)}",
-                        onchange: move |_| {
+                    Checkbox {
+                        checked: if pgr_checked { CheckboxState::Checked } else { CheckboxState::Unchecked },
+                        on_checked_change: move |_: CheckboxState| {
                             props.toggle_ingredient.call(OneTimeIngredient::PGR);
-                        }
+                        },
                     }
                 }
-                Button {
+                KButton {
+                    variant: if !props.mix_state.use_pot { KButtonVariant::Primary } else { KButtonVariant::Ghost },
                     onclick: move |_| {
                         props.set_use_pot.call(false);
                     },
-                    active: !props.mix_state.use_pot,
                     "Tent"
                 }
-                Button {
+                KButton {
+                    variant: if props.mix_state.use_pot { KButtonVariant::Primary } else { KButtonVariant::Ghost },
                     onclick: move |_| {
                         props.set_use_pot.call(true);
                     },
-                    active: props.mix_state.use_pot,
                     "Pot"
                 }
             }

@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use kinetic_ui::KineticTheme;
 
 use components::Navbar;
 use views::{Education, Me, Projects, Work};
@@ -33,7 +34,7 @@ fn main() {
 fn App() -> Element {
     // Build cool things ✌️
     let resume = use_resource(|| async move {
-        reqwest::get("https://gitconnected.com/v1/portfolio/ToyVo")
+        reqwest::get("https://gitconnected.com/api/v1/portfolio/toyvo")
             .await
             .unwrap()
             .json::<Resume>()
@@ -49,7 +50,9 @@ fn App() -> Element {
         document::Link { rel: "stylesheet", href: MAIN_CSS }
 
 
-        Router::<Route> {}
+        KineticTheme {
+            Router::<Route> {}
+        }
     }
 }
 

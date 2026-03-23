@@ -1,4 +1,12 @@
-use {chrono::prelude::*, dioxus::prelude::*, std::time::Duration};
+use {
+    chrono::prelude::*,
+    dioxus::prelude::*,
+    kinetic_ui::{
+        KButton, KButtonVariant, KInput, KSelect, KSelectList, KSelectOption, KSelectTrigger,
+        KSelectValue,
+    },
+    std::time::Duration,
+};
 
 const VALID_SERVICES: [&str; 3] = [
     "arion-minecraft-modded.service",
@@ -9,57 +17,55 @@ const VALID_SERVICES: [&str; 3] = [
 #[component]
 pub fn Logs() -> Element {
     let mut logs = use_signal(String::new);
-    let unit = use_signal(|| String::from("arion-minecraft-modded.service"));
+    let mut unit = use_signal(|| String::from("arion-minecraft-modded.service"));
+    let unit_value: Memo<Option<Option<String>>> = use_memo(move || Some(Some(unit())));
     let now = Utc::now();
     let since = now - Duration::from_secs(3600);
     let until = now;
     rsx! {
         form {
-            label {
-                r#for: "unit-select",
-                "Unit"
-            }
-            select {
-                id: "unit-select",
-                name: "unit",
-                for service in VALID_SERVICES {
-                    option {
-                        value: service,
-                        selected: service == unit.read().as_str(),
-                        {service}
+            label { "Unit" }
+            KSelect::<String> {
+                value: unit_value,
+                on_value_change: move |val: Option<String>| {
+                    if let Some(v) = val {
+                        unit.set(v);
+                    }
+                },
+                KSelectTrigger {
+                    KSelectValue {}
+                }
+                KSelectList {
+                    for (i, service) in VALID_SERVICES.iter().enumerate() {
+                        KSelectOption::<String> {
+                            value: service.to_string(),
+                            index: i,
+                            text_value: service.to_string(),
+                            "{service}"
+                        }
                     }
                 }
             }
-            label {
-                r#for: "since-input",
-                "Since"
-            }
-            input {
-                id: "since-input",
-                name: "since",
-                r#type: "datetime-local",
+            label { "Since" }
+            KInput {
+                r#type: "datetime-local".to_string(),
                 value: since.format("%Y-%m-%dT%H:%M:%S").to_string(),
             }
-            label {
-                r#for: "until-input",
-                "Until"
-            }
-            input {
-                id: "until-input",
-                name: "until",
-                r#type: "datetime-local",
+            label { "Until" }
+            KInput {
+                r#type: "datetime-local".to_string(),
                 value: until.format("%Y-%m-%dT%H:%M:%S").to_string(),
             }
             small {
                 "Note: time shown in UTC"
             }
-            button {
+            KButton {
+                variant: KButtonVariant::Primary,
                 onclick: move |_| async move {
                     if let Ok(new_logs) = fetch_logs(unit.to_string(), since.to_rfc3339(), until.to_rfc3339()).await {
                         logs.set(new_logs);
                     }
                 },
-                r#type: "button",
                 "Fetch Logs"
             }
         }

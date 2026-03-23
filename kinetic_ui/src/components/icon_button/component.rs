@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 pub fn IconButton(
     onclick: Option<EventHandler<MouseEvent>>,
     #[props(default)] active: Option<bool>,
+    #[props(default)] disabled: bool,
     children: Element,
 ) -> Element {
     let active_str = active.unwrap_or(false).to_string();
@@ -14,6 +15,8 @@ pub fn IconButton(
         button {
             class: "k-icon-button",
             "data-active": "{active_str}",
+            "data-disabled": "{disabled}",
+            disabled: disabled,
             onclick: move |event| {
                 if let Some(f) = &onclick {
                     f.call(event);

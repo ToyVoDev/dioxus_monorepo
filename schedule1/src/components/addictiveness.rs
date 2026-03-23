@@ -7,6 +7,6 @@ pub fn Addictiveness(props: ComponentProps) -> Element {
         div {
             "Addictiveness"
         }
-        div { class: "justify-self-end", "{props.working_product.addictiveness():.0}%" }
+        div { justify_self: "end", "{props.working_product.addictiveness():.0}%" }
     }
 }

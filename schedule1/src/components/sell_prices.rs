@@ -10,20 +10,20 @@ pub struct ComponentProps {
 pub fn SellPrices(props: ComponentProps) -> Element {
     rsx! {
         div {
-            class: "col-span-full",
+            grid_column: "1 / -1",
             "Sell Price:"
         }
         div {
             "Baggie"
         }
-        div { class: "justify-self-end", "${props.working_product.sell_price():.0}" }
+        div { justify_self: "end", "${props.working_product.sell_price():.0}" }
         div {
             "Jar"
         }
-        div { class: "justify-self-end", "${props.working_product.sell_price()*5.:.0}" }
+        div { justify_self: "end", "${props.working_product.sell_price()*5.:.0}" }
         div {
             "Brick"
         }
-        div { class: "justify-self-end", "${props.working_product.sell_price()*20.:.0}" }
+        div { justify_self: "end", "${props.working_product.sell_price()*20.:.0}" }
     }
 }

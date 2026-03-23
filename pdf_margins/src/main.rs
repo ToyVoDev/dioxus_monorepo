@@ -5,16 +5,9 @@ use dioxus::prelude::*;
 use dioxus_primitives::checkbox::CheckboxState;
 use js_sys::{Array, Uint8Array};
 use kinetic_ui::{
-    Checkbox, IconButton, KBadge, KBadgeVariant, KButton, KButtonVariant, KInput, KSelect,
-    KSelectList, KSelectOption, KSelectTrigger, KSelectValue, KineticTheme,
+    Checkbox, KBadge, KBadgeVariant, KButton, KButtonVariant, KInput, KSelect, KSelectList,
+    KSelectOption, KSelectTrigger, KSelectValue, KineticTheme, ThemeToggle,
 };
-
-#[derive(Clone, Copy, PartialEq)]
-enum ThemeMode {
-    System,
-    Light,
-    Dark,
-}
 use web_sys::{Blob, BlobPropertyBag, Url};
 
 fn main() {
@@ -55,26 +48,8 @@ fn App() -> Element {
     let mut nudge_border_x: Signal<f64> = use_signal(|| 7.0);
     let mut nudge_border_y: Signal<f64> = use_signal(|| 7.0);
     let mut paper_size: Signal<PaperSize> = use_signal(|| PaperSize::Letter);
-    let mut theme_mode = use_signal(|| ThemeMode::System);
     let paper_size_value: Memo<Option<Option<PaperSize>>> =
         use_memo(move || Some(Some(paper_size())));
-
-    // Apply theme override on :root via JS (CSS space toggle must be on :root)
-    use_effect(move || {
-        let mode = theme_mode();
-        let js = match mode {
-            ThemeMode::System => {
-                "document.documentElement.style.removeProperty('--dark'); document.documentElement.style.removeProperty('--light');"
-            }
-            ThemeMode::Light => {
-                "document.documentElement.style.setProperty('--dark', ' '); document.documentElement.style.setProperty('--light', 'initial');"
-            }
-            ThemeMode::Dark => {
-                "document.documentElement.style.setProperty('--dark', 'initial'); document.documentElement.style.setProperty('--light', ' ');"
-            }
-        };
-        document::eval(js);
-    });
 
     let on_file_change = move |evt: Event<FormData>| {
         spawn(async move {
@@ -166,35 +141,7 @@ fn App() -> Element {
             div { class: "app-shell",
                 div { class: "title-row",
                     h1 { "PDF Margins" }
-                    IconButton {
-                        onclick: move |_| {
-                            let next = match theme_mode() {
-                                ThemeMode::System => ThemeMode::Light,
-                                ThemeMode::Light => ThemeMode::Dark,
-                                ThemeMode::Dark => ThemeMode::System,
-                            };
-                            theme_mode.set(next);
-                        },
-                        match theme_mode() {
-                            ThemeMode::System => rsx! {
-                                svg { xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2",
-                                    circle { cx: "12", cy: "12", r: "4" }
-                                    path { d: "M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" }
-                                }
-                            },
-                            ThemeMode::Light => rsx! {
-                                svg { xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2",
-                                    circle { cx: "12", cy: "12", r: "5" }
-                                    path { d: "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" }
-                                }
-                            },
-                            ThemeMode::Dark => rsx! {
-                                svg { xmlns: "http://www.w3.org/2000/svg", width: "18", height: "18", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2",
-                                    path { d: "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" }
-                                }
-                            },
-                        }
-                    }
+                    ThemeToggle {}
                 }
 
                 div { class: "controls",

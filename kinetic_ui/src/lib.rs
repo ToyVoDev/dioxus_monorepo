@@ -10,7 +10,7 @@ pub use components::{
     kaccordion::*, kbadge::*, kbutton::*, kinput::*, kselect::*, kseparator::*, ktabs::*,
     ktooltip::*, label::*, menubar::*, navbar::*, pagination::*, popover::*, progress::*,
     radio_group::*, scroll_area::*, search_input::*, select::*, separator::*, sheet::*, sidebar::*,
-    skeleton::*, slider::*, switch::*, table::*, tabs::*, textarea::*, toast::*, toggle::*,
-    toggle_group::*, toolbar::*, tooltip::*, tree_view::*, virtual_list::*,
+    skeleton::*, slider::*, switch::*, table::*, tabs::*, textarea::*, theme_toggle::*, toast::*,
+    toggle::*, toggle_group::*, toolbar::*, tooltip::*, tree_view::*, virtual_list::*,
 };
 pub use theme::KineticTheme;

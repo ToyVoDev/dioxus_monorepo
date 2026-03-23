@@ -17,6 +17,7 @@ dioxus-logger = { workspace = true, optional = true }
 jsonwebtoken = { workspace = true, features = ["aws_lc_rs"], optional = true }
 mc-query = { workspace = true, optional = true }
 mime = { workspace = true, optional = true }
+kinetic_ui = { workspace = true }
 oxford_join = { workspace = true }
 rand = { workspace = true, optional = true }
 reqwest = { workspace = true, features = ["json"] }

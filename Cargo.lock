@@ -2178,6 +2178,7 @@ dependencies = [
  "dioxus",
  "dioxus-cli-config",
  "dioxus-logger",
+ "kinetic_ui",
  "mc-query",
  "mime",
  "poise",
@@ -2619,6 +2620,7 @@ dependencies = [
  "dioxus-cli-config",
  "dioxus-logger",
  "jsonwebtoken",
+ "kinetic_ui",
  "mc-query",
  "mime",
  "oxford_join",
@@ -4166,6 +4168,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "dioxus",
+ "kinetic_ui",
  "regex",
  "reqwest 0.13.2",
  "serde",
@@ -4989,6 +4992,7 @@ name = "portfolio"
 version = "0.1.0"
 dependencies = [
  "dioxus",
+ "kinetic_ui",
  "reqwest 0.13.2",
  "serde",
  "serde_json",
@@ -5861,7 +5865,8 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus-free-icons",
- "web-sys",
+ "dioxus-primitives",
+ "kinetic_ui",
 ]
 
 [[package]]
