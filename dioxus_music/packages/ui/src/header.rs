@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use kinetic_ui::{IconButton, KSearchInput};
+use kinetic_ui::{IconButton, SearchInput};
 
 const HEADER_CSS: Asset = asset!("/assets/styling/header.css");
 const SETTINGS_CSS: Asset = asset!("/assets/styling/settings-dropdown.css");
@@ -15,7 +15,7 @@ pub fn Header() -> Element {
             span { class: "header__brand", {env!("CARGO_PKG_NAME")} }
             div { class: "header__spacer" }
             div { class: "header__actions",
-                KSearchInput { placeholder: "Search...".to_string() }
+                SearchInput { placeholder: "Search...".to_string() }
                 div { class: "header__sync-dot", title: "Synced" }
                 div { class: "settings-dropdown",
                     IconButton {

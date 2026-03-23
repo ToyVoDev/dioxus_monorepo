@@ -8,6 +8,7 @@ pub enum BadgeVariant {
     Secondary,
     Destructive,
     Outline,
+    Error,
 }
 
 impl BadgeVariant {
@@ -17,6 +18,7 @@ impl BadgeVariant {
             BadgeVariant::Secondary => "secondary",
             BadgeVariant::Destructive => "destructive",
             BadgeVariant::Outline => "outline",
+            BadgeVariant::Error => "error",
         }
     }
 }

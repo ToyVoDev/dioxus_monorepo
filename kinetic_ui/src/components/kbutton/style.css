@@ -1,0 +1,68 @@
+.k-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--k-radius-default);
+  font-family: var(--k-font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    filter 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+  line-height: 1.4;
+  user-select: none;
+}
+
+.k-button:active {
+  filter: brightness(0.95);
+}
+
+/* Primary */
+.k-button--primary {
+  background: linear-gradient(
+    135deg,
+    var(--k-primary),
+    var(--k-primary-container)
+  );
+  color: var(--k-on-primary-container);
+}
+
+.k-button--primary:hover {
+  filter: brightness(1.1);
+}
+
+/* Secondary */
+.k-button--secondary {
+  background: var(--primary-color-7);
+  color: var(--secondary-color-3);
+  border: 1px solid rgba(91, 64, 62, 0.2);
+}
+
+.k-button--secondary:hover {
+  filter: brightness(1.1);
+}
+
+/* Ghost */
+.k-button--ghost {
+  background: transparent;
+  color: var(--secondary-color-3);
+}
+
+.k-button--ghost:hover {
+  background: var(--primary-color-6);
+}
+
+/* Destructive */
+.k-button--destructive {
+  background: linear-gradient(135deg, var(--k-error), var(--k-error-container));
+  color: var(--k-on-error);
+}
+
+.k-button--destructive:hover {
+  filter: brightness(1.1);
+}

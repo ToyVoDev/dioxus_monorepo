@@ -1,13 +1,13 @@
 use crate::state::{AppState, SideNavItem};
 use dioxus::prelude::*;
-use kinetic_ui::{Badge, BadgeVariant, KTreeBranch, KTreeLeaf};
+use kinetic_ui::{KBadge, KBadgeVariant, TreeBranch, TreeLeaf};
 
-const fn method_badge_variant(method: &str) -> BadgeVariant {
+const fn method_badge_variant(method: &str) -> KBadgeVariant {
     match method.as_bytes() {
-        b"GET" => BadgeVariant::Secondary,
-        b"POST" => BadgeVariant::Primary,
-        b"PUT" | b"PATCH" | b"DELETE" => BadgeVariant::Tertiary,
-        _ => BadgeVariant::Muted,
+        b"GET" => KBadgeVariant::Secondary,
+        b"POST" => KBadgeVariant::Primary,
+        b"PUT" | b"PATCH" | b"DELETE" => KBadgeVariant::Tertiary,
+        _ => KBadgeVariant::Muted,
     }
 }
 
@@ -42,7 +42,7 @@ pub fn Explorer() -> Element {
                 div { class: "explorer__content",
                     // Collections with their requests
                     for collection in collections() {
-                        KTreeBranch {
+                        TreeBranch {
                             initially_expanded: true,
                             label: rsx! { "{collection.name}" },
                             {
@@ -58,12 +58,12 @@ pub fn Explorer() -> Element {
                                             let name = request.name.clone();
                                             let url = request.url;
                                             rsx! {
-                                                KTreeLeaf {
+                                                TreeLeaf {
                                                     selected: selected_request() == Some(req_id),
                                                     onclick: move |_| selected_request.set(Some(req_id)),
                                                     div { class: "explorer__request-item",
                                                         div { style: "display: flex; align-items: center; gap: 6px;",
-                                                            Badge { variant: variant, "{method}" }
+                                                            KBadge { variant: variant, "{method}" }
                                                             span { class: "explorer__request-name", "{name}" }
                                                         }
                                                         span { class: "explorer__request-url", "{url}" }
@@ -87,7 +87,7 @@ pub fn Explorer() -> Element {
                             rsx! {}
                         } else {
                             rsx! {
-                                KTreeBranch {
+                                TreeBranch {
                                     initially_expanded: true,
                                     label: rsx! { "Drafts" },
                                     for request in draft_requests {
@@ -98,12 +98,12 @@ pub fn Explorer() -> Element {
                                             let name = request.name.clone();
                                             let url = request.url;
                                             rsx! {
-                                                KTreeLeaf {
+                                                TreeLeaf {
                                                     selected: selected_request() == Some(req_id),
                                                     onclick: move |_| selected_request.set(Some(req_id)),
                                                     div { class: "explorer__request-item",
                                                         div { style: "display: flex; align-items: center; gap: 6px;",
-                                                            Badge { variant: variant, "{method}" }
+                                                            KBadge { variant: variant, "{method}" }
                                                             span { class: "explorer__request-name", "{name}" }
                                                         }
                                                         span { class: "explorer__request-url", "{url}" }

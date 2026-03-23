@@ -1,6 +1,6 @@
 use crate::Route;
 use dioxus::prelude::*;
-use dioxus_music_ui::{group_tracks_into_albums, TrackList};
+use dioxus_music_ui::{TrackList, group_tracks_into_albums};
 
 #[component]
 pub fn Library() -> Element {

@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::player_state::{use_player_state, RepeatMode};
+use dioxus_music_ui::player_state::{RepeatMode, use_player_state};
 
 const NOW_PLAYING_CSS: Asset = asset!("/assets/now_playing.css");
 

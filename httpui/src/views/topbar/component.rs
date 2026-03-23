@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use dioxus_free_icons::Icon;
 use dioxus_free_icons::icons::md_action_icons::{MdAccountCircle, MdSettings};
 use kinetic_ui::{
-    IconButton, KSearchInput, KSelect, KSelectList, KSelectOption, KSelectTrigger, KSelectValue,
+    IconButton, KSelect, KSelectList, KSelectOption, KSelectTrigger, KSelectValue, SearchInput,
 };
 use strum::IntoEnumIterator;
 
@@ -53,7 +53,7 @@ pub fn TopBar() -> Element {
             // Actions
             div { class: "topbar__actions",
                 // Search
-                KSearchInput { placeholder: "Search...".to_string() }
+                SearchInput { placeholder: "Search...".to_string() }
 
                 // Environment selector
                 KSelect::<String> {

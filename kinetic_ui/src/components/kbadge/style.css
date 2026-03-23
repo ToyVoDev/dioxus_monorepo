@@ -1,0 +1,31 @@
+.k-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--k-radius-full);
+  font-family: var(--k-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.k-badge[data-variant="primary"] {
+  color: var(--k-primary);
+}
+
+.k-badge[data-variant="secondary"] {
+  color: var(--k-secondary);
+}
+
+.k-badge[data-variant="tertiary"] {
+  color: var(--k-tertiary);
+}
+
+.k-badge[data-variant="error"] {
+  color: var(--k-error);
+}
+
+.k-badge[data-variant="muted"] {
+  color: var(--secondary-color-4);
+}

@@ -63,3 +63,8 @@
   padding: var(--k-space-4);
   text-align: center;
 }
+
+.explorer button {
+  z-index: 101;
+  position: relative;
+}

@@ -39,3 +39,16 @@ pub mod toggle_group;
 pub mod toolbar;
 pub mod tooltip;
 pub mod virtual_list;
+
+pub mod icon_button;
+pub mod kaccordion;
+pub mod kbadge;
+pub mod kbutton;
+pub mod kinput;
+pub mod kselect;
+pub mod kseparator;
+pub mod ktabs;
+pub mod ktooltip;
+pub mod search_input;
+pub mod table;
+pub mod tree_view;

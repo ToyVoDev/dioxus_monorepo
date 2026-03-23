@@ -3,6 +3,7 @@
 ## httpui
 
 ### Core Features
+
 - [ ] Request persistence (save/load from disk — SQLite or JSON files)
 - [ ] Request body editor (raw text, JSON, form-data, XML, binary)
 - [ ] Request headers editor (functional key-value editing with common headers)
@@ -11,6 +12,7 @@
 - [ ] Import/export (Postman collections, cURL commands, OpenAPI)
 
 ### UI Features
+
 - [ ] Search functionality (TopBar search input is visual placeholder)
 - [ ] Request/response history tracking
 - [ ] Explorer collapse/toggle
@@ -19,6 +21,7 @@
 - [ ] Response timing waterfall visualization
 
 ### Placeholder Views
+
 - [ ] History explorer panel (shows "Coming soon")
 - [ ] APIs explorer panel (shows "Coming soon")
 - [ ] Mock Servers explorer panel (shows "Coming soon")
@@ -27,6 +30,7 @@
 - [ ] Settings tab in request editor (shows placeholder)
 
 ### Advanced
+
 - [ ] Request scripting (pre-request/post-response)
 - [ ] WebSocket support
 - [ ] File upload
@@ -38,6 +42,7 @@
 ## dioxus_music
 
 ### Playback
+
 - [ ] Seekable progress bar (JS interop with audio `currentTime`)
 - [ ] Volume control (JS interop with audio `volume`)
 - [ ] Album cover art (currently character placeholder — need file path or embedded art)
@@ -45,6 +50,7 @@
 - [ ] Visualizer bars / audio waveform
 
 ### Library
+
 - [ ] Artist detail view (Artists route shows "Coming soon")
 - [ ] Album entity in database (currently derived client-side from track metadata)
 - [ ] Album cover art extraction from audio files (lofty supports embedded art)
@@ -53,16 +59,19 @@
 - [ ] Popularity/play count tracking
 
 ### Metadata
+
 - [ ] Real codec/bitrate/source in Now Playing (currently hardcoded "FLAC" / "— kbps" / "Local")
 - [ ] Track metadata editing
 
 ### Desktop as Pure Client (DONE — uses `set_server_url`)
+
 - [x] Desktop uses `dioxus::fullstack::set_server_url()` to point server function calls at the remote web server
 - [x] No embedded Axum server, no DB pool, no migrations
 - [x] `SERVER_URL` env var configures the server (defaults to `http://localhost:8080`)
 - [ ] Settings UI for server URL (currently env var only)
 
 ### Offline Sync (architecture designed, not implemented)
+
 - [ ] Server health endpoint + incremental sync
 - [ ] Desktop connectivity detection + download manager
 - [ ] Cache management with LRU eviction
@@ -73,11 +82,13 @@
 - [ ] Transcoding settings
 
 ### Mobile
+
 - [ ] Mobile home view (shows placeholder)
 - [ ] Mobile Now Playing (swipe-up from compact PlayerBar)
 - [ ] Mobile-specific views for Library/Albums/Playlists
 
 ### Platform
+
 - [ ] Android Auto (MediaBrowserService + MediaSession)
 - [ ] iOS CarPlay (Core Data + AVQueuePlayer)
 

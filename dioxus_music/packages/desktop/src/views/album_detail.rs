@@ -1,7 +1,7 @@
 use crate::Route;
 use dioxus::prelude::*;
 use dioxus_music_ui::TrackList;
-use kinetic_ui::{Badge, BadgeVariant, Button, ButtonVariant, IconButton};
+use kinetic_ui::{IconButton, KBadge, KBadgeVariant, KButton, KButtonVariant};
 
 fn format_duration_minutes(total_secs: i32) -> String {
     let minutes = total_secs / 60;
@@ -70,11 +70,11 @@ pub fn AlbumDetail(name: String) -> Element {
                                     div {
                                         style: "display: flex; align-items: center; gap: var(--k-space-2); color: var(--secondary-color-4);",
                                         span { "{artist}" }
-                                        Badge { variant: BadgeVariant::Muted, "{genre}" }
+                                        KBadge { variant: KBadgeVariant::Muted, "{genre}" }
                                     }
                                     div {
                                         style: "display: flex; gap: var(--k-space-2); margin-top: var(--k-space-2);",
-                                        Button { variant: ButtonVariant::Primary, "Download Album" }
+                                        KButton { variant: KButtonVariant::Primary, "Download Album" }
                                         IconButton {
                                             svg { width: "18", height: "18", view_box: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2",
                                                 path { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }

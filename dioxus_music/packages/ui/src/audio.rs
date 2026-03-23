@@ -1,5 +1,5 @@
-use crate::player_state::{use_player_state, RepeatMode};
 use crate::ServerConfig;
+use crate::player_state::{RepeatMode, use_player_state};
 use dioxus::prelude::*;
 
 pub fn render_audio_element() -> Element {

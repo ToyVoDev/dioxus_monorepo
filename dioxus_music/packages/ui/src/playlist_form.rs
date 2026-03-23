@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 use dioxus_music_api::models::SmartPlaylistRules;
-use kinetic_ui::{Button, ButtonVariant, Input};
+use kinetic_ui::{KButton, KButtonVariant, KInput};
 
 const PLAYLIST_FORM_CSS: Asset = asset!("/assets/styling/playlist-form.css");
 
@@ -81,7 +81,7 @@ pub fn PlaylistFormModal(
 
                 div { class: "playlist-form-card__field",
                     label { "Name" }
-                    Input {
+                    KInput {
                         r#type: "text",
                         value: "{name}",
                         placeholder: "Playlist name",
@@ -150,13 +150,13 @@ pub fn PlaylistFormModal(
                 }
 
                 div { class: "playlist-form-card__actions",
-                    Button {
-                        variant: ButtonVariant::Ghost,
+                    KButton {
+                        variant: KButtonVariant::Ghost,
                         onclick: move |_| on_cancel.call(()),
                         "Cancel"
                     }
-                    Button {
-                        variant: ButtonVariant::Primary,
+                    KButton {
+                        variant: KButtonVariant::Primary,
                         onclick: move |_| {
                             let rules = if is_smart {
                                 Some(SmartPlaylistRules {

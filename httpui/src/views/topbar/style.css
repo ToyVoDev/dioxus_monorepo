@@ -65,6 +65,7 @@
 .topbar button,
 .topbar input {
   z-index: 101;
+  position: relative;
 }
 
 /* Environment selector in topbar: align dropdown to right edge */

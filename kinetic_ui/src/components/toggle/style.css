@@ -15,7 +15,8 @@
   outline: none;
 }
 
-.toggle:hover, .toggle:focus-visible {
+.toggle:hover,
+.toggle:focus-visible {
   background-color: var(--primary-color-4);
   cursor: pointer;
 }

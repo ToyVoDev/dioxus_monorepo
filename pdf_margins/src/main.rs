@@ -2,10 +2,10 @@ mod center_pdf;
 
 use center_pdf::{CenterOptions, PaperSize};
 use dioxus::prelude::*;
-use js_sys::{Array, Uint8Array};
 use dioxus_primitives::checkbox::CheckboxState;
+use js_sys::{Array, Uint8Array};
 use kinetic_ui::{
-    Badge, BadgeVariant, Button, ButtonVariant, Checkbox, IconButton, Input, KSelect,
+    Checkbox, IconButton, KBadge, KBadgeVariant, KButton, KButtonVariant, KInput, KSelect,
     KSelectList, KSelectOption, KSelectTrigger, KSelectValue, KineticTheme,
 };
 
@@ -199,8 +199,8 @@ fn App() -> Element {
 
                 div { class: "controls",
                     // File upload
-                    Button {
-                        variant: ButtonVariant::Primary,
+                    KButton {
+                        variant: KButtonVariant::Primary,
                         onclick: move |_| {
                             document::eval(r#"document.getElementById('pdf-file-input').click()"#);
                         },
@@ -239,7 +239,7 @@ fn App() -> Element {
                     // Nudge X
                     label {
                         "Nudge X"
-                        Input {
+                        KInput {
                             r#type: "number".to_string(),
                             value: format!("{}", nudge_x()),
                             oninput: move |evt: FormEvent| {
@@ -253,7 +253,7 @@ fn App() -> Element {
                     // Nudge Y
                     label {
                         "Nudge Y"
-                        Input {
+                        KInput {
                             r#type: "number".to_string(),
                             value: format!("{}", nudge_y()),
                             oninput: move |evt: FormEvent| {
@@ -267,7 +267,7 @@ fn App() -> Element {
                     // Border X
                     label {
                         "Border X"
-                        Input {
+                        KInput {
                             r#type: "number".to_string(),
                             value: format!("{}", nudge_border_x()),
                             oninput: move |evt: FormEvent| {
@@ -281,7 +281,7 @@ fn App() -> Element {
                     // Border Y
                     label {
                         "Border Y"
-                        Input {
+                        KInput {
                             r#type: "number".to_string(),
                             value: format!("{}", nudge_border_y()),
                             oninput: move |evt: FormEvent| {
@@ -321,7 +321,7 @@ fn App() -> Element {
 
                 // Error display
                 if let Some(ref err) = *error_msg.read() {
-                    Badge { variant: BadgeVariant::Error, "{err}" }
+                    KBadge { variant: KBadgeVariant::Error, "{err}" }
                 }
 
                 // Preview area

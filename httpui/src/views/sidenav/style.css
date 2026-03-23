@@ -100,4 +100,5 @@
 
 .sidenav button {
   z-index: 101;
+  position: relative;
 }

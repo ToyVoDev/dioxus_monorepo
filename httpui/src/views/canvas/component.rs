@@ -2,9 +2,9 @@ use crate::state::{AppState, EditorTab, HttpResponse, KeyValue};
 use dioxus::prelude::*;
 use dioxus_primitives::tabs;
 use kinetic_ui::{
-    Badge, BadgeVariant, Button, ButtonVariant, IconButton, Input, KSelect, KSelectList,
-    KSelectOption, KSelectTrigger, KSelectValue, KTable, KTableAddRow, KTableCell, KTableHeader,
-    KTableInput, KTableRow,
+    IconButton, KBadge, KBadgeVariant, KButton, KButtonVariant, KInput, KSelect, KSelectList,
+    KSelectOption, KSelectTrigger, KSelectValue, Table, TableAddRow, TableCell, TableHeader,
+    TableInput, TableRow,
 };
 use strum::IntoEnumIterator;
 
@@ -45,12 +45,12 @@ fn format_bytes(bytes: u64) -> String {
     }
 }
 
-const fn status_badge_variant(status: u16) -> BadgeVariant {
+const fn status_badge_variant(status: u16) -> KBadgeVariant {
     match status {
-        200..=299 => BadgeVariant::Secondary,
-        300..=399 => BadgeVariant::Tertiary,
-        400..=499 => BadgeVariant::Primary,
-        _ => BadgeVariant::Error,
+        200..=299 => KBadgeVariant::Secondary,
+        300..=399 => KBadgeVariant::Tertiary,
+        400..=499 => KBadgeVariant::Primary,
+        _ => KBadgeVariant::Error,
     }
 }
 
@@ -82,7 +82,7 @@ pub fn Canvas() -> Element {
     rsx! {
         document::Link { rel: "stylesheet", href: asset!("./style.css") }
         // Load tabs CSS — canvas uses dioxus_primitives::tabs directly with k-tabs classes
-        kinetic_ui::TabsStylesheet {}
+        kinetic_ui::KTabsStylesheet {}
 
         div { class: "canvas",
             if let Some(req) = current_request() {
@@ -121,7 +121,7 @@ pub fn Canvas() -> Element {
                         }
                     }
                     div { class: "canvas__url-input",
-                        Input {
+                        KInput {
                             monospace: true,
                             value: req.url.clone(),
                             placeholder: "Enter URL...".to_string(),
@@ -138,8 +138,8 @@ pub fn Canvas() -> Element {
                             },
                         }
                     }
-                    Button {
-                        variant: ButtonVariant::Primary,
+                    KButton {
+                        variant: KButtonVariant::Primary,
                         onclick: {
                             let req_method = req.method.clone();
                             let req_url = req.url.clone();
@@ -191,7 +191,7 @@ pub fn Canvas() -> Element {
                         span { class: "canvas__response-label", "Response" }
                         if let Some(resp) = app_state.http_response.read().as_ref() {
                             div { class: "canvas__response-meta",
-                                Badge {
+                                KBadge {
                                     variant: status_badge_variant(resp.status),
                                     "{resp.status} {resp.status_text}"
                                 }
@@ -328,15 +328,15 @@ fn render_kv_table(
     kind: KvKind,
 ) -> Element {
     rsx! {
-        KTable {
-            KTableHeader { columns: vec!["KEY".to_string(), "VALUE".to_string(), "DESCRIPTION".to_string(), String::new()] }
+        Table {
+            TableHeader { columns: vec!["KEY".to_string(), "VALUE".to_string(), "DESCRIPTION".to_string(), String::new()] }
             tbody {
                 for item in items.iter() {
                     {render_kv_row(app_state, request_id, item, kind)}
                 }
             }
         }
-        KTableAddRow {
+        TableAddRow {
             onclick: move |_| {
                 app_state.requests.with_mut(|reqs| {
                     if let Some(req) = reqs.iter_mut().find(|r| r.id == request_id) {
@@ -371,9 +371,9 @@ fn render_kv_row(
     let item_id = item.id;
 
     rsx! {
-        KTableRow {
-            KTableCell {
-                KTableInput {
+        TableRow {
+            TableCell {
+                TableInput {
                     value: item.key.clone(),
                     placeholder: Some("Key".to_string()),
                     oninput: move |e: FormEvent| {
@@ -392,8 +392,8 @@ fn render_kv_row(
                     },
                 }
             }
-            KTableCell {
-                KTableInput {
+            TableCell {
+                TableInput {
                     value: item.value.clone(),
                     placeholder: Some("Value".to_string()),
                     oninput: move |e: FormEvent| {
@@ -412,8 +412,8 @@ fn render_kv_row(
                     },
                 }
             }
-            KTableCell {
-                KTableInput {
+            TableCell {
+                TableInput {
                     value: item.description.clone(),
                     placeholder: Some("Description".to_string()),
                     oninput: move |e: FormEvent| {
@@ -432,7 +432,7 @@ fn render_kv_row(
                     },
                 }
             }
-            KTableCell {
+            TableCell {
                 IconButton {
                     onclick: move |_| {
                         app_state.requests.with_mut(|reqs| {

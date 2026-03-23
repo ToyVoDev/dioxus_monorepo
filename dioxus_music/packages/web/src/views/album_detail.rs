@@ -1,7 +1,7 @@
 use crate::Route;
 use dioxus::prelude::*;
 use dioxus_music_ui::TrackList;
-use kinetic_ui::{Badge, BadgeVariant, Button, ButtonVariant, IconButton};
+use kinetic_ui::{IconButton, KBadge, KBadgeVariant, KButton, KButtonVariant};
 
 const ALBUM_DETAIL_CSS: Asset = asset!("/assets/album_detail.css");
 
@@ -66,11 +66,11 @@ pub fn AlbumDetail(name: String) -> Element {
                                 div { class: "album-detail__artist-row",
                                     span { "{artist}" }
                                     if !genre.is_empty() {
-                                        Badge { variant: BadgeVariant::Secondary, "{genre}" }
+                                        KBadge { variant: KBadgeVariant::Secondary, "{genre}" }
                                     }
                                 }
                                 div { class: "album-detail__actions",
-                                    Button { variant: ButtonVariant::Primary, "Download Album" }
+                                    KButton { variant: KButtonVariant::Primary, "Download Album" }
                                     IconButton { "\u{2661}" }
                                 }
                             }

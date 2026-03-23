@@ -1,0 +1,16 @@
+.k-separator {
+  background: rgba(91, 64, 62, 0.1);
+  border: none;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.k-separator[data-orientation="horizontal"] {
+  height: 1px;
+  width: 100%;
+}
+
+.k-separator[data-orientation="vertical"] {
+  width: 1px;
+  height: 100%;
+}

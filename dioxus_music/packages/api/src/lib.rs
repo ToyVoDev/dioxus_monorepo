@@ -322,7 +322,6 @@ pub async fn get_playlist_tracks(id: Uuid) -> Result<Vec<TrackSummary>, ServerFn
 #[post("/api/playlists/add-track")]
 pub async fn add_track_to_playlist(playlist_id: Uuid, track_id: Uuid) -> Result<(), ServerFnError> {
     use axum::Extension;
-    use diesel::dsl::max;
     use diesel::prelude::*;
     use diesel_async::RunQueryDsl;
     use models::NewPlaylistTrack;
@@ -336,7 +335,7 @@ pub async fn add_track_to_playlist(playlist_id: Uuid, track_id: Uuid) -> Result<
 
     let max_pos: Option<i32> = schema::playlist_tracks::table
         .filter(schema::playlist_tracks::playlist_id.eq(playlist_id))
-        .select(max(schema::playlist_tracks::position))
+        .select(diesel::dsl::max(schema::playlist_tracks::position))
         .first(&mut conn)
         .await
         .map_err(|e| server_err(format!("DB query error: {e}")))?;
@@ -434,10 +433,9 @@ pub async fn get_genres() -> Result<Vec<String>, ServerFnError> {
 
 #[server]
 pub async fn get_library_version() -> Result<Option<chrono::DateTime<chrono::Utc>>, ServerFnError> {
-    use diesel::dsl::max;
+    use axum::Extension;
     use diesel::prelude::*;
     use diesel_async::RunQueryDsl;
-    use axum::Extension;
 
     let Extension(pool): Extension<db::DbPool> =
         dioxus::fullstack::FullstackContext::extract().await?;
@@ -447,7 +445,7 @@ pub async fn get_library_version() -> Result<Option<chrono::DateTime<chrono::Utc
         .map_err(|e| server_err(format!("DB pool error: {e}")))?;
 
     let result: Option<chrono::DateTime<chrono::Utc>> = schema::tracks::table
-        .select(max(schema::tracks::updated_at))
+        .select(diesel::dsl::max(schema::tracks::updated_at))
         .first(&mut conn)
         .await
         .map_err(|e| server_err(format!("DB query error: {e}")))?;

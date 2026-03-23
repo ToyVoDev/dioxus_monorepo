@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fmt;
 
-use lopdf::{dictionary, Dictionary, Document, Object, ObjectId, Stream};
+use lopdf::{Dictionary, Document, Object, ObjectId, Stream, dictionary};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PaperSize {
@@ -180,8 +180,7 @@ pub fn center_pdf(pdf_bytes: &[u8], options: &CenterOptions) -> Result<Vec<u8>, 
         let y_offset = (target_h - src_height) / 2.0 + options.nudge_y;
 
         // Embed source page as Form XObject
-        let xobject_id =
-            embed_page_as_xobject(&source_doc, &mut new_doc, page_id, &media_box)?;
+        let xobject_id = embed_page_as_xobject(&source_doc, &mut new_doc, page_id, &media_box)?;
 
         // Build content stream that places the XObject
         let mut content_ops = format!(
@@ -383,7 +382,8 @@ fn collect_and_remap_objects(
                     // Reserve a new ID first to handle cycles
                     let new_id = dest.new_object_id();
                     remap.insert(*id, new_id);
-                    let remapped = collect_and_remap_objects(source, dest, &source_obj_clone, remap);
+                    let remapped =
+                        collect_and_remap_objects(source, dest, &source_obj_clone, remap);
                     dest.objects.insert(new_id, remapped);
                     Object::Reference(new_id)
                 } else {
