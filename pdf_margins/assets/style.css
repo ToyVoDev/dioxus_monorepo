@@ -2,7 +2,7 @@ html, body {
     height: 100%;
 }
 
-#main {
+.app-shell {
     display: flex;
     flex-direction: column;
     height: 100vh;

@@ -59,10 +59,21 @@ fn App() -> Element {
     let paper_size_value: Memo<Option<Option<PaperSize>>> =
         use_memo(move || Some(Some(paper_size())));
 
-    let theme_style = use_memo(move || match theme_mode() {
-        ThemeMode::System => String::new(),
-        ThemeMode::Light => "--dark: ; --light: initial;".to_string(),
-        ThemeMode::Dark => "--dark: initial; --light: ;".to_string(),
+    // Apply theme override on :root via JS (CSS space toggle must be on :root)
+    use_effect(move || {
+        let mode = theme_mode();
+        let js = match mode {
+            ThemeMode::System => {
+                "document.documentElement.style.removeProperty('--dark'); document.documentElement.style.removeProperty('--light');"
+            }
+            ThemeMode::Light => {
+                "document.documentElement.style.setProperty('--dark', ' '); document.documentElement.style.setProperty('--light', 'initial');"
+            }
+            ThemeMode::Dark => {
+                "document.documentElement.style.setProperty('--dark', 'initial'); document.documentElement.style.setProperty('--light', ' ');"
+            }
+        };
+        document::eval(js);
     });
 
     let on_file_change = move |evt: Event<FormData>| {
@@ -152,7 +163,7 @@ fn App() -> Element {
     rsx! {
         document::Stylesheet { href: asset!("/assets/style.css") }
         KineticTheme {
-            div { id: "main", style: "{theme_style}",
+            div { class: "app-shell",
                 div { class: "title-row",
                     h1 { "PDF Margins" }
                     IconButton {
