@@ -3,6 +3,11 @@ mod center_pdf;
 use center_pdf::{CenterOptions, PaperSize};
 use dioxus::prelude::*;
 use js_sys::{Array, Uint8Array};
+use dioxus_primitives::checkbox::CheckboxState;
+use kinetic_ui::{
+    Badge, BadgeVariant, Button, ButtonVariant, Checkbox, Input, KSelect, KSelectList,
+    KSelectOption, KSelectTrigger, KSelectValue, KineticTheme,
+};
 use web_sys::{Blob, BlobPropertyBag, Url};
 
 fn main() {
@@ -43,6 +48,8 @@ fn App() -> Element {
     let mut nudge_border_x: Signal<f64> = use_signal(|| 7.0);
     let mut nudge_border_y: Signal<f64> = use_signal(|| 7.0);
     let mut paper_size: Signal<PaperSize> = use_signal(|| PaperSize::Letter);
+    let paper_size_value: Memo<Option<Option<PaperSize>>> =
+        use_memo(move || Some(Some(paper_size())));
 
     let on_file_change = move |evt: Event<FormData>| {
         spawn(async move {
@@ -130,143 +137,150 @@ fn App() -> Element {
 
     rsx! {
         document::Stylesheet { href: asset!("/assets/style.css") }
-        div { id: "main",
-            h1 { "PDF Margins" }
+        KineticTheme {
+            div { id: "main",
+                h1 { "PDF Margins" }
 
-            div { class: "controls",
-                // File upload
-                label { class: "upload-btn",
-                    "Choose PDF"
+                div { class: "controls",
+                    // File upload
+                    Button {
+                        variant: ButtonVariant::Primary,
+                        onclick: move |_| {
+                            document::eval(r#"document.getElementById('pdf-file-input').click()"#);
+                        },
+                        "Choose PDF"
+                    }
                     input {
+                        id: "pdf-file-input",
                         r#type: "file",
                         accept: ".pdf",
                         style: "display: none;",
                         onchange: on_file_change,
                     }
-                }
 
-                // Draw Alignment Corner checkbox
-                label {
-                    input {
-                        r#type: "checkbox",
-                        checked: draw_alignment(),
-                        onchange: move |evt: Event<FormData>| {
-                            draw_alignment.set(evt.checked());
-                        },
+                    // Draw Alignment Corner checkbox
+                    label { class: "checkbox-label",
+                        Checkbox {
+                            checked: if draw_alignment() { CheckboxState::Checked } else { CheckboxState::Unchecked },
+                            on_checked_change: move |val: CheckboxState| {
+                                draw_alignment.set(bool::from(val));
+                            },
+                        }
+                        "Draw Alignment Corner"
                     }
-                    "Draw Alignment Corner"
-                }
 
-                // Draw Border checkbox
-                label {
-                    input {
-                        r#type: "checkbox",
-                        checked: draw_border(),
-                        onchange: move |evt: Event<FormData>| {
-                            draw_border.set(evt.checked());
-                        },
+                    // Draw Border checkbox
+                    label { class: "checkbox-label",
+                        Checkbox {
+                            checked: if draw_border() { CheckboxState::Checked } else { CheckboxState::Unchecked },
+                            on_checked_change: move |val: CheckboxState| {
+                                draw_border.set(bool::from(val));
+                            },
+                        }
+                        "Draw Border"
                     }
-                    "Draw Border"
-                }
 
-                // Nudge X
-                label {
-                    "Nudge X"
-                    input {
-                        r#type: "number",
-                        value: "{nudge_x}",
-                        oninput: move |evt: Event<FormData>| {
-                            if let Ok(v) = evt.value().parse::<f64>() {
-                                nudge_x.set(v);
-                            }
-                        },
-                    }
-                }
-
-                // Nudge Y
-                label {
-                    "Nudge Y"
-                    input {
-                        r#type: "number",
-                        value: "{nudge_y}",
-                        oninput: move |evt: Event<FormData>| {
-                            if let Ok(v) = evt.value().parse::<f64>() {
-                                nudge_y.set(v);
-                            }
-                        },
-                    }
-                }
-
-                // Border X
-                label {
-                    "Border X"
-                    input {
-                        r#type: "number",
-                        value: "{nudge_border_x}",
-                        oninput: move |evt: Event<FormData>| {
-                            if let Ok(v) = evt.value().parse::<f64>() {
-                                nudge_border_x.set(v);
-                            }
-                        },
-                    }
-                }
-
-                // Border Y
-                label {
-                    "Border Y"
-                    input {
-                        r#type: "number",
-                        value: "{nudge_border_y}",
-                        oninput: move |evt: Event<FormData>| {
-                            if let Ok(v) = evt.value().parse::<f64>() {
-                                nudge_border_y.set(v);
-                            }
-                        },
-                    }
-                }
-
-                // Paper size select
-                label {
-                    "Paper Size"
-                    select {
-                        value: "{paper_size}",
-                        onchange: move |evt: Event<FormData>| {
-                            let val = evt.value();
-                            for ps in PaperSize::ALL {
-                                if ps.to_string() == val {
-                                    paper_size.set(*ps);
-                                    break;
+                    // Nudge X
+                    label {
+                        "Nudge X"
+                        Input {
+                            r#type: "number".to_string(),
+                            value: format!("{}", nudge_x()),
+                            oninput: move |evt: FormEvent| {
+                                if let Ok(v) = evt.value().parse::<f64>() {
+                                    nudge_x.set(v);
                                 }
+                            },
+                        }
+                    }
+
+                    // Nudge Y
+                    label {
+                        "Nudge Y"
+                        Input {
+                            r#type: "number".to_string(),
+                            value: format!("{}", nudge_y()),
+                            oninput: move |evt: FormEvent| {
+                                if let Ok(v) = evt.value().parse::<f64>() {
+                                    nudge_y.set(v);
+                                }
+                            },
+                        }
+                    }
+
+                    // Border X
+                    label {
+                        "Border X"
+                        Input {
+                            r#type: "number".to_string(),
+                            value: format!("{}", nudge_border_x()),
+                            oninput: move |evt: FormEvent| {
+                                if let Ok(v) = evt.value().parse::<f64>() {
+                                    nudge_border_x.set(v);
+                                }
+                            },
+                        }
+                    }
+
+                    // Border Y
+                    label {
+                        "Border Y"
+                        Input {
+                            r#type: "number".to_string(),
+                            value: format!("{}", nudge_border_y()),
+                            oninput: move |evt: FormEvent| {
+                                if let Ok(v) = evt.value().parse::<f64>() {
+                                    nudge_border_y.set(v);
+                                }
+                            },
+                        }
+                    }
+
+                    // Paper size select
+                    label {
+                        "Paper Size"
+                        KSelect::<PaperSize> {
+                            value: paper_size_value,
+                            on_value_change: move |val: Option<PaperSize>| {
+                                if let Some(ps) = val {
+                                    paper_size.set(ps);
+                                }
+                            },
+                            KSelectTrigger {
+                                KSelectValue {}
                             }
-                        },
-                        for ps in PaperSize::ALL {
-                            option {
-                                value: "{ps}",
-                                selected: *ps == paper_size(),
-                                "{ps}"
+                            KSelectList {
+                                for (i, ps) in PaperSize::ALL.iter().enumerate() {
+                                    KSelectOption::<PaperSize> {
+                                        value: *ps,
+                                        index: i,
+                                        text_value: ps.to_string(),
+                                        "{ps}"
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            // Error display
-            if let Some(ref err) = *error_msg.read() {
-                div { class: "error", "{err}" }
-            }
-
-            // Preview area
-            div { class: "preview",
-                div { class: "preview-pane",
-                    h3 { "Original" }
-                    if let Some(ref url) = *original_url.read() {
-                        iframe { src: "{url}", title: "Original PDF" }
-                    }
+                // Error display
+                if let Some(ref err) = *error_msg.read() {
+                    Badge { variant: BadgeVariant::Error, "{err}" }
                 }
-                div { class: "preview-pane",
-                    h3 { "Centered" }
-                    if let Some(ref url) = *centered_url.read() {
-                        iframe { src: "{url}", title: "Centered PDF" }
+
+                // Preview area
+                div { class: "preview",
+                    div { class: "preview-pane",
+                        h3 { "Original" }
+                        if let Some(ref url) = *original_url.read() {
+                            iframe { src: "{url}", title: "Original PDF" }
+                        }
+                    }
+                    div { class: "preview-pane",
+                        h3 { "Centered" }
+                        if let Some(ref url) = *centered_url.read() {
+                            iframe { src: "{url}", title: "Centered PDF" }
+                        }
                     }
                 }
             }

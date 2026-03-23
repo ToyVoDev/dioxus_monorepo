@@ -21,6 +21,8 @@ gloo-file = { version = "0.3", features = ["futures"] }
 wasm-bindgen-futures = "0.4"
 tracing = { workspace = true }
 dioxus-logger = { workspace = true }
+dioxus-primitives = { workspace = true }
+kinetic_ui = { workspace = true }
 
 [features]
 default = ["web"]
