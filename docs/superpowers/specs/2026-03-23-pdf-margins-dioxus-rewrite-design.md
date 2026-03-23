@@ -11,7 +11,7 @@ Rewrite the pdf_margins utility from React/TypeScript/pdf-lib to Dioxus 0.7/Rust
 ## Goals
 
 - Feature parity with the React version (all controls, previews, options)
-- Fix the existing `nudgeBorderHeight` bug (reads from `nudgeBorderWidth` in React source)
+- Fix two existing bugs (see Bugfixes section)
 - Pure Rust PDF processing via `lopdf` instead of JavaScript pdf-lib
 - Deploy as a static site (same as current)
 
@@ -41,9 +41,10 @@ Single crate, web-only. Added as a workspace member in the root `Cargo.toml`.
 | Crate | Purpose |
 |-------|---------|
 | `dioxus` (feature: `web`) | UI framework, WASM target |
-| `lopdf` | PDF loading, manipulation, XObject embedding |
+| `lopdf` (`default-features = false`, feature: `wasm_js`) | PDF loading, manipulation, XObject embedding. Default features disabled to avoid `rayon` (no WASM threads) and `chrono`/`jiff` clock features. `wasm_js` enables `getrandom` WASM support. |
 | `web-sys` | File API, Blob, URL.createObjectURL |
 | `js-sys` | Uint8Array conversion for blob creation |
+| `gloo-file` | Ergonomic file reading from `<input type="file">` |
 
 ## State Management
 
@@ -56,16 +57,16 @@ All state lives as Dioxus signals in the root `App` component:
 | `centered_url` | `Signal<Option<String>>` | Blob URL for centered preview iframe |
 | `draw_alignment` | `Signal<bool>` | Toggle alignment corner lines |
 | `draw_border` | `Signal<bool>` | Toggle content boundary rectangle |
-| `nudge_x` | `Signal<f64>` | Horizontal content offset (points) |
-| `nudge_y` | `Signal<f64>` | Vertical content offset (points) |
-| `nudge_border_x` | `Signal<f64>` | Horizontal border offset (points) |
-| `nudge_border_y` | `Signal<f64>` | Vertical border offset (points) |
+| `nudge_x` | `Signal<f64>` | Horizontal content offset in points (default: 0.0) |
+| `nudge_y` | `Signal<f64>` | Vertical content offset in points (default: 0.0) |
+| `nudge_border_x` | `Signal<f64>` | Horizontal border offset in points (default: 7.0) |
+| `nudge_border_y` | `Signal<f64>` | Vertical border offset in points (default: 7.0) |
 | `paper_size` | `Signal<PaperSize>` | Selected target paper size |
 
 ## Data Flow
 
 1. **Upload:** User selects PDF file. `web-sys` FileReader reads bytes into `original_bytes`. A blob URL is created for `original_url`.
-2. **Process:** A `use_effect` watches `original_bytes` and all option signals. On change, calls `center_pdf()` (pure, synchronous) to produce new PDF bytes. Creates a blob URL for `centered_url`. Revokes the previous centered blob URL to avoid memory leaks.
+2. **Process:** A `use_effect` watches `original_bytes` and all option signals. On change, calls `center_pdf()` (pure, synchronous) to produce new PDF bytes. Creates a blob URL for `centered_url`. Revokes the previous centered blob URL to avoid memory leaks. Note: processing is synchronous on the main thread — large PDFs may briefly freeze the UI. This is an acceptable tradeoff for v1; web worker offloading is future work.
 3. **Preview:** Two `<iframe>` elements display the original and centered PDFs via their blob URLs.
 
 ## PDF Centering Algorithm (`center_pdf.rs`)
@@ -90,13 +91,18 @@ pub fn center_pdf(pdf_bytes: &[u8], options: &CenterOptions) -> Result<Vec<u8>, 
 
 1. **Load** source PDF via `lopdf::Document::load_mem(pdf_bytes)`
 2. **Read MediaBox** of source page to get original `(width, height)`
-3. **Orientation matching:** If source is landscape (w > h), swap target dimensions so the new page also uses landscape. If both are portrait (or both landscape), keep target as-is.
+3. **Orientation matching:** Compare source and target orientations. If both are landscape or both are portrait, keep target as-is. If they differ (one landscape, one portrait), swap the target dimensions to match the source orientation. This fixes a bug in the React version (see Bugfixes section).
 4. **Calculate offsets:**
    ```
    x_offset = (target_width - source_width) / 2 + nudge_x
    y_offset = (target_height - source_height) / 2 + nudge_y
    ```
-5. **Embed as Form XObject:** Extract the source page's content stream and resources. Create a Form XObject (Type: XObject, Subtype: Form, BBox: original MediaBox) in the new document.
+5. **Embed as Form XObject:** This is the most complex step — lopdf has no high-level `embedPage` API like pdf-lib, so we build it manually:
+   - **Copy content streams:** Read the page's `/Contents` (may be a single stream or an array of streams). If multiple, concatenate them into one stream.
+   - **Copy resources recursively:** Clone the page's `/Resources` dictionary, including all referenced fonts, images, color spaces, and nested XObjects. Remap all indirect object references from the source document to the new document using `lopdf::Document::renumber_objects()` or manual ID mapping.
+   - **Handle encoded streams:** lopdf handles FlateDecode and other filters transparently when reading content streams.
+   - **Build Form XObject:** Create an XObject stream with dictionary entries: `/Type /XObject`, `/Subtype /Form`, `/BBox [0 0 width height]` (from source MediaBox), `/Resources` (the copied resource dict). The stream data is the concatenated content stream bytes.
+   - **Register in new page:** Add the Form XObject to the new page's `/Resources/XObject` dictionary under a name like `/SourcePage`.
 6. **Draw on new page:** Create a new page with target MediaBox. Write content stream: `q {x_offset} {y_offset} cm /SourcePage Do Q` to place the embedded page at the calculated position.
 7. **Optional alignment corner:** If `draw_alignment` is true, draw two perpendicular lines (L-shape) at the appropriate corner. Position depends on page orientation (matches React version behavior).
 8. **Optional border:** If `draw_border` is true, draw a rectangle at the original content boundary, accounting for nudge offsets. 2pt stroke, no fill.
@@ -111,7 +117,7 @@ Rust enum covering standard sizes, each mapping to `(width_pts, height_pts)`:
 - B4, B5
 - Additional sizes as present in pdf-lib's PageSizes
 
-Implements `Display` for the select dropdown labels and `PartialEq + Clone` for Dioxus props.
+Implements `Display` for the select dropdown labels and `Copy + Clone + PartialEq` for Dioxus props compatibility.
 
 ## JS Interop
 
@@ -119,10 +125,9 @@ Two interop surfaces, kept minimal:
 
 ### File Reading
 
-Use `web-sys` to access the `<input type="file">` change event:
-- Get `File` from `FileList`
-- Use `FileReader.readAsArrayBuffer()` or the `gloo-file` crate
-- Convert `ArrayBuffer` → `Uint8Array` → `Vec<u8>`
+Use `gloo-file` for ergonomic file reading:
+- Get `File` from the `<input type="file">` change event via `web-sys`
+- Use `gloo_file::futures::read_as_bytes()` to asynchronously read into `Vec<u8>`
 
 ### Blob URL Management
 
@@ -155,6 +160,21 @@ Single-page layout with plain HTML/CSS (no component library):
 - Two iframes side by side filling remaining space
 - Flexbox layout, minimal CSS
 
-## Bugfix
+## Dioxus.toml
 
-The React version at `CenterPDF.ts:20` assigns `nudgeBorderHeight` from `options?.nudgeBorderWidth` instead of `options?.nudgeBorderHeight`. The Rust rewrite uses named struct fields, eliminating this class of bug.
+Minimal configuration:
+- `name = "pdf_margins"`, `default_platform = "web"`
+- Title: "PDF Margins"
+- Web app dir and asset dir pointing to standard locations
+
+## Error Handling
+
+`center_pdf()` returns `Result<Vec<u8>, String>`. On error (malformed PDF, encrypted PDF, etc.), the UI displays the error message in the preview area instead of the iframe. The upload/original preview is unaffected.
+
+## Bugfixes
+
+Two bugs in the React version are fixed:
+
+1. **`nudgeBorderHeight` assignment bug:** `CenterPDF.ts:20` assigns `nudgeBorderHeight` from `options?.nudgeBorderWidth` instead of `options?.nudgeBorderHeight`. The Rust rewrite uses named struct fields, eliminating this class of bug.
+
+2. **Orientation matching bug:** `CenterPDF.ts:27-28` checks `bothLandscapeOrPortrait` but the condition (`oldPage.getWidth() > oldPage.getHeight() && paperSize[0] > paperSize[1]`) is only true when both are landscape. When both source and target are portrait, the variable is false and the target dimensions get swapped to landscape — incorrect behavior. The Rust rewrite properly checks whether orientations match (both landscape or both portrait) and only swaps when they differ.
