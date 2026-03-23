@@ -283,22 +283,20 @@ fn get_media_box(doc: &Document, page_dict: &Dictionary) -> Result<[f64; 4], Str
             return parse_media_box_array(arr);
         }
         // Could be a reference
-        if let Ok(id) = mb.as_reference() {
-            if let Ok(obj) = doc.get_object(id) {
-                if let Ok(arr) = obj.as_array() {
-                    return parse_media_box_array(arr);
-                }
-            }
+        if let Ok(id) = mb.as_reference()
+            && let Ok(obj) = doc.get_object(id)
+            && let Ok(arr) = obj.as_array()
+        {
+            return parse_media_box_array(arr);
         }
     }
 
     // Walk up via Parent
-    if let Ok(parent_ref) = page_dict.get(b"Parent") {
-        if let Ok(parent_id) = parent_ref.as_reference() {
-            if let Ok(parent_dict) = doc.get_dictionary(parent_id) {
-                return get_media_box(doc, parent_dict);
-            }
-        }
+    if let Ok(parent_ref) = page_dict.get(b"Parent")
+        && let Ok(parent_id) = parent_ref.as_reference()
+        && let Ok(parent_dict) = doc.get_dictionary(parent_id)
+    {
+        return get_media_box(doc, parent_dict);
     }
 
     Err("MediaBox not found".to_string())
@@ -479,15 +477,14 @@ fn embed_page_as_xobject(
 
 /// Walk the parent chain to find inherited Resources.
 fn find_inherited_resources(doc: &Document, page_dict: &Dictionary) -> Option<Object> {
-    if let Ok(parent_ref) = page_dict.get(b"Parent") {
-        if let Ok(parent_id) = parent_ref.as_reference() {
-            if let Ok(parent_dict) = doc.get_dictionary(parent_id) {
-                if let Ok(res) = parent_dict.get(b"Resources") {
-                    return Some(res.clone());
-                }
-                return find_inherited_resources(doc, parent_dict);
-            }
+    if let Ok(parent_ref) = page_dict.get(b"Parent")
+        && let Ok(parent_id) = parent_ref.as_reference()
+        && let Ok(parent_dict) = doc.get_dictionary(parent_id)
+    {
+        if let Ok(res) = parent_dict.get(b"Resources") {
+            return Some(res.clone());
         }
+        return find_inherited_resources(doc, parent_dict);
     }
     None
 }

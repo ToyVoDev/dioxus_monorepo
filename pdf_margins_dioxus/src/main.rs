@@ -79,7 +79,7 @@ fn App() -> Element {
 
     // Reactive processing effect: re-center whenever inputs change
     use_effect(move || {
-        let bytes_opt = original_bytes().clone();
+        let bytes_opt = original_bytes();
         let alignment = draw_alignment();
         let border = draw_border();
         let nx = nudge_x();
