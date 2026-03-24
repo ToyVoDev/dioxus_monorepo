@@ -2182,6 +2182,7 @@ dependencies = [
  "mc-query",
  "mime",
  "poise",
+ "regex",
  "reqwest 0.13.2",
  "rust-i18n",
  "serde",
@@ -2189,6 +2190,7 @@ dependencies = [
  "serenity",
  "thiserror 2.0.18",
  "tokio",
+ "toml 1.1.0+spec-1.1.0",
  "tower",
  "tower-http",
  "tracing",
@@ -4160,21 +4162,6 @@ checksum = "f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e"
 dependencies = [
  "mime",
  "unicase",
-]
-
-[[package]]
-name = "minecraft_modpack"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "dioxus",
- "kinetic_ui",
- "regex",
- "reqwest 0.13.2",
- "serde",
- "serde_json",
- "tokio",
- "toml 1.1.0+spec-1.1.0",
 ]
 
 [[package]]

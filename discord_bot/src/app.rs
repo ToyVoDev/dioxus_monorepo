@@ -1,7 +1,7 @@
 use {
     crate::{
         components::Navbar,
-        views::{Home, Logs, PrivacyPolicy, TermsOfService},
+        views::{Home, Modpack, PrivacyPolicy, TermsOfService},
     },
     dioxus::prelude::*,
     kinetic_ui::KineticTheme,
@@ -28,8 +28,8 @@ pub enum Route {
     // the component for that route will be rendered. The component name that is rendered defaults to the variant name.
     #[route("/")]
     Home {},
-    #[route("/logs")]
-    Logs {},
+    #[route("/modpack")]
+    Modpack {},
     #[route("/terms-of-service")]
     TermsOfService {},
     #[route("/privacy-policy")]

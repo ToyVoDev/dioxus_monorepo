@@ -9,7 +9,6 @@ members = [
     "game_manager",
     "httpui",
     "kinetic_ui",
-    "minecraft_modpack",
     "pdf_margins",
     "portfolio",
     "schedule1",

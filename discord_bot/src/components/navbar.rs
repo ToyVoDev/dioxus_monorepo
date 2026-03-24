@@ -19,8 +19,8 @@ pub fn Navbar() -> Element {
                 "Home"
             }
             Link {
-                to: Route::Logs {},
-                "Logs"
+                to: Route::Modpack {},
+                "Minecraft Modpack"
             }
             Link {
                 to: Route::TermsOfService {},
