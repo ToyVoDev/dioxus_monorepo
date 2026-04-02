@@ -66,4 +66,79 @@ impl AppState {
             environments,
         }
     }
+
+    pub fn create_space(&mut self, name: String, icon: String, color: String) -> i32 {
+        let id = *self.next_space_id.read();
+        *self.next_space_id.write() += 1;
+        let space = Space {
+            id,
+            name,
+            icon: Some(icon),
+            color: Some(color),
+            environments: Vec::new(),
+            variables: Vec::new(),
+        };
+        self.spaces.write().push(space);
+        id
+    }
+
+    pub fn create_collection(
+        &mut self,
+        name: String,
+        icon: String,
+        color: String,
+        space_id: i32,
+    ) -> i32 {
+        let id = *self.next_collection_id.read();
+        *self.next_collection_id.write() += 1;
+        let collection = Collection {
+            id,
+            space_id,
+            name,
+            icon: Some(icon),
+            color: Some(color),
+        };
+        self.collections.write().push(collection);
+        id
+    }
+
+    pub fn create_request(
+        &mut self,
+        name: Option<String>,
+        method: String,
+        url: String,
+        collection_id: i32,
+    ) -> i32 {
+        let id = *self.next_request_id.read();
+        *self.next_request_id.write() += 1;
+        let request = Request {
+            id,
+            collection_id: Some(collection_id),
+            name: name.unwrap_or_else(|| format!("{} {}", method, url)),
+            method,
+            url,
+            headers: Vec::new(),
+            params: Vec::new(),
+            body: None,
+            inherit_cookies_header: false,
+            inherit_authorization_header: false,
+        };
+        self.requests.write().push(request);
+        id
+    }
+
+    pub fn create_environment(&mut self, name: String, space_id: i32) -> i32 {
+        let id = *self.next_environment_id.read();
+        *self.next_environment_id.write() += 1;
+        let environment = crate::state::models::Environment {
+            id,
+            name,
+            variables: Vec::new(),
+        };
+        // Add to the space's environments list
+        if let Some(space) = self.spaces.write().iter_mut().find(|s| s.id == space_id) {
+            space.environments.push(environment.clone());
+        }
+        id
+    }
 }
