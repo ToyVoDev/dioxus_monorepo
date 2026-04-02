@@ -18,6 +18,11 @@ pub struct AppState {
     pub active_topbar_nav: Signal<TopBarNav>,
     pub active_editor_tab: Signal<EditorTab>,
     pub http_response: Signal<Option<HttpResponse>>,
+    pub create_modal_type: Signal<Option<crate::state::models::CreateType>>,
+    pub selected_space: Signal<Option<i32>>,
+    pub selected_collection: Signal<Option<i32>>,
+    pub next_environment_id: Signal<i32>,
+    pub environments: Signal<Vec<crate::state::models::Environment>>,
 }
 
 impl AppState {
@@ -35,6 +40,11 @@ impl AppState {
         active_topbar_nav: Signal<TopBarNav>,
         active_editor_tab: Signal<EditorTab>,
         http_response: Signal<Option<HttpResponse>>,
+        create_modal_type: Signal<Option<crate::state::models::CreateType>>,
+        selected_space: Signal<Option<i32>>,
+        selected_collection: Signal<Option<i32>>,
+        next_environment_id: Signal<i32>,
+        environments: Signal<Vec<crate::state::models::Environment>>,
     ) -> Self {
         Self {
             spaces,
@@ -49,6 +59,11 @@ impl AppState {
             active_topbar_nav,
             active_editor_tab,
             http_response,
+            create_modal_type,
+            selected_space,
+            selected_collection,
+            next_environment_id,
+            environments,
         }
     }
 }
