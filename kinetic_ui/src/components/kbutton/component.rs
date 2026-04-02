@@ -13,6 +13,9 @@ pub enum KButtonVariant {
 #[component]
 pub fn KButton(
     #[props(default)] variant: KButtonVariant,
+    #[props(extends=GlobalAttributes)]
+    #[props(extends=button)]
+    attributes: Vec<Attribute>,
     #[props(default)] disabled: bool,
     onclick: Option<EventHandler<MouseEvent>>,
     onmousedown: Option<EventHandler<MouseEvent>>,
@@ -45,6 +48,7 @@ pub fn KButton(
                     f.call(event);
                 }
             },
+            ..attributes,
             {children}
         }
     }

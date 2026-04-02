@@ -3,10 +3,7 @@ use dioxus::prelude::*;
 use dioxus_free_icons::icons::md_action_icons::{MdDns, MdHelp, MdHistory, MdSettings};
 use dioxus_free_icons::icons::md_file_icons::MdFolder;
 use dioxus_free_icons::Icon;
-use kinetic_ui::{
-    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, KButton,
-    KButtonVariant,
-};
+use kinetic_ui::{DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger};
 
 #[component]
 pub fn SideNav() -> Element {
@@ -50,10 +47,8 @@ pub fn SideNav() -> Element {
             div { class: "sidenav__cta",
                 DropdownMenu {
                     DropdownMenuTrigger {
-                        KButton {
-                            variant: KButtonVariant::Primary,
-                            "+"
-                        }
+                        class: "sidenav__add-btn",
+                        "+"
                     }
                     DropdownMenuContent {
                         DropdownMenuItem::<CreateType> {

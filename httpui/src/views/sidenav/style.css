@@ -102,3 +102,36 @@
   z-index: 101;
   position: relative;
 }
+
+/* Dropdown trigger styled as a button */
+.sidenav__add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--k-space-3) var(--k-space-2);
+  border: none;
+  border-radius: var(--k-radius-default);
+  background: var(--k-primary);
+  color: var(--secondary-color-1);
+  font-family: var(--k-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.sidenav__add-btn:hover {
+  background: var(--primary-container);
+  transform: scale(1.02);
+}
+
+.sidenav__add-btn:focus-visible {
+  outline: 2px solid var(--k-primary);
+  outline-offset: 2px;
+}
+
+/* Ensure dropdown content floats above everything */
+.sidenav .dropdown-menu-content {
+  z-index: 9999;
+}
