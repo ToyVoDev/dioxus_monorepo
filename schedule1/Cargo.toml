@@ -8,9 +8,11 @@ edition = "2021"
 
 [dependencies]
 dioxus = { workspace = true, features = [] }
+dioxus-logger = { workspace = true }
 dioxus-free-icons = { workspace = true, features = ["octicons"] }
 dioxus-primitives = { workspace = true }
 kinetic_ui = { workspace = true }
+tracing = { workspace = true }
 
 [features]
 default = ["web"]

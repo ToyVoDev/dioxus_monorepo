@@ -11,7 +11,7 @@ use kinetic_ui::{
 use web_sys::{Blob, BlobPropertyBag, Url};
 
 fn main() {
-    dioxus_logger::init(tracing::Level::INFO).expect("failed to init logger");
+    dioxus_logger::initialize_default();
     launch(App);
 }
 

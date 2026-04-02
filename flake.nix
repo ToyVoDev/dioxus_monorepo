@@ -102,6 +102,8 @@
               };
               systemd.services = {
                 discord_bot = {
+                  after = [ "postgresql.service" ];
+                  requires = [ "postgresql.service" ];
                   serviceConfig.User = "discord_bot";
                   wantedBy = [ "multi-user.target" ];
                   script = ''
@@ -335,7 +337,7 @@
           };
           devShells.default = pkgs.mkShell {
             shellHook = ''
-              export RUST_LOG="discord_bot=trace"
+              export RUST_LOG="debug"
               export RUST_SRC_PATH=${pkgs.rustPlatform.rustLibSrc}
               export ANDROID_HOME="${androidComposition.androidsdk}/libexec/android-sdk"
               export ANDROID_NDK_HOME="${androidComposition.androidsdk}/libexec/android-sdk/ndk-bundle"

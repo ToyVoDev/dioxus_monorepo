@@ -2103,9 +2103,11 @@ name = "dioxus_music_desktop"
 version = "0.1.0"
 dependencies = [
  "dioxus",
+ "dioxus-logger",
  "dioxus_music_api",
  "dioxus_music_ui",
  "kinetic_ui",
+ "tracing",
  "uuid",
 ]
 
@@ -2114,8 +2116,10 @@ name = "dioxus_music_mobile"
 version = "0.1.0"
 dependencies = [
  "dioxus",
+ "dioxus-logger",
  "dioxus_music_ui",
  "kinetic_ui",
+ "tracing",
 ]
 
 [[package]]
@@ -2135,11 +2139,13 @@ version = "0.1.0"
 dependencies = [
  "axum 0.8.8",
  "dioxus",
+ "dioxus-logger",
  "dioxus_music_api",
  "dioxus_music_ui",
  "dotenvy",
  "kinetic_ui",
  "tokio",
+ "tracing",
  "uuid",
 ]
 
@@ -3254,11 +3260,15 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus-free-icons",
+ "dioxus-logger",
  "dioxus-primitives",
+ "dirs",
  "kinetic_ui",
  "reqwest 0.13.2",
  "serde",
+ "serde_json",
  "strum",
+ "tracing",
 ]
 
 [[package]]
@@ -4979,10 +4989,12 @@ name = "portfolio"
 version = "0.1.0"
 dependencies = [
  "dioxus",
+ "dioxus-logger",
  "kinetic_ui",
  "reqwest 0.13.2",
  "serde",
  "serde_json",
+ "tracing",
 ]
 
 [[package]]
@@ -5852,8 +5864,10 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "dioxus-free-icons",
+ "dioxus-logger",
  "dioxus-primitives",
  "kinetic_ui",
+ "tracing",
 ]
 
 [[package]]

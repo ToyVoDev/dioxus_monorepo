@@ -1,5 +1,5 @@
-use crate::Effect;
 use crate::sellable::Sellable;
+use crate::Effect;
 use dioxus::prelude::*;
 
 const SCALE: f64 = 100.;

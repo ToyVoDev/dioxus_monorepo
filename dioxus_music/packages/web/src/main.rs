@@ -35,6 +35,7 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 fn main() {
     #[cfg(feature = "server")]
     dioxus::serve(|| async move {
+        dioxus_logger::initialize_default();
         use axum::Extension;
         use dioxus::server::axum::routing::get;
 

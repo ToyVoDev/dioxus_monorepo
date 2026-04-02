@@ -2,6 +2,243 @@ You are an expert [0.7 Dioxus](https://dioxuslabs.com/learn/0.7) assistant. Diox
 
 Provide concise code examples with detailed descriptions
 
+# Build Commands
+
+This is a Cargo workspace monorepo with multiple Dioxus projects. Use the Dioxus CLI (`dx`) for serving/building:
+
+```bash
+# Serve with hot-reload
+dx serve --package <package_name> --platform <platform>
+
+# Build
+dx build --package <package_name> --platform <platform>
+
+# Examples
+dx serve --package dioxus_music_web --platform web
+dx serve --package dioxus_music_desktop --platform desktop
+dx serve --package httpui --platform desktop
+dx serve --package dioxus_music_mobile --platform android
+dx serve --package dioxus_music_mobile --platform ios
+dx serve --package discord_bot --platform web
+dx serve --package game_manager --platform web
+```
+
+# Lint and Check Commands
+
+```bash
+# Workspace-level type checking
+cargo check --workspace
+
+# Workspace-level clippy linting
+cargo clippy --workspace
+
+# Format all code (Nix devshell provides rustfmt, nixfmt, prettier)
+nix fmt
+
+# Run tests for a specific package
+cargo test --package <package_name>
+
+# Run a single test
+cargo test --package <package_name> -- <test_name>
+
+# Run tests with output
+cargo test --package <package_name> -- --nocapture
+
+# Run specific test file
+cargo test --package <package_name> --test <test_file_name>
+```
+
+# Development Environment
+
+This project uses a Nix flake for development dependencies. Enter the devshell with:
+
+```bash
+nix develop
+```
+
+The devshell provides: Rust nightly toolchain, Dioxus CLI (`dx`), Android SDK/NDK, wasm-bindgen, diesel CLI, and other build dependencies.
+
+Without Nix, install these manually (see README.md).
+
+# Rust Toolchain
+
+Uses Rust nightly as specified in `rust-toolchain.toml`. Target platforms include:
+- `wasm32-unknown-unknown` (web)
+- `aarch64-linux-android`, `armv7-linux-androideabi`, `i686-linux-android`, `x86_64-linux-android` (Android)
+- `aarch64-apple-ios`, `aarch64-apple-ios-sim` (iOS)
+
+# Code Style Guidelines
+
+## Imports
+
+Group imports logically and use `use { ... }` blocks for multiple imports from the same crate:
+
+```rust
+// Standard library
+use std::{collections::HashSet, sync::Arc};
+
+// External crates
+use axum::{
+    Router,
+    http::{HeaderValue, header},
+};
+use dioxus::prelude::*;
+
+// Internal modules (use pub use in mod.rs to re-export)
+use crate::models::{PlaylistDetail, TrackSummary};
+use kinetic_ui::KineticTheme;
+```
+
+Feature-gate imports for server-only code:
+
+```rust
+#[cfg(feature = "server")]
+use {
+    axum::Router,
+    diesel_migrations::{EmbeddedMigrations, embed_migrations},
+    tokio::sync::Mutex,
+};
+```
+
+## Formatting
+
+- Use `cargo fmt` / `nix fmt` for formatting
+- Use tabs for indentation (default Rust style)
+- Maximum line width: 100 characters
+- Use trailing commas in multi-line arrays/structs/enums
+
+## Types and Naming
+
+- Prefer `String` over `&str` for owned data (props, struct fields)
+- Use `Uuid` for IDs from database (not integers)
+- Use `chrono::DateTime<Utc>` for timestamps
+- Enum variants: `PascalCase`
+- Structs and enums: `PascalCase`
+- Functions and variables: `snake_case`
+- Modules: `snake_case`
+- Constants: `SCREAMING_SNAKE_CASE`
+
+## Constants
+
+Define constants at module level:
+
+```rust
+pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations/");
+```
+
+## Error Handling
+
+- Use `thiserror` for custom error types
+- Use `anyhow::Result` for application-level errors (fallible operations)
+- Never use `.unwrap()` in production code (clippy: `unwrap_used = "deny"`)
+- Use `.expect()` only in tests with meaningful messages
+- For server functions, log errors and return `ServerFnError`:
+
+```rust
+#[cfg(feature = "server")]
+fn server_err(msg: String) -> ServerFnError {
+    tracing::error!("{msg}");
+    ServerFnError::new(msg)
+}
+```
+
+## Clippy Settings
+
+Projects use pedantic and nursery lints at deny level:
+
+```toml
+[lints.clippy]
+pedantic = { level = "deny", priority = -1 }
+nursery = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+```
+
+Special clippy configuration in `dioxus_music/clippy.toml` prevents holding signal references across await points to avoid deadlocks.
+
+## Module Organization
+
+Organize modules with `mod.rs` for re-exports:
+
+```rust
+// src/state/mod.rs
+mod models;
+mod persistence;
+mod store;
+
+pub use models::*;
+pub use persistence::*;
+pub use store::*;
+```
+
+Use `#[rustfmt::skip]` on route enums to preserve formatting:
+
+```rust
+#[derive(Debug, Clone, Routable, PartialEq)]
+#[rustfmt::skip]
+enum Route {
+    #[route("/settings")]
+    SettingsSection {},
+    #[route("/")]
+    Home {},
+}
+```
+
+# Dioxus 0.7 Conventions
+
+See the complete API reference below. Critical rules:
+
+- **No `cx`, `Scope`, or `use_state`** — removed in 0.7
+- Components use `#[component]` macro; props must be `Clone + PartialEq` and owned (`String` not `&str`)
+- State: `use_signal()` for local, `use_memo()` for derived, `use_context_provider()`/`use_context()` for shared
+- Signal reads: `count()` or `.read()`; writes: `*count.write()` or `.with_mut()`
+- Async: `use_resource()` for client-side, `use_server_future()` for SSR-compatible data fetching
+- RSX: prefer `for` loops over `.map()` iterators; conditionals with `if` directly in RSX
+- Assets: `asset!("/assets/...")` macro; CSS via `document::Link { rel: "stylesheet", href: ... }`
+
+## Avoiding Deadlocks with Async
+
+Never hold a signal `.read()` or `.write()` borrow across an `.await`. The borrow prevents other accesses and can deadlock. Pattern: read into a local variable, drop the borrow, then await:
+
+```rust
+// ❌ WRONG - borrow held across await
+let data = signal.read().clone();
+some_async_call(&data).await; // borrow still active!
+
+// ✅ CORRECT - borrow dropped before await
+let data = signal.read().clone();
+drop(data); // explicit drop, or just let it go out of scope
+some_async_call(&data).await;
+```
+
+## Feature Flags
+
+Fullstack projects use feature-flag splits:
+
+```toml
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+server = ["dioxus/server", "dep:axum", "dep:tokio", ...]
+```
+
+Gate server-only code:
+
+```rust
+#[cfg(feature = "server")]
+pub async fn some_server_function() -> Result<...> { ... }
+
+#[cfg(not(feature = "server"))]
+fn main() {
+    dioxus::launch(App);
+}
+
+#[cfg(feature = "server")]
+#[tokio::main(flavor = "multi_thread")]
+async fn main() -> Result<(), Error> { ... }
+```
+
 # Dioxus Dependency
 
 You can add Dioxus to your `Cargo.toml` like this:

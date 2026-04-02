@@ -14,6 +14,7 @@ mod components;
 mod sellable;
 
 fn main() {
+    dioxus_logger::initialize_default();
     dioxus::launch(App);
 }
 

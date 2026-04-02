@@ -5,8 +5,10 @@ edition = "2024"
 
 [dependencies]
 dioxus = { workspace = true, features = ["router", "fullstack"] }
+dioxus-logger = { workspace = true }
 dioxus_music_ui = { workspace = true }
 kinetic_ui = { workspace = true }
+tracing = { workspace = true }
 
 [features]
 default = []

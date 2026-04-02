@@ -1,7 +1,7 @@
 use crate::sellable::Sellable;
 use dioxus::prelude::*;
-use dioxus_free_icons::Icon;
 use dioxus_free_icons::icons::go_icons::{GoBookmark, GoBookmarkSlash};
+use dioxus_free_icons::Icon;
 use kinetic_ui::{IconButton, KInput};
 use std::collections::HashMap;
 

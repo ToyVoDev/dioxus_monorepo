@@ -33,6 +33,8 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 
 #[cfg(feature = "desktop")]
 fn main() {
+    dioxus_logger::initialize_default();
+    
     use dioxus::desktop::Config;
     use dioxus::desktop::tao::window::WindowBuilder;
 
@@ -64,6 +66,7 @@ fn main() {
 
 #[cfg(not(feature = "desktop"))]
 fn main() {
+    dioxus_logger::initialize_default();
     dioxus::launch(App);
 }
 

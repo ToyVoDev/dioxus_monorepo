@@ -3,7 +3,10 @@ use dioxus::prelude::*;
 use dioxus_free_icons::icons::md_action_icons::{MdDns, MdHelp, MdHistory, MdSettings};
 use dioxus_free_icons::icons::md_file_icons::MdFolder;
 use dioxus_free_icons::Icon;
-use kinetic_ui::{KButton, KButtonVariant};
+use kinetic_ui::{
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, KButton,
+    KButtonVariant,
+};
 
 #[component]
 pub fn SideNav() -> Element {
@@ -45,12 +48,47 @@ pub fn SideNav() -> Element {
 
             // CTA: new request button
             div { class: "sidenav__cta",
-                KButton {
-                    variant: KButtonVariant::Primary,
-                    onclick: move |_| {
-                        state.create_modal_type.set(Some(CreateType::Request));
-                    },
-                    "+"
+                DropdownMenu {
+                    DropdownMenuTrigger {
+                        KButton {
+                            variant: KButtonVariant::Primary,
+                            "+"
+                        }
+                    }
+                    DropdownMenuContent {
+                        DropdownMenuItem::<CreateType> {
+                            value: CreateType::Space,
+                            index: 0usize,
+                            on_select: move |create_type: CreateType| {
+                                state.create_modal_type.set(Some(create_type));
+                            },
+                            "New Space"
+                        }
+                        DropdownMenuItem::<CreateType> {
+                            value: CreateType::Collection,
+                            index: 1usize,
+                            on_select: move |create_type: CreateType| {
+                                state.create_modal_type.set(Some(create_type));
+                            },
+                            "New Collection"
+                        }
+                        DropdownMenuItem::<CreateType> {
+                            value: CreateType::Request,
+                            index: 2usize,
+                            on_select: move |create_type: CreateType| {
+                                state.create_modal_type.set(Some(create_type));
+                            },
+                            "New Request"
+                        }
+                        DropdownMenuItem::<CreateType> {
+                            value: CreateType::Environment,
+                            index: 3usize,
+                            on_select: move |create_type: CreateType| {
+                                state.create_modal_type.set(Some(create_type));
+                            },
+                            "New Environment"
+                        }
+                    }
                 }
             }
 
