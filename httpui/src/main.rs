@@ -3,7 +3,11 @@
 use dioxus::prelude::*;
 
 use kinetic_ui::KineticTheme;
-use views::{layout_grid::LayoutGrid, settings::SettingsSection};
+use views::{
+    layout_grid::LayoutGrid,
+    modals::CreateModal,
+    settings::{CollectionSettings, EnvironmentSettings, SettingsSection},
+};
 
 /// Define a state module that contains all state management for our app.
 mod state;
@@ -13,6 +17,10 @@ mod views;
 #[derive(Debug, Clone, Routable, PartialEq)]
 #[rustfmt::skip]
 enum Route {
+    #[route("/settings/collection/:id")]
+    CollectionSettings { id: i32 },
+    #[route("/settings/environment/:id")]
+    EnvironmentSettings { id: i32 },
     #[route("/settings")]
     SettingsSection {},
     #[route("/")]
@@ -132,5 +140,6 @@ fn App() -> Element {
                 Router::<Route> {}
             }
         }
+        CreateModal {}
     }
 }
