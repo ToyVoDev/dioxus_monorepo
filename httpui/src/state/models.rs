@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumIter};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter, Serialize, Deserialize)]
 pub enum SideNavItem {
     Collections,
     History,
@@ -9,20 +9,28 @@ pub enum SideNavItem {
     MockServers,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter, Serialize, Deserialize)]
 pub enum TopBarNav {
     Collections,
     Environment,
     History,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter, Serialize, Deserialize)]
 pub enum EditorTab {
     Params,
     Authorization,
     Headers,
     Body,
     Settings,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display, EnumIter, Serialize, Deserialize)]
+pub enum CreateType {
+    Space,
+    Collection,
+    Request,
+    Environment,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
