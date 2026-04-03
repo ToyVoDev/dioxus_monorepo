@@ -176,7 +176,7 @@
           cargoLock = {
             lockFile = ./Cargo.lock;
             outputHashes = {
-              "dioxus-attributes-0.1.0" = "sha256-81dTwKzebIVIDwzfK99JGF8ohstz4IVGPGHk/LzSnkE=";
+              "dioxus-attributes-0.1.0" = "sha256-P0YhW08wlLwugWaWW28Vuwy5abAeS1o4vXd74QHSq2c=";
             };
           };
           desktopDir = if pkgs.stdenv.isDarwin then "macos" else "linux";
