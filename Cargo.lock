@@ -5861,18 +5861,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "schedule1"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "dioxus-free-icons",
- "dioxus-logger",
- "dioxus-primitives",
- "kinetic_ui",
- "tracing",
-]
-
-[[package]]
 name = "scoped-futures"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
