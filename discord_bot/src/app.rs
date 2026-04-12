@@ -1,7 +1,7 @@
 use {
     crate::{
         components::Navbar,
-        views::{Home, Modpack, PrivacyPolicy, TermsOfService},
+        views::{Home, Modpack, PrivacyPolicy, Schedule1, TermsOfService},
     },
     dioxus::prelude::*,
     kinetic_ui::KineticTheme,
@@ -30,6 +30,8 @@ pub enum Route {
     Home {},
     #[route("/modpack")]
     Modpack {},
+    #[route("/schedule1")]
+    Schedule1 {},
     #[route("/terms-of-service")]
     TermsOfService {},
     #[route("/privacy-policy")]
