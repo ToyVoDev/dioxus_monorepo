@@ -11,5 +11,6 @@ pub mod queries;
 pub mod schema;
 pub mod state;
 pub mod views;
+pub mod schedule1;
 
 rust_i18n::i18n!();

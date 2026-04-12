@@ -19,3 +19,6 @@ pub use privacy_policy::PrivacyPolicy;
 
 mod terms_of_service;
 pub use terms_of_service::TermsOfService;
+
+mod schedule1;
+pub use schedule1::*;
