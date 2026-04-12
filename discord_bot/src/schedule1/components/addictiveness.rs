@@ -1,0 +1,12 @@
+use super::sell_prices::ComponentProps;
+use dioxus::prelude::*;
+
+#[component]
+pub fn Addictiveness(props: ComponentProps) -> Element {
+    rsx! {
+        div {
+            "Addictiveness"
+        }
+        div { justify_self: "end", "{props.working_product.addictiveness():.0}%" }
+    }
+}
