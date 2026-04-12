@@ -7,10 +7,10 @@ pub mod error;
 pub mod models;
 #[cfg(feature = "server")]
 pub mod queries;
+pub mod schedule1;
 #[cfg(feature = "server")]
 pub mod schema;
 pub mod state;
 pub mod views;
-pub mod schedule1;
 
 rust_i18n::i18n!();
