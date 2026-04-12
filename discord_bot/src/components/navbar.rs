@@ -23,6 +23,10 @@ pub fn Navbar() -> Element {
                 "Minecraft Modpack"
             }
             Link {
+                to: Route::Schedule1 {},
+                "Schedule1"
+            }
+            Link {
                 to: Route::TermsOfService {},
                 "Terms of Service"
             }
