@@ -19,6 +19,7 @@ diesel_migrations = { workspace = true, optional = true, features = ["postgres"]
 dirs = { workspace = true, optional = true }
 dotenvy = { workspace = true, optional = true }
 hex = { version = "0.4", optional = true }
+image = { workspace = true, optional = true }
 lofty = { workspace = true, optional = true }
 rand = { workspace = true, optional = true }
 sha2 = { version = "0.10", optional = true }
@@ -40,6 +41,7 @@ server = [
     "dep:dirs",
     "dep:dotenvy",
     "dep:hex",
+    "dep:image",
     "dep:lofty",
     "dep:rand",
     "dep:sha2",
