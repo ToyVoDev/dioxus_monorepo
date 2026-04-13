@@ -90,3 +90,47 @@ pub struct AuthenticationResult {
     pub access_token: String,
     pub server_id: Uuid,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct MediaSourceInfo {
+    pub id: String,
+    pub path: Option<String>,
+    pub protocol: String,           // "File"
+    pub media_type: Option<String>, // "Audio"
+    pub container: Option<String>,
+    pub size: Option<i64>,
+    pub bit_rate: Option<i32>,
+    pub default_audio_stream_index: Option<i32>,
+    pub supports_direct_play: bool,
+    pub supports_direct_stream: bool,
+    pub supports_transcoding: bool,
+    pub is_remote: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct PlaybackInfoResponse {
+    pub media_sources: Vec<MediaSourceInfo>,
+    pub play_session_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct SearchHint {
+    pub item_id: Uuid,
+    pub name: String,
+    #[serde(rename = "Type")]
+    pub item_type: String,
+    pub album: Option<String>,
+    pub album_id: Option<Uuid>,
+    pub album_artist: Option<String>,
+    pub primary_image_tag: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct SearchHintsResult {
+    pub search_hints: Vec<SearchHint>,
+    pub total_record_count: i64,
+}
