@@ -1,3 +1,4 @@
+pub mod query;
 pub mod users;
 
 use axum::Router;
