@@ -36,32 +36,58 @@ fn main() {
     #[cfg(feature = "server")]
     dioxus::serve(|| async move {
         dioxus_logger::initialize_default();
-        use axum::Extension;
-        use dioxus::server::axum::routing::get;
-
         dotenvy::dotenv().ok();
-        let database_url =
-            std::env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env or environment");
 
-        // Run migrations synchronously on a blocking thread
+        let database_url = std::env::var("DATABASE_URL")
+            .expect("DATABASE_URL must be set in .env or environment");
+
+        let music_dir = std::env::var("MUSIC_DIR")
+            .map(std::path::PathBuf::from)
+            .unwrap_or_else(|_| {
+                dirs::audio_dir().unwrap_or_else(|| {
+                    dirs::home_dir().expect("home dir must exist").join("Music")
+                })
+            });
+
+        let image_cache_dir = std::env::var("IMAGE_CACHE_DIR")
+            .map(std::path::PathBuf::from)
+            .unwrap_or_else(|_| {
+                dirs::data_local_dir()
+                    .unwrap_or_else(|| {
+                        dirs::home_dir().expect("home dir must exist").join(".local/share")
+                    })
+                    .join("dioxus_music/images")
+            });
+
+        // Run Diesel migrations (blocking, must complete before serving).
         {
             let url = database_url.clone();
-            tokio::task::spawn_blocking(move || dioxus_music_api::db::run_migrations(&url))
+            tokio::task::spawn_blocking(move || dioxus_music_api::run_migrations(&url))
                 .await
                 .expect("Migration thread panicked");
         }
 
-        let pool = dioxus_music_api::db::create_pool(&database_url).await;
+        let pool = dioxus_music_api::create_pool(&database_url).await;
 
-        // Spawn background quick scan (non-blocking, skips files already in DB)
-        tokio::spawn(dioxus_music_api::scanner::quick_scan(pool.clone()));
+        let server_id: Uuid = std::env::var("SERVER_ID")
+            .ok()
+            .and_then(|s| s.parse().ok())
+            .unwrap_or_else(Uuid::new_v4);
 
-        let router = dioxus::server::router(App)
-            .route(
-                "/stream/{track_id}",
-                get(dioxus_music_api::streaming::stream_track),
-            )
-            .layer(Extension(pool));
+        let state = dioxus_music_api::AppState {
+            pool,
+            image_cache_dir,
+            server_id,
+            music_dir,
+        };
+
+        // Create default admin user if no users exist.
+        dioxus_music_api::bootstrap(&state).await;
+
+        // Mount the Jellyfin REST router alongside the Dioxus app.
+        let api_router = dioxus_music_api::create_router(state);
+
+        let router = dioxus::server::router(App).merge(api_router);
 
         Ok(router)
     });
@@ -75,16 +101,13 @@ fn App() -> Element {
     rsx! {
         document::Link { rel: "icon", href: FAVICON }
         document::Link { rel: "stylesheet", href: MAIN_CSS }
-
         Router::<Route> {}
     }
 }
 
 #[component]
 fn AppLayout() -> Element {
-    use_context_provider(|| ServerConfig {
-        base_url: String::new(),
-    });
+    use_context_provider(|| ServerConfig { base_url: String::new() });
     use_player_state_provider();
     let nav = navigator();
     let current_route = use_route::<Route>();

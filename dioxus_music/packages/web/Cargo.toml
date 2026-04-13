@@ -13,9 +13,10 @@ kinetic_ui = { workspace = true }
 dotenvy = { workspace = true, optional = true }
 tokio = { workspace = true, optional = true }
 tracing = { workspace = true }
-uuid = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+dirs = { workspace = true, optional = true }
 
 [features]
 default = []
 web = ["dioxus/web"]
-server = ["dioxus/server", "dioxus_music_ui/server", "dioxus_music_api/server", "dep:dotenvy", "dep:axum", "dep:tokio"]
+server = ["dioxus/server", "dioxus_music_ui/server", "dioxus_music_api/server", "dep:dotenvy", "dep:axum", "dep:tokio", "dep:dirs"]
