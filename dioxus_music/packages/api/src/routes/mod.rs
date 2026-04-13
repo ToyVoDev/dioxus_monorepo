@@ -5,6 +5,7 @@ pub mod custom;
 pub mod genres;
 pub mod images;
 pub mod items;
+pub mod playlists;
 pub mod query;
 pub mod search;
 pub mod users;
@@ -22,6 +23,7 @@ pub fn create_router(state: AppState) -> Router {
         .merge(audio::router())
         .merge(images::router())
         .merge(search::router())
+        .merge(playlists::router())
         .merge(custom::router())
         .with_state(state)
 }
