@@ -1,3 +1,4 @@
+pub mod api_client;
 pub mod audio;
 pub mod player_state;
 

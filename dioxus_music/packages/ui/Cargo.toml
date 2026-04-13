@@ -8,7 +8,10 @@ dioxus = { workspace = true }
 dioxus_music_api = { workspace = true }
 fastrand = { workspace = true }
 kinetic_ui = { workspace = true }
+reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true }
+urlencoding = { workspace = true }
+uuid = { workspace = true, features = ["serde"] }
 
 [features]
 server = ["dioxus_music_api/server"]
