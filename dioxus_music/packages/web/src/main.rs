@@ -84,6 +84,9 @@ fn main() {
         // Create default admin user if no users exist.
         dioxus_music_api::bootstrap(&state).await;
 
+        // Spawn background quick scan.
+        tokio::spawn(dioxus_music_api::quick_scan(state.clone()));
+
         // Mount the Jellyfin REST router alongside the Dioxus app.
         let api_router = dioxus_music_api::create_router(state);
 
