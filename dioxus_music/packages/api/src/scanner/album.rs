@@ -20,11 +20,13 @@ pub async fn find_or_create(
 ) -> Result<Uuid, diesel::result::Error> {
     let norm_title = normalize(title);
 
+    // Parameterized comparison — avoids SQL injection via music file tags.
     let existing: Option<Album> = albums::table
         .filter(albums::artist_id.eq(artist_id))
-        .filter(diesel::dsl::sql::<diesel::sql_types::Bool>(
-            &format!("LOWER(TRIM(title)) = '{}'", norm_title.replace('\'', "''")),
-        ))
+        .filter(
+            diesel::dsl::sql::<diesel::sql_types::Bool>("LOWER(TRIM(title)) = ")
+                .bind::<diesel::sql_types::Text, _>(&norm_title),
+        )
         .first(conn)
         .await
         .optional()?;

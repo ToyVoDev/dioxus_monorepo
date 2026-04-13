@@ -89,7 +89,10 @@ pub async fn full_scan(state: AppState) {
     if state.image_cache_dir.exists() {
         std::fs::remove_dir_all(&state.image_cache_dir).ok();
     }
-    std::fs::create_dir_all(&state.image_cache_dir).ok();
+    if let Err(e) = std::fs::create_dir_all(&state.image_cache_dir) {
+        tracing::error!("full_scan: failed to create image cache dir {:?}: {e}", state.image_cache_dir);
+        return;
+    }
 
     // Truncate tables in dependency order.
     diesel::delete(user_data::table).execute(&mut conn).await.ok();
@@ -134,7 +137,10 @@ async fn process_directory(
     dir: &Path,
     paths: &[std::path::PathBuf],
 ) {
-    let mut album_id_for_dir: Option<Uuid> = None;
+    // Track cover extraction state to avoid redundant DB queries after first attempt.
+    let mut cover_extracted = false;
+    // Track last resolved album for post-loop artist image propagation.
+    let mut last_album_id: Option<Uuid> = None;
 
     for path in paths {
         // Read metadata on a blocking thread to avoid blocking the async runtime.
@@ -151,10 +157,14 @@ async fn process_directory(
 
         let Ok(mut conn) = state.pool.get().await else { continue };
 
-        // Resolve artist and album artist.
-        let track_artist_id = artist::find_or_create(&mut conn, &meta.artist)
-            .await
-            .unwrap_or_else(|_| Uuid::new_v4());
+        // Resolve track artist — skip track if DB is unreachable.
+        let track_artist_id = match artist::find_or_create(&mut conn, &meta.artist).await {
+            Ok(id) => id,
+            Err(e) => {
+                tracing::error!("Failed to resolve artist for {:?}: {e}", path);
+                continue;
+            }
+        };
 
         let album_artist_id = if meta.album_artist != meta.artist {
             artist::find_or_create(&mut conn, &meta.album_artist)
@@ -164,22 +174,15 @@ async fn process_directory(
             track_artist_id
         };
 
-        // Resolve album (once per directory).
-        let the_album_id = if let Some(aid) = album_id_for_dir {
-            aid
-        } else {
-            let aid = album::find_or_create(&mut conn, &meta.album, album_artist_id, meta.year)
-                .await
-                .unwrap_or_else(|_| Uuid::new_v4());
-            album_id_for_dir = Some(aid);
-            aid
+        // Resolve album per-track so compilation folders assign each track to its correct album.
+        let the_album_id = match album::find_or_create(&mut conn, &meta.album, album_artist_id, meta.year).await {
+            Ok(id) => id,
+            Err(e) => {
+                tracing::error!("Failed to resolve album for {:?}: {e}", path);
+                continue;
+            }
         };
-
-        let container = path
-            .extension()
-            .and_then(|e| e.to_str())
-            .map(|e| e.to_ascii_lowercase())
-            .unwrap_or_else(|| "unknown".to_string());
+        last_album_id = Some(the_album_id);
 
         let new_track = NewTrack {
             id: Uuid::new_v4(),
@@ -192,7 +195,7 @@ async fn process_directory(
             track_number: meta.track_number,
             disc_number: meta.disc_number,
             file_path: path.to_str().unwrap_or("").to_string(),
-            container,
+            container: meta.container.clone(),
             bit_rate: meta.bit_rate,
             sample_rate: meta.sample_rate,
             channels: meta.channels,
@@ -208,14 +211,17 @@ async fn process_directory(
             tracing::error!("Failed to insert track {:?}: {e}", path);
         }
 
-        // Extract cover art once per album (first track that has it or folder cover).
-        if album_id_for_dir.is_some() {
+        // Attempt cover art extraction once per directory (or until we get art).
+        // try_extract_album_cover is idempotent, so later tracks won't double-write,
+        // but we skip extra DB round-trips once we know we've already tried.
+        if !cover_extracted {
             try_extract_album_cover(state, dir, path, the_album_id, &meta).await;
+            cover_extracted = true;
         }
     }
 
-    // Also try to assign the album cover to the album artist as their Primary image.
-    if let Some(album_id) = album_id_for_dir {
+    // Propagate the album's Primary image to its artist if the artist has none.
+    if let Some(album_id) = last_album_id {
         if let Ok(mut conn) = state.pool.get().await {
             propagate_artist_image_from_album(&mut conn, album_id).await;
         }

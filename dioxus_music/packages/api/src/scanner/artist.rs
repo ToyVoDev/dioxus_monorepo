@@ -18,11 +18,12 @@ pub async fn find_or_create(
 ) -> Result<Uuid, diesel::result::Error> {
     let norm = normalize(name);
 
-    // Try to find existing artist by normalized name (case-insensitive).
+    // Try to find existing artist by normalized name (case-insensitive, parameterized).
     let existing: Option<Artist> = artists::table
-        .filter(diesel::dsl::sql::<diesel::sql_types::Bool>(
-            &format!("LOWER(TRIM(name)) = '{}'", norm.replace('\'', "''")),
-        ))
+        .filter(
+            diesel::dsl::sql::<diesel::sql_types::Bool>("LOWER(TRIM(name)) = ")
+                .bind::<diesel::sql_types::Text, _>(&norm),
+        )
         .first(conn)
         .await
         .optional()?;
