@@ -1,8 +1,9 @@
-use rand::Rng;
+use rand::RngCore;
 
 /// Generate a random 32-byte hex token.
 pub fn generate() -> String {
-    let bytes: [u8; 32] = rand::thread_rng().gen();
+    let mut bytes = [0u8; 32];
+    rand::thread_rng().fill_bytes(&mut bytes);
     hex::encode(bytes)
 }
 
