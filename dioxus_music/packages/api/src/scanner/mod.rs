@@ -137,8 +137,9 @@ async fn process_directory(
     dir: &Path,
     paths: &[std::path::PathBuf],
 ) {
-    // Track cover extraction state to avoid redundant DB queries after first attempt.
-    let mut cover_extracted = false;
+    // Track which albums have had cover extraction attempted (per-album, not per-directory,
+    // so compilation folders each get a cover attempt for each distinct album they contain).
+    let mut covers_extracted: std::collections::HashSet<Uuid> = std::collections::HashSet::new();
     // Track last resolved album for post-loop artist image propagation.
     let mut last_album_id: Option<Uuid> = None;
 
@@ -167,9 +168,13 @@ async fn process_directory(
         };
 
         let album_artist_id = if meta.album_artist != meta.artist {
-            artist::find_or_create(&mut conn, &meta.album_artist)
-                .await
-                .unwrap_or(track_artist_id)
+            match artist::find_or_create(&mut conn, &meta.album_artist).await {
+                Ok(id) => id,
+                Err(e) => {
+                    tracing::warn!("Failed to resolve album artist for {:?}, falling back to track artist: {e}", path);
+                    track_artist_id
+                }
+            }
         } else {
             track_artist_id
         };
@@ -211,12 +216,12 @@ async fn process_directory(
             tracing::error!("Failed to insert track {:?}: {e}", path);
         }
 
-        // Attempt cover art extraction once per directory (or until we get art).
-        // try_extract_album_cover is idempotent, so later tracks won't double-write,
-        // but we skip extra DB round-trips once we know we've already tried.
-        if !cover_extracted {
+        // Extract cover art once per unique album in this directory. Using a HashSet
+        // keyed on album_id ensures compilation folders (multiple albums, one dir)
+        // each get a cover attempt, while standard albums (one album, one dir) still
+        // avoid the N-1 redundant DB SELECT queries.
+        if covers_extracted.insert(the_album_id) {
             try_extract_album_cover(state, dir, path, the_album_id, &meta).await;
-            cover_extracted = true;
         }
     }
 
