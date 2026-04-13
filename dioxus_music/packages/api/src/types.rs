@@ -134,3 +134,89 @@ pub struct SearchHintsResult {
     pub search_hints: Vec<SearchHint>,
     pub total_record_count: i64,
 }
+
+/// Smart playlist genre filter rules.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SmartPlaylistRules {
+    pub include_genres: Vec<String>,
+    pub exclude_genres: Vec<String>,
+}
+
+impl SmartPlaylistRules {
+    /// Check if a track's genre matches these rules.
+    pub fn matches(&self, genre: &str) -> bool {
+        let included = self.include_genres.is_empty()
+            || self.include_genres.iter().any(|g| g.eq_ignore_ascii_case(genre));
+        let excluded = self.exclude_genres.iter().any(|g| g.eq_ignore_ascii_case(genre));
+        included && !excluded
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct CreatePlaylistRequest {
+    pub name: String,
+    pub ids: Option<Vec<Uuid>>,
+    pub user_id: Option<Uuid>,
+    pub media_type: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct UpdatePlaylistRequest {
+    pub name: Option<String>,
+    pub overview: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct CreateSmartPlaylistRequest {
+    pub name: String,
+    pub rules: SmartPlaylistRules,
+    pub user_id: Option<Uuid>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn smart_rules_empty_include_matches_all() {
+        let rules = SmartPlaylistRules {
+            include_genres: vec![],
+            exclude_genres: vec![],
+        };
+        assert!(rules.matches("Jazz"));
+        assert!(rules.matches("Blues"));
+    }
+
+    #[test]
+    fn smart_rules_include_filters() {
+        let rules = SmartPlaylistRules {
+            include_genres: vec!["Jazz".to_string()],
+            exclude_genres: vec![],
+        };
+        assert!(rules.matches("Jazz"));
+        assert!(!rules.matches("Blues"));
+    }
+
+    #[test]
+    fn smart_rules_exclude_overrides_include() {
+        let rules = SmartPlaylistRules {
+            include_genres: vec![],
+            exclude_genres: vec!["Holiday".to_string()],
+        };
+        assert!(rules.matches("Jazz"));
+        assert!(!rules.matches("Holiday"));
+    }
+
+    #[test]
+    fn smart_rules_case_insensitive() {
+        let rules = SmartPlaylistRules {
+            include_genres: vec!["jazz".to_string()],
+            exclude_genres: vec![],
+        };
+        assert!(rules.matches("Jazz"));
+        assert!(rules.matches("JAZZ"));
+    }
+}
