@@ -10,6 +10,8 @@ pub mod error;
 pub mod routes;
 #[cfg(feature = "server")]
 pub mod state;
+#[cfg(feature = "server")]
+pub mod scanner;
 
 #[cfg(feature = "server")]
 pub use db::{create_pool, run_migrations};
@@ -17,6 +19,8 @@ pub use db::{create_pool, run_migrations};
 pub use routes::create_router;
 #[cfg(feature = "server")]
 pub use state::AppState;
+#[cfg(feature = "server")]
+pub use scanner::{full_scan, quick_scan};
 
 /// Create default admin user if the users table is empty (first-run bootstrap).
 #[cfg(feature = "server")]
