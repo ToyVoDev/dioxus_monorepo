@@ -4,6 +4,8 @@ use dioxus_music_ui::{TrackList, api_client::use_api_client, player_state::use_p
 #[component]
 pub fn AlbumDetail(name: String) -> Element {
     let client = use_api_client();
+    let client2 = client.clone();
+    let client3 = client.clone();
 
     // Fetch all albums, find the one matching this name.
     let albums = use_resource(move || {
@@ -24,7 +26,7 @@ pub fn AlbumDetail(name: String) -> Element {
 
     let album_id = album.id;
     let tracks = use_resource(move || {
-        let client = client.clone();
+        let client = client2.clone();
         async move { client.get_album_tracks(album_id).await.ok() }
     });
 
@@ -32,7 +34,7 @@ pub fn AlbumDetail(name: String) -> Element {
         .image_tags
         .as_ref()
         .and_then(|t| t.get("Primary"))
-        .map(|_| client.image_url(album.id, "Primary"));
+        .map(|_| client3.image_url(album.id, "Primary"));
 
     rsx! {
         div { class: "album-detail",

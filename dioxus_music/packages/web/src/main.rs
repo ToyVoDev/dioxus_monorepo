@@ -153,7 +153,7 @@ fn AuthenticatedLayout() -> Element {
 /// Login form shown before authentication.
 #[component]
 fn LoginView() -> Element {
-    let client_signal = use_context::<Signal<ApiClient>>();
+    let mut client_signal = use_context::<Signal<ApiClient>>();
     let mut username = use_signal(String::new);
     let mut password = use_signal(String::new);
     let mut error_msg = use_signal(|| None::<String>);
