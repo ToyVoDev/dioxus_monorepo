@@ -35,8 +35,13 @@ pub fn QueuePanel() -> Element {
                         let is_current = has_track && i == queue_index;
                         let is_drag_over = drag_over_index() == Some(i);
                         let track_id = track.id;
-                        let track_title = track.title.clone();
-                        let track_artist = track.artist.clone();
+                        let track_title = track.name.clone();
+                        let track_artist = track
+                            .artists
+                            .as_ref()
+                            .and_then(|a| a.first())
+                            .cloned()
+                            .unwrap_or_default();
 
                         let class_name = if is_current && is_drag_over {
                             "queue-panel__item queue-panel__item--active queue-panel__item--drag-over"

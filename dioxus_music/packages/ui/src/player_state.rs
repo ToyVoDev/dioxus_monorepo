@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_music_api::models::TrackSummary;
+use dioxus_music_api::types::BaseItemDto;
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum RepeatMode {
@@ -11,14 +11,14 @@ pub enum RepeatMode {
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct PlayerState {
-    pub current_track: Option<TrackSummary>,
-    pub queue: Vec<TrackSummary>,
+    pub current_track: Option<BaseItemDto>,
+    pub queue: Vec<BaseItemDto>,
     pub queue_index: usize,
     pub is_playing: bool,
     pub repeat_mode: RepeatMode,
     pub is_shuffled: bool,
     pub show_queue: bool,
-    original_queue: Vec<TrackSummary>,
+    original_queue: Vec<BaseItemDto>,
     original_index: usize,
 }
 
@@ -27,7 +27,7 @@ impl PlayerState {
         Self::default()
     }
 
-    pub fn play_track(&mut self, track: TrackSummary, queue: Vec<TrackSummary>, index: usize) {
+    pub fn play_track(&mut self, track: BaseItemDto, queue: Vec<BaseItemDto>, index: usize) {
         self.current_track = Some(track);
         self.queue = queue;
         self.queue_index = index;
@@ -122,7 +122,8 @@ impl PlayerState {
 
             if self.queue.len() > 1 && self.queue_index < self.queue.len() {
                 // Keep current track at current position, shuffle the rest after it
-                let mut remaining: Vec<TrackSummary> = self.queue[self.queue_index + 1..].to_vec();
+                let mut remaining: Vec<BaseItemDto> =
+                    self.queue[self.queue_index + 1..].to_vec();
                 // Fisher-Yates shuffle on remaining
                 for i in (1..remaining.len()).rev() {
                     let j = fastrand::usize(..=i);

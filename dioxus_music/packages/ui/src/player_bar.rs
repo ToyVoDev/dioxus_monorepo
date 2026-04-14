@@ -55,8 +55,16 @@ pub fn PlayerBar(
                 // Now playing info
                 div { class: "player-bar__info",
                     if let Some(track) = &track_info {
-                        div { class: "player-bar__title", "{track.title}" }
-                        div { class: "player-bar__artist", "{track.artist}" }
+                        div { class: "player-bar__title", "{track.name}" }
+                        div { class: "player-bar__artist",
+                            {
+                                track.artists
+                                    .as_ref()
+                                    .and_then(|a| a.first())
+                                    .map(|s| s.as_str())
+                                    .unwrap_or("")
+                            }
+                        }
                     } else {
                         div { class: "player-bar__title player-bar__title--empty", "No track selected" }
                     }

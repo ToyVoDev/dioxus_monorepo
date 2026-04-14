@@ -1,10 +1,11 @@
 use crate::player_state::use_player_state;
 use dioxus::prelude::*;
-use dioxus_music_api::models::TrackSummary;
+use dioxus_music_api::types::BaseItemDto;
 
 const TRACK_LIST_CSS: Asset = asset!("/assets/styling/track-list.css");
 
-fn format_duration(secs: i32) -> String {
+fn format_duration(ticks: i64) -> String {
+    let secs = (ticks / 10_000_000) as i32;
     let minutes = secs / 60;
     let seconds = secs % 60;
     format!("{minutes}:{seconds:02}")
@@ -12,7 +13,7 @@ fn format_duration(secs: i32) -> String {
 
 #[component]
 pub fn TrackList(
-    tracks: Vec<TrackSummary>,
+    tracks: Vec<BaseItemDto>,
     #[props(default = false)] show_download_status: bool,
 ) -> Element {
     let mut player = use_player_state();
@@ -57,6 +58,16 @@ pub fn TrackList(
                         "track-list__row"
                     };
 
+                    let artist = track
+                        .artists
+                        .as_ref()
+                        .and_then(|a| a.first())
+                        .map(|s| s.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let album = track.album.as_deref().unwrap_or("").to_string();
+                    let duration = track.run_time_ticks.unwrap_or(0);
+
                     rsx! {
                         div {
                             class: "{row_class}",
@@ -70,10 +81,12 @@ pub fn TrackList(
                                 "#);
                             },
                             span { class: "track-list__col track-list__col--num", "{idx + 1}" }
-                            span { class: "track-list__col track-list__col--title", "{track.title}" }
-                            span { class: "track-list__col track-list__col--artist", "{track.artist}" }
-                            span { class: "track-list__col track-list__col--album", "{track.album}" }
-                            span { class: "track-list__col track-list__col--duration", "{format_duration(track.duration_secs)}" }
+                            span { class: "track-list__col track-list__col--title", "{track.name}" }
+                            span { class: "track-list__col track-list__col--artist", "{artist}" }
+                            span { class: "track-list__col track-list__col--album", "{album}" }
+                            span { class: "track-list__col track-list__col--duration",
+                                "{format_duration(duration)}"
+                            }
                             if show_download_status {
                                 span { class: "track-list__col track-list__col--status",
                                     svg {

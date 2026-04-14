@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::ServerConfig;
+use dioxus_music_ui::api_client::ApiClient;
 use dioxus_music_ui::player_state::use_player_state_provider;
-use dioxus_music_ui::{AppShell, Sidebar};
+use dioxus_music_ui::{AppShell, ServerConfig, Sidebar};
 use uuid::Uuid;
 use views::{AlbumDetail, Artists, Downloads, Home, Library, NowPlaying, PlaylistView, Playlists};
 
@@ -103,6 +103,7 @@ fn drag_regions() -> Element {
 fn DesktopLayout() -> Element {
     let server_url =
         std::env::var("SERVER_URL").unwrap_or_else(|_| "http://localhost:8080".to_string());
+    use_context_provider(|| ApiClient::new(server_url.clone()));
     use_context_provider(|| ServerConfig {
         base_url: server_url,
     });
