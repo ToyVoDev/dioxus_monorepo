@@ -109,11 +109,25 @@ fn App() -> Element {
     }
 }
 
+/// Returns the current window origin in WASM, or empty string on the server.
+fn api_base_url() -> String {
+    #[cfg(target_arch = "wasm32")]
+    {
+        web_sys::window()
+            .and_then(|w| w.location().origin().ok())
+            .unwrap_or_default()
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        String::new()
+    }
+}
+
 /// Root layout. Provides the `Signal<ApiClient>` context and gates access
 /// behind a login screen until a token is obtained.
 #[component]
 fn AppLayout() -> Element {
-    let client_signal = use_context_provider(|| Signal::new(ApiClient::new("")));
+    let client_signal = use_context_provider(|| Signal::new(ApiClient::new(api_base_url())));
 
     rsx! {
         if client_signal.read().token.is_none() {
