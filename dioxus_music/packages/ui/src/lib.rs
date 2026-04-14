@@ -2,11 +2,6 @@ pub mod api_client;
 pub mod audio;
 pub mod player_state;
 
-#[derive(Clone, Debug, PartialEq)]
-pub struct ServerConfig {
-    pub base_url: String,
-}
-
 mod album_utils;
 pub use album_utils::{AlbumSummary, group_tracks_into_albums};
 
@@ -24,8 +19,5 @@ pub use player_bar::PlayerBar;
 
 mod track_list;
 pub use track_list::TrackList;
-
-pub mod playlist_form;
-pub use playlist_form::{PlaylistFormModal, PlaylistFormMode};
 
 mod queue_panel;
