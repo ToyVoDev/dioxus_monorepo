@@ -9,7 +9,7 @@ use dioxus_music_api::types::{
 };
 
 /// Shared API client. Holds the base URL and current auth token.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct ApiClient {
     pub client: Client,
     pub base_url: String,
@@ -25,7 +25,7 @@ impl ApiClient {
         }
     }
 
-    fn auth_header(&self) -> String {
+    pub(crate) fn auth_header(&self) -> String {
         match &self.token {
             Some(t) => format!(
                 r#"MediaBrowser Client="DioxusMusic", Device="Web", DeviceId="web-1", Version="1.0", Token="{t}""#

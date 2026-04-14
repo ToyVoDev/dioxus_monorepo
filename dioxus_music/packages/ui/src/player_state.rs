@@ -1,6 +1,8 @@
 use dioxus::prelude::*;
 use dioxus_music_api::types::BaseItemDto;
 
+use crate::api_client::ApiClient;
+
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum RepeatMode {
     #[default]
@@ -9,7 +11,7 @@ pub enum RepeatMode {
     One,
 }
 
-#[derive(Debug, Clone, PartialEq, Default)]
+#[derive(Debug, Clone, Default)]
 pub struct PlayerState {
     pub current_track: Option<BaseItemDto>,
     pub queue: Vec<BaseItemDto>,
@@ -18,13 +20,17 @@ pub struct PlayerState {
     pub repeat_mode: RepeatMode,
     pub is_shuffled: bool,
     pub show_queue: bool,
+    pub api_client: ApiClient,
     original_queue: Vec<BaseItemDto>,
     original_index: usize,
 }
 
 impl PlayerState {
-    pub fn new() -> Self {
-        Self::default()
+    pub fn new(api_client: ApiClient) -> Self {
+        Self {
+            api_client,
+            ..Default::default()
+        }
     }
 
     pub fn play_track(&mut self, track: BaseItemDto, queue: Vec<BaseItemDto>, index: usize) {
@@ -34,6 +40,24 @@ impl PlayerState {
         self.is_playing = true;
         self.is_shuffled = false;
         self.original_queue.clear();
+
+        if let Some(track) = &self.current_track {
+            let client = self.api_client.clone();
+            let track_id = track.id;
+            spawn(async move {
+                let _ = client
+                    .client
+                    .post(format!("{}/Sessions/Playing", client.base_url))
+                    .header("Authorization", client.auth_header())
+                    .json(&serde_json::json!({
+                        "ItemId": track_id,
+                        "PositionTicks": 0,
+                        "IsPaused": false,
+                    }))
+                    .send()
+                    .await;
+            });
+        }
     }
 
     pub fn next_track(&mut self) {
@@ -167,7 +191,8 @@ impl PlayerState {
 }
 
 pub fn use_player_state_provider() {
-    use_context_provider(|| Signal::new(PlayerState::new()));
+    let api_client = use_context::<ApiClient>();
+    use_context_provider(|| Signal::new(PlayerState::new(api_client)));
 }
 
 pub fn use_player_state() -> Signal<PlayerState> {
