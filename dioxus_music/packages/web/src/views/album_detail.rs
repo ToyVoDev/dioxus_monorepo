@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::{TrackList, api_client::ApiClient, player_state::use_player_state};
+use dioxus_music_ui::{TrackList, api_client::use_api_client, player_state::use_player_state};
 
 #[component]
 pub fn AlbumDetail(name: String) -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
 
     // Fetch all albums, find the one matching this name.
     let albums = use_resource(move || {
@@ -23,20 +23,16 @@ pub fn AlbumDetail(name: String) -> Element {
     };
 
     let album_id = album.id;
-    let client2 = use_context::<ApiClient>();
     let tracks = use_resource(move || {
-        let client = client2.clone();
+        let client = client.clone();
         async move { client.get_album_tracks(album_id).await.ok() }
     });
 
-    let image_url = {
-        let client3 = use_context::<ApiClient>();
-        album
-            .image_tags
-            .as_ref()
-            .and_then(|t| t.get("Primary"))
-            .map(|_| client3.image_url(album.id, "Primary"))
-    };
+    let image_url = album
+        .image_tags
+        .as_ref()
+        .and_then(|t| t.get("Primary"))
+        .map(|_| client.image_url(album.id, "Primary"));
 
     rsx! {
         div { class: "album-detail",

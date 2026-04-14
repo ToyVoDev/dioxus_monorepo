@@ -1,4 +1,4 @@
-use crate::api_client::ApiClient;
+use crate::api_client::use_api_client;
 use crate::player_state::{RepeatMode, use_player_state};
 use dioxus::prelude::*;
 
@@ -7,7 +7,7 @@ pub fn render_audio_element() -> Element {
     let track_info = player.read().current_track.clone();
     let repeat_mode = player.read().repeat_mode;
 
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let audio_src = track_info
         .as_ref()
         .map(|t| client.stream_url(t.id))

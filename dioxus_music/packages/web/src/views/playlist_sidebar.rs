@@ -1,12 +1,12 @@
 use dioxus::prelude::*;
 use dioxus_music_api::types::SmartPlaylistRules;
-use dioxus_music_ui::api_client::ApiClient;
+use dioxus_music_ui::api_client::use_api_client;
 
 use crate::Route;
 
 #[component]
 pub fn PlaylistSidebarSection() -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let client_playlists = client.clone();
     let mut playlists = use_resource(move || {
         let client = client_playlists.clone();
@@ -46,7 +46,7 @@ pub fn PlaylistSidebarSection() -> Element {
 
 #[component]
 fn CreatePlaylistModal(on_save: EventHandler<()>, on_cancel: EventHandler<()>) -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let client_genres = client.clone();
     let mut name = use_signal(String::new);
     let mut is_smart = use_signal(|| false);

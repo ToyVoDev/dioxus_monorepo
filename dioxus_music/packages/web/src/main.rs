@@ -109,14 +109,24 @@ fn App() -> Element {
     }
 }
 
+/// Root layout. Provides the `Signal<ApiClient>` context and gates access
+/// behind a login screen until a token is obtained.
 #[component]
 fn AppLayout() -> Element {
-    use_context_provider(|| {
-        // In production, read base_url from window.location.origin or env.
-        // For local dev, the Dioxus dev server serves both frontend and API on the same origin.
-        let base_url = "".to_string(); // empty = same-origin
-        ApiClient::new(base_url)
-    });
+    let client_signal = use_context_provider(|| Signal::new(ApiClient::new("")));
+
+    rsx! {
+        if client_signal.read().token.is_none() {
+            LoginView {}
+        } else {
+            AuthenticatedLayout {}
+        }
+    }
+}
+
+/// Shown after a successful login. Provides player state and the full app shell.
+#[component]
+fn AuthenticatedLayout() -> Element {
     use_player_state_provider();
     let nav = navigator();
     let current_route = use_route::<Route>();
@@ -136,6 +146,67 @@ fn AppLayout() -> Element {
                 }
             },
             Outlet::<Route> {}
+        }
+    }
+}
+
+/// Login form shown before authentication.
+#[component]
+fn LoginView() -> Element {
+    let client_signal = use_context::<Signal<ApiClient>>();
+    let mut username = use_signal(String::new);
+    let mut password = use_signal(String::new);
+    let mut error_msg = use_signal(|| None::<String>);
+    let mut loading = use_signal(|| false);
+
+    rsx! {
+        div { class: "login-page",
+            div { class: "login-card",
+                h1 { "Sign in" }
+                if let Some(err) = error_msg() {
+                    p { class: "login-card__error", "{err}" }
+                }
+                input {
+                    placeholder: "Username",
+                    value: username(),
+                    disabled: loading(),
+                    oninput: move |e| username.set(e.value()),
+                }
+                input {
+                    r#type: "password",
+                    placeholder: "Password",
+                    value: password(),
+                    disabled: loading(),
+                    oninput: move |e| password.set(e.value()),
+                }
+                button {
+                    disabled: loading(),
+                    onclick: move |_| {
+                        let u = username();
+                        let p = password();
+                        loading.set(true);
+                        error_msg.set(None);
+                        spawn(async move {
+                            // Clone the client (drop the borrow before await).
+                            let mut client = {
+                                let r = client_signal.read();
+                                r.clone()
+                            };
+                            match client.authenticate(&u, &p).await {
+                                Ok(_) => {
+                                    // Write the authenticated client back into context.
+                                    *client_signal.write() = client;
+                                }
+                                Err(e) => {
+                                    error_msg.set(Some(format!("Login failed: {e}")));
+                                    loading.set(false);
+                                }
+                            }
+                        });
+                    },
+                    if loading() { "Signing in\u{2026}" } else { "Sign in" }
+                }
+            }
         }
     }
 }

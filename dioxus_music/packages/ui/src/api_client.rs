@@ -1,6 +1,7 @@
 //! HTTP client for the Jellyfin-compatible API.
 //! Works on both native (reqwest with hyper) and WASM (reqwest with fetch).
 
+use dioxus::prelude::*;
 use reqwest::Client;
 use uuid::Uuid;
 use dioxus_music_api::types::{
@@ -343,4 +344,10 @@ impl ApiClient {
             None => self.url(&format!("/Items/{item_id}/Images/{image_type}")),
         }
     }
+}
+
+/// Hook to get the current [`ApiClient`] from context.
+/// Reads from the [`Signal<ApiClient>`] provided by the platform layout.
+pub fn use_api_client() -> ApiClient {
+    use_context::<Signal<ApiClient>>().read().clone()
 }

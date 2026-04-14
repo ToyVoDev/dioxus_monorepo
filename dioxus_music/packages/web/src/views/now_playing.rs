@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::{api_client::ApiClient, player_state::use_player_state};
+use dioxus_music_ui::{api_client::use_api_client, player_state::use_player_state};
 
 #[component]
 pub fn NowPlaying() -> Element {
     let player = use_player_state();
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let state = player.read();
 
     rsx! {

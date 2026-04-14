@@ -1,10 +1,10 @@
 use dioxus::prelude::*;
 use dioxus_music_api::types::BaseItemDto;
-use dioxus_music_ui::api_client::ApiClient;
+use dioxus_music_ui::api_client::use_api_client;
 
 #[component]
 pub fn Artists() -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let artists = use_resource(move || {
         let client = client.clone();
         async move { client.get_artists().await.ok() }
@@ -29,7 +29,7 @@ pub fn Artists() -> Element {
 
 #[component]
 fn ArtistRow(artist: BaseItemDto) -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let image_url = artist.image_tags
         .as_ref()
         .and_then(|t| t.get("Primary"))

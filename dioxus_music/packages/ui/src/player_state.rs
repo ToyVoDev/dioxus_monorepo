@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use dioxus_music_api::types::BaseItemDto;
 
-use crate::api_client::ApiClient;
+use crate::api_client::{ApiClient, use_api_client};
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub enum RepeatMode {
@@ -191,7 +191,7 @@ impl PlayerState {
 }
 
 pub fn use_player_state_provider() {
-    let api_client = use_context::<ApiClient>();
+    let api_client = use_api_client();
     use_context_provider(|| Signal::new(PlayerState::new(api_client)));
 }
 

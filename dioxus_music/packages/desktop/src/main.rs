@@ -103,7 +103,7 @@ fn drag_regions() -> Element {
 fn DesktopLayout() -> Element {
     let server_url =
         std::env::var("SERVER_URL").unwrap_or_else(|_| "http://localhost:8080".to_string());
-    use_context_provider(|| ApiClient::new(server_url));
+    use_context_provider(|| Signal::new(ApiClient::new(server_url)));
     use_player_state_provider();
     let route = use_route::<Route>();
     let on_now_playing = matches!(route, Route::NowPlaying {});

@@ -1,12 +1,12 @@
 use dioxus::prelude::*;
 use dioxus_music_api::types::BaseItemDto;
-use dioxus_music_ui::api_client::ApiClient;
+use dioxus_music_ui::api_client::use_api_client;
 
 use crate::Route;
 
 #[component]
 pub fn Library() -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let albums = use_resource(move || {
         let client = client.clone();
         async move { client.get_albums(None).await.ok() }
@@ -31,7 +31,7 @@ pub fn Library() -> Element {
 
 #[component]
 fn AlbumCard(album: BaseItemDto) -> Element {
-    let client = use_context::<ApiClient>();
+    let client = use_api_client();
     let image_url = album
         .image_tags
         .as_ref()
