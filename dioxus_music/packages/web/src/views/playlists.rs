@@ -1,6 +1,12 @@
 use dioxus::prelude::*;
 
+use super::PlaylistSidebarSection;
+
 #[component]
 pub fn Playlists() -> Element {
-    rsx! { "Coming soon" }
+    rsx! {
+        div { class: "playlists-page",
+            PlaylistSidebarSection {}
+        }
+    }
 }
