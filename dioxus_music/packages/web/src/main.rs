@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use dioxus_music_ui::api_client::ApiClient;
 use dioxus_music_ui::player_state::use_player_state_provider;
 use dioxus_music_ui::{AppShell, ServerConfig, Sidebar};
 use uuid::Uuid;
@@ -110,6 +111,12 @@ fn App() -> Element {
 
 #[component]
 fn AppLayout() -> Element {
+    use_context_provider(|| {
+        // In production, read base_url from window.location.origin or env.
+        // For local dev, the Dioxus dev server serves both frontend and API on the same origin.
+        let base_url = "".to_string(); // empty = same-origin
+        ApiClient::new(base_url)
+    });
     use_context_provider(|| ServerConfig { base_url: String::new() });
     use_player_state_provider();
     let nav = navigator();
