@@ -4,6 +4,8 @@ use dioxus_music_ui::api_client::use_api_client;
 
 use crate::Route;
 
+const LIBRARY_CSS: Asset = asset!("/assets/library.css");
+
 #[component]
 pub fn Library() -> Element {
     let client = use_api_client();
@@ -13,6 +15,7 @@ pub fn Library() -> Element {
     });
 
     rsx! {
+        document::Link { rel: "stylesheet", href: LIBRARY_CSS }
         div { class: "library",
             match &*albums.read() {
                 Some(Some(result)) => rsx! {

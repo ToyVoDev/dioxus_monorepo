@@ -1,0 +1,30 @@
+.playlists-page {
+  padding: var(--k-space-6);
+}
+
+.playlists-page__empty {
+  color: var(--secondary-color-4);
+  font-size: 0.875rem;
+}
+
+.playlist-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-2);
+}
+
+.playlist-card {
+  display: flex;
+  align-items: center;
+  padding: var(--k-space-3) var(--k-space-4);
+  border-radius: var(--k-radius-default);
+  background: var(--primary-color-7);
+  text-decoration: none;
+  color: var(--secondary-color-3);
+  font-size: 0.9375rem;
+  transition: background 150ms;
+}
+
+.playlist-card:hover {
+  background: var(--primary-color-6);
+}

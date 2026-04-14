@@ -28,6 +28,8 @@
   border-radius: var(--k-radius-default);
   background: var(--primary-color-6);
   flex-shrink: 0;
+  object-fit: cover;
+  display: block;
 }
 
 .player-bar__info {

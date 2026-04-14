@@ -21,3 +21,6 @@ pub use playlist_view::PlaylistView;
 
 mod now_playing;
 pub use now_playing::NowPlaying;
+
+mod songs;
+pub use songs::Songs;

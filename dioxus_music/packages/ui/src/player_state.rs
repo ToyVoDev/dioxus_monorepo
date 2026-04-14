@@ -20,6 +20,8 @@ pub struct PlayerState {
     pub repeat_mode: RepeatMode,
     pub is_shuffled: bool,
     pub show_queue: bool,
+    pub current_time: f64,
+    pub duration: f64,
     pub api_client: ApiClient,
     original_queue: Vec<BaseItemDto>,
     original_index: usize,
@@ -39,6 +41,8 @@ impl PlayerState {
         self.queue_index = index;
         self.is_playing = true;
         self.is_shuffled = false;
+        self.current_time = 0.0;
+        self.duration = 0.0;
         self.original_queue.clear();
 
         if let Some(track) = &self.current_track {

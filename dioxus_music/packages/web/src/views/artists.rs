@@ -2,6 +2,8 @@ use dioxus::prelude::*;
 use dioxus_music_api::types::BaseItemDto;
 use dioxus_music_ui::api_client::use_api_client;
 
+const ARTISTS_CSS: Asset = asset!("/assets/artists.css");
+
 #[component]
 pub fn Artists() -> Element {
     let client = use_api_client();
@@ -11,6 +13,7 @@ pub fn Artists() -> Element {
     });
 
     rsx! {
+        document::Link { rel: "stylesheet", href: ARTISTS_CSS }
         div { class: "artists",
             match &*artists.read() {
                 Some(Some(result)) => rsx! {

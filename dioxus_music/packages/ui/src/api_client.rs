@@ -93,6 +93,19 @@ impl ApiClient {
             .await
     }
 
+    pub async fn get_tracks(&self) -> Result<ItemsResult, reqwest::Error> {
+        let url = self.url(
+            "/Items?IncludeItemTypes=Audio&SortBy=AlbumArtist,Album,ParentIndexNumber,IndexNumber&SortOrder=Ascending",
+        );
+        self.client
+            .get(&url)
+            .header("Authorization", self.auth_header())
+            .send()
+            .await?
+            .json()
+            .await
+    }
+
     pub async fn get_artists(&self) -> Result<ItemsResult, reqwest::Error> {
         let url = self.url("/Artists/AlbumArtists?SortBy=SortName&SortOrder=Ascending");
         self.client
@@ -335,7 +348,10 @@ impl ApiClient {
     // ── Streaming ─────────────────────────────────────────────────────────
 
     pub fn stream_url(&self, track_id: Uuid) -> String {
-        self.url(&format!("/Audio/{track_id}/stream"))
+        match &self.token {
+            Some(t) => self.url(&format!("/Audio/{track_id}/stream?api_key={t}")),
+            None => self.url(&format!("/Audio/{track_id}/stream")),
+        }
     }
 
     pub fn image_url(&self, item_id: Uuid, image_type: &str) -> String {

@@ -1,4 +1,4 @@
-use crate::api_client::ApiClient;
+use crate::api_client::use_api_client;
 use dioxus::prelude::*;
 use kinetic_ui::{IconButton, SearchInput};
 
@@ -8,7 +8,7 @@ const SETTINGS_CSS: Asset = asset!("/assets/styling/settings-dropdown.css");
 #[component]
 pub fn Header() -> Element {
     let mut settings_open = use_signal(|| false);
-    let api_client = use_context::<ApiClient>();
+    let api_client = use_api_client();
 
     rsx! {
         document::Link { rel: "stylesheet", href: HEADER_CSS }

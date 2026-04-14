@@ -1,0 +1,37 @@
+.artists {
+  padding: var(--k-space-6);
+}
+
+.artist-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--k-space-1);
+}
+
+.artist-row {
+  display: flex;
+  align-items: center;
+  gap: var(--k-space-3);
+  padding: var(--k-space-2) var(--k-space-3);
+  border-radius: var(--k-radius-default);
+  transition: background 150ms;
+  cursor: default;
+}
+
+.artist-row:hover {
+  background: var(--primary-color-6);
+}
+
+.artist-row__art {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--primary-color-7);
+  flex-shrink: 0;
+}
+
+.artist-row__name {
+  font-size: 0.9375rem;
+  color: var(--secondary-color-3);
+}

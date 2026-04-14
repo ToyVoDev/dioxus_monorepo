@@ -1,7 +1,8 @@
 use axum::{
-    extract::FromRequestParts,
+    extract::{FromRequestParts, Query},
     http::{StatusCode, request::Parts},
 };
+use serde::Deserialize;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 
@@ -23,6 +24,11 @@ pub struct AuthUser {
 /// Admin-only variant — returns 403 if the user is not an admin.
 pub struct AdminUser(pub AuthUser);
 
+#[derive(Deserialize)]
+struct ApiKeyQuery {
+    api_key: Option<String>,
+}
+
 impl FromRequestParts<AppState> for AuthUser {
     type Rejection = StatusCode;
 
@@ -30,13 +36,22 @@ impl FromRequestParts<AppState> for AuthUser {
         parts: &mut Parts,
         state: &AppState,
     ) -> Result<Self, Self::Rejection> {
-        let auth_header = parts
+        // Try Authorization header first (used by API calls).
+        let token_from_header = parts
             .headers
             .get("Authorization")
             .and_then(|v| v.to_str().ok())
-            .ok_or(StatusCode::UNAUTHORIZED)?;
+            .and_then(|h| extract_token(h));
 
-        let token = extract_token(auth_header).ok_or(StatusCode::UNAUTHORIZED)?;
+        // Fall back to ?api_key= query param (used by browser <img> tags).
+        let token = if let Some(t) = token_from_header {
+            t
+        } else {
+            let Query(q) = Query::<ApiKeyQuery>::from_request_parts(parts, state)
+                .await
+                .map_err(|_| StatusCode::UNAUTHORIZED)?;
+            q.api_key.ok_or(StatusCode::UNAUTHORIZED)?
+        };
 
         let mut conn = state
             .pool

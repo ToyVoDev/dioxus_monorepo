@@ -22,6 +22,25 @@ pub fn render_audio_element() -> Element {
                 src: "{audio_src}",
                 autoplay: true,
                 r#loop: is_looping,
+                ontimeupdate: move |_| {
+                    spawn(async move {
+                        let mut eval = document::eval(r#"
+                            let a = document.getElementById('main-audio');
+                            dioxus.send(a ? [a.currentTime, isFinite(a.duration) ? a.duration : 0] : [0, 0]);
+                        "#);
+                        if let Ok(val) = eval.recv::<serde_json::Value>().await {
+                            if let (Some(ct), Some(dur)) = (
+                                val.get(0).and_then(|v| v.as_f64()),
+                                val.get(1).and_then(|v| v.as_f64()),
+                            ) {
+                                player.with_mut(|p| {
+                                    p.current_time = ct;
+                                    p.duration = dur;
+                                });
+                            }
+                        }
+                    });
+                },
                 onended: move |_| {
                     player.with_mut(|p| p.next_track());
                     let _ = document::eval(r#"

@@ -1,5 +1,14 @@
+use crate::api_client::use_api_client;
 use crate::player_state::{RepeatMode, use_player_state};
 use dioxus::prelude::*;
+
+fn fmt_time(secs: f64) -> String {
+    if !secs.is_finite() || secs < 0.0 {
+        return "0:00".to_string();
+    }
+    let s = secs as u64;
+    format!("{}:{:02}", s / 60, s % 60)
+}
 
 const PLAYER_BAR_CSS: Asset = asset!("/assets/styling/player-bar.css");
 
@@ -14,12 +23,15 @@ pub fn PlayerBar(
     }
 
     let mut player = use_player_state();
+    let api_client = use_api_client();
 
     let track_info = player.read().current_track.clone();
     let is_playing = player.read().is_playing;
     let repeat_mode = player.read().repeat_mode;
     let is_shuffled = player.read().is_shuffled;
     let show_queue = player.read().show_queue;
+    let current_time = player.read().current_time;
+    let duration = player.read().duration;
 
     let has_track = track_info.is_some();
 
@@ -49,8 +61,23 @@ pub fn PlayerBar(
                         handler.call(());
                     }
                 },
-                // Album art placeholder
-                div { class: "player-bar__art" }
+                // Album art
+                {
+                    let art_url = track_info.as_ref().and_then(|t| {
+                        t.image_tags.as_ref()?.get("Primary")?;
+                        Some(api_client.image_url(t.id, "Primary"))
+                    });
+                    rsx! {
+                        if let Some(url) = art_url {
+                            img {
+                                class: "player-bar__art",
+                                src: url,
+                            }
+                        } else {
+                            div { class: "player-bar__art" }
+                        }
+                    }
+                }
 
                 // Now playing info
                 div { class: "player-bar__info",
@@ -152,14 +179,26 @@ pub fn PlayerBar(
                 }
             }
 
-            // Placeholder progress bar
+            // Progress bar
             if !compact {
-                div { class: "player-bar__progress",
-                    span { "0:00" }
-                    div { class: "player-bar__progress-bar",
-                        div { class: "player-bar__progress-fill" }
+                {
+                    let pct = if duration > 0.0 {
+                        (current_time / duration * 100.0).clamp(0.0, 100.0)
+                    } else {
+                        0.0
+                    };
+                    rsx! {
+                        div { class: "player-bar__progress",
+                            span { "{fmt_time(current_time)}" }
+                            div { class: "player-bar__progress-bar",
+                                div {
+                                    class: "player-bar__progress-fill",
+                                    style: "width: {pct:.1}%;",
+                                }
+                            }
+                            span { "{fmt_time(duration)}" }
+                        }
                     }
-                    span { "0:00" }
                 }
             }
 

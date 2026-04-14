@@ -8,6 +8,9 @@ pub use album_utils::{AlbumSummary, group_tracks_into_albums};
 mod header;
 pub use header::Header;
 
+mod login;
+pub use login::LoginView;
+
 mod app_shell;
 pub use app_shell::AppShell;
 
