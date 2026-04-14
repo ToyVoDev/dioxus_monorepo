@@ -7,8 +7,9 @@ use crate::Route;
 #[component]
 pub fn PlaylistSidebarSection() -> Element {
     let client = use_context::<ApiClient>();
-    let playlists = use_resource(move || {
-        let client = client.clone();
+    let client_playlists = client.clone();
+    let mut playlists = use_resource(move || {
+        let client = client_playlists.clone();
         async move { client.get_playlists().await.ok() }
     });
     let mut show_create = use_signal(|| false);
@@ -46,13 +47,14 @@ pub fn PlaylistSidebarSection() -> Element {
 #[component]
 fn CreatePlaylistModal(on_save: EventHandler<()>, on_cancel: EventHandler<()>) -> Element {
     let client = use_context::<ApiClient>();
+    let client_genres = client.clone();
     let mut name = use_signal(String::new);
     let mut is_smart = use_signal(|| false);
     let mut include_genres = use_signal(|| Vec::<String>::new());
     let mut exclude_genres = use_signal(|| Vec::<String>::new());
 
     let _genres_resource = use_resource(move || {
-        let client = client.clone();
+        let client = client_genres.clone();
         async move { client.get_genres().await.ok() }
     });
 

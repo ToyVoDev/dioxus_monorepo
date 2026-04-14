@@ -20,20 +20,21 @@ fn get_pool() -> Result<deadpool_diesel::postgres::Pool, AppError> {
 
 #[poise::command(
     slash_command,
+    required_permissions = "MANAGE_ROLES",
     subcommands("minecraft_geyser_restart", "minecraft_geyser_stop")
 )]
 pub async fn minecraft_geyser(_ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     unreachable!()
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn minecraft_geyser_restart(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Restarting Java/Bedrock Minecraft Server"))
         .await?;
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn minecraft_geyser_stop(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Stopping Java/Bedrock Minecraft Server"))
         .await?;
@@ -42,20 +43,21 @@ pub async fn minecraft_geyser_stop(ctx: crate::state::Context<'_>) -> Result<(),
 
 #[poise::command(
     slash_command,
+    required_permissions = "MANAGE_ROLES",
     subcommands("minecraft_modded_restart", "minecraft_modded_stop")
 )]
 pub async fn minecraft_modded(_ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     unreachable!()
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn minecraft_modded_restart(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Restarting Modded Minecraft Server"))
         .await?;
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn minecraft_modded_stop(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Stopping Modded Minecraft Server"))
         .await?;
@@ -64,13 +66,14 @@ pub async fn minecraft_modded_stop(ctx: crate::state::Context<'_>) -> Result<(),
 
 #[poise::command(
     slash_command,
+    required_permissions = "MANAGE_ROLES",
     subcommands("terraria_broadcast_message", "terraria_restart", "terraria_stop")
 )]
 pub async fn terraria(_ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     unreachable!()
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn terraria_broadcast_message(
     ctx: crate::state::Context<'_>,
     #[description = "The message to broadcast"] message: String,
@@ -83,19 +86,19 @@ pub async fn terraria_broadcast_message(
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn terraria_restart(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Restarting Terraria Server")).await?;
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn terraria_stop(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     ctx.say(String::from("Stopping Terraria Server")).await?;
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn game_roles(ctx: crate::state::Context<'_>) -> Result<(), AppError> {
     let pool = get_pool()?;
     if let Some(guild) = ctx.partial_guild().await {
@@ -123,7 +126,7 @@ pub async fn game_roles(ctx: crate::state::Context<'_>) -> Result<(), AppError> 
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn register_self_assignable_role(
     ctx: crate::state::Context<'_>,
     #[description = "Pick a role"] role: serenity::RoleId,
@@ -144,7 +147,7 @@ pub async fn register_self_assignable_role(
     Ok(())
 }
 
-#[poise::command(slash_command)]
+#[poise::command(slash_command, required_permissions = "MANAGE_ROLES")]
 pub async fn deregister_self_assignable_role(
     ctx: crate::state::Context<'_>,
     #[description = "Pick a role"] role: serenity::RoleId,

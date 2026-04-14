@@ -5,9 +5,10 @@ use uuid::Uuid;
 #[component]
 pub fn PlaylistView(id: Uuid) -> Element {
     let client = use_context::<ApiClient>();
+    let client_playlist = client.clone();
 
     let playlist = use_resource(move || {
-        let client = client.clone();
+        let client = client_playlist.clone();
         async move { client.get_playlist(id).await.ok() }
     });
 

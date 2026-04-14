@@ -7,7 +7,7 @@ use uuid::Uuid;
 
 /// The universal Jellyfin item object. `item_type` discriminates between
 /// Audio, MusicAlbum, and MusicArtist.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct BaseItemDto {
     pub id: Uuid,
@@ -43,14 +43,14 @@ pub struct BaseItemDto {
     pub date_created: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct NameGuidPair {
     pub name: String,
     pub id: Uuid,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct UserItemDataDto {
     pub is_favorite: bool,

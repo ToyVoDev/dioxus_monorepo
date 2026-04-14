@@ -41,7 +41,7 @@ async fn list_genres(
     let mut q = genres::table.into_boxed();
     if let Some(ref term) = params.search_term {
         let pattern = format!("%{}%", term);
-        q = q.filter(genres::name.ilike(&pattern));
+        q = q.filter(genres::name.ilike(pattern));
     }
 
     let all: Vec<Genre> = q

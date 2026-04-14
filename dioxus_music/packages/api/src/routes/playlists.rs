@@ -294,9 +294,9 @@ async fn get_playlist_items(
             .optional()?;
         items.push(query::track_to_dto(
             track,
-            &artist,
+            artist,
             album.as_ref(),
-            album.as_ref().map(|_| &artist),
+            album.as_ref().map(|_| artist),
             image.as_ref(),
             None,
             state.server_id,
@@ -532,9 +532,9 @@ async fn instant_mix_from_playlist(
             .optional()?;
         items.push(query::track_to_dto(
             track,
-            &artist,
+            artist,
             album.as_ref(),
-            album.as_ref().map(|_| &artist),
+            album.as_ref().map(|_| artist),
             image.as_ref(),
             None,
             state.server_id,

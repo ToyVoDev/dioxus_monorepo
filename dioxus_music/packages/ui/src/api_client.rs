@@ -319,6 +319,18 @@ impl ApiClient {
             .await
     }
 
+    // ── Library management ────────────────────────────────────────────────
+
+    pub async fn rescan_library(&self) -> Result<(), reqwest::Error> {
+        self.client
+            .post(self.url("/custom/library/rescan"))
+            .header("Authorization", self.auth_header())
+            .send()
+            .await?
+            .error_for_status()?;
+        Ok(())
+    }
+
     // ── Streaming ─────────────────────────────────────────────────────────
 
     pub fn stream_url(&self, track_id: Uuid) -> String {

@@ -1,5 +1,4 @@
 use axum::{
-    async_trait,
     extract::FromRequestParts,
     http::{StatusCode, request::Parts},
 };
@@ -24,7 +23,6 @@ pub struct AuthUser {
 /// Admin-only variant — returns 403 if the user is not an admin.
 pub struct AdminUser(pub AuthUser);
 
-#[async_trait]
 impl FromRequestParts<AppState> for AuthUser {
     type Rejection = StatusCode;
 
@@ -70,7 +68,6 @@ impl FromRequestParts<AppState> for AuthUser {
     }
 }
 
-#[async_trait]
 impl FromRequestParts<AppState> for AdminUser {
     type Rejection = StatusCode;
 

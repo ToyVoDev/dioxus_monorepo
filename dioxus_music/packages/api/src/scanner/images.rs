@@ -21,7 +21,7 @@ pub fn compute_tag(data: &[u8]) -> String {
 }
 
 /// Determine the file extension for an image given its MIME type.
-pub fn mime_to_ext(mime: &str) -> &str {
+pub fn mime_to_ext(mime: &str) -> &'static str {
     match mime {
         "image/png" => "png",
         "image/webp" => "webp",

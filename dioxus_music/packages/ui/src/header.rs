@@ -1,3 +1,4 @@
+use crate::api_client::ApiClient;
 use dioxus::prelude::*;
 use kinetic_ui::{IconButton, SearchInput};
 
@@ -7,6 +8,7 @@ const SETTINGS_CSS: Asset = asset!("/assets/styling/settings-dropdown.css");
 #[component]
 pub fn Header() -> Element {
     let mut settings_open = use_signal(|| false);
+    let api_client = use_context::<ApiClient>();
 
     rsx! {
         document::Link { rel: "stylesheet", href: HEADER_CSS }
@@ -34,8 +36,9 @@ pub fn Header() -> Element {
                                 class: "settings-dropdown__item",
                                 onclick: move |_| {
                                     settings_open.set(false);
+                                    let client = api_client.clone();
                                     spawn(async move {
-                                        let _ = dioxus_music_api::rescan_library().await;
+                                        let _ = client.rescan_library().await;
                                     });
                                 },
                                 "Rescan Library"

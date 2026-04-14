@@ -44,7 +44,7 @@ async fn list_artists(
     let mut q = artists::table.into_boxed();
     if let Some(ref term) = params.search_term {
         let pattern = format!("%{}%", term);
-        q = q.filter(artists::name.ilike(&pattern));
+        q = q.filter(artists::name.ilike(pattern));
     }
 
     let all: Vec<Artist> = q

@@ -76,8 +76,8 @@ pub fn read_metadata(path: &Path) -> Option<TrackMetadata> {
         .unwrap_or_default();
 
     let year = tag
-        .and_then(|t| t.year())
-        .and_then(|y| i32::try_from(y).ok());
+        .and_then(|t| t.date())
+        .and_then(|d| i32::try_from(d.year).ok());
 
     let track_number = tag
         .and_then(|t| t.track())

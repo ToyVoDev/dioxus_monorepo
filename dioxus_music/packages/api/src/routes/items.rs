@@ -82,8 +82,8 @@ async fn list_items(
         if let Some(ref term) = params.search_term {
             let pattern = format!("%{}%", term);
             q = q.filter(
-                tracks::title.ilike(&pattern)
-                    .or(artists::name.ilike(&pattern)),
+                tracks::title.ilike(pattern.clone())
+                    .or(artists::name.ilike(pattern)),
             );
         }
 
@@ -126,7 +126,7 @@ async fn list_items(
         }
         if let Some(ref term) = params.search_term {
             let pattern = format!("%{}%", term);
-            q = q.filter(albums::title.ilike(&pattern));
+            q = q.filter(albums::title.ilike(pattern));
         }
 
         let rows: Vec<(Album, Artist)> = q
@@ -159,7 +159,7 @@ async fn list_items(
         let mut q = artists::table.into_boxed();
         if let Some(ref term) = params.search_term {
             let pattern = format!("%{}%", term);
-            q = q.filter(artists::name.ilike(&pattern));
+            q = q.filter(artists::name.ilike(pattern));
         }
 
         let all_artists: Vec<Artist> = q
