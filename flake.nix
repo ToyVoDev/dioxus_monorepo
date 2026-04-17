@@ -149,6 +149,89 @@
             includeNDK = true;
             includeEmulator = false;
           };
+          # xcrun shim: routes iOS/watchOS/tvOS SDK queries to Xcode so that
+          # build scripts (objc2-exception-helper, aws-lc-sys, etc.) can find
+          # the simulator and device SDKs, while letting macOS SDK queries fall
+          # through unchanged so Nix's cc-wrapper keeps using its own Nix SDK
+          # (which has arm64 TBDs — required on macOS 26 / Tahoe where Apple's
+          # SDK has arm64e-only stubs that Nix's ld 1010.6 cannot resolve).
+          xcrunShim = pkgs.writeShellScriptBin "xcrun" ''
+            for arg in "$@"; do
+              case "$arg" in
+                iphoneos*|iphonesimulator*|watchos*|watchsimulator*|appletvos*|appletvsimulator*|xros*|xrsimulator*)
+                  exec env DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" \
+                    /usr/bin/xcrun "$@"
+                  ;;
+              esac
+            done
+            exec /usr/bin/xcrun "$@"
+          '';
+          # Shell snippet that configures CC/CXX/LINKER/CFLAGS/RUSTFLAGS for
+          # iOS cross-compilation. Used verbatim in both dioxus_music_ios
+          # buildPhase and devShells.default shellHook so the two environments
+          # stay in sync. xcrunShim must be on PATH when this runs (it is,
+          # because it's in nativeBuildInputs for both contexts).
+          iosEnvSetup = ''
+            # clang-ios-wrapper is in PATH via nativeBuildInputs. It unsets
+            # MACOSX_DEPLOYMENT_TARGET and sets DEVELOPER_DIR=Xcode so
+            # /usr/bin/clang resolves to the actual Xcode clang, not the Nix
+            # cc-wrapper (which would inject -mmacos-version-min and conflict
+            # with cc-rs's -mios-simulator-version-min for iOS sim targets).
+            export CC_aarch64_apple_ios="clang-ios-wrapper"
+            export CXX_aarch64_apple_ios="clang-ios-wrapper"
+            export CC_aarch64_apple_ios_sim="clang-ios-wrapper"
+            export CXX_aarch64_apple_ios_sim="clang-ios-wrapper"
+            export CARGO_TARGET_AARCH64_APPLE_IOS_LINKER="clang-ios-wrapper"
+            export CARGO_TARGET_AARCH64_APPLE_IOS_SIM_LINKER="clang-ios-wrapper"
+
+            # Resolve iOS device and simulator SDK paths via the xcrun shim.
+            # The shim routes these calls to Xcode while leaving DEVELOPER_DIR
+            # pointing at the Nix SDK for all macOS cc-wrapper invocations.
+            _ios_sdk=$(xcrun --sdk iphoneos --show-sdk-path 2>/dev/null)
+            _sim_sdk=$(xcrun --sdk iphonesimulator --show-sdk-path 2>/dev/null)
+            if [ -n "$_ios_sdk" ]; then
+              export CFLAGS_aarch64_apple_ios="-isysroot $_ios_sdk"
+              export CXXFLAGS_aarch64_apple_ios="-isysroot $_ios_sdk"
+              export CARGO_TARGET_AARCH64_APPLE_IOS_RUSTFLAGS="-C link-arg=-isysroot -C link-arg=$_ios_sdk"
+            fi
+            if [ -n "$_sim_sdk" ]; then
+              export CFLAGS_aarch64_apple_ios_sim="-isysroot $_sim_sdk"
+              export CXXFLAGS_aarch64_apple_ios_sim="-isysroot $_sim_sdk"
+              export CARGO_TARGET_AARCH64_APPLE_IOS_SIM_RUSTFLAGS="-C link-arg=-isysroot -C link-arg=$_sim_sdk"
+            fi
+            unset _ios_sdk _sim_sdk
+          '';
+          # Clang wrapper for iOS cross-compilation targets.
+          # Nix's Darwin stdenv exports MACOSX_DEPLOYMENT_TARGET (e.g. "14.0")
+          # into the shell. System clang reads this env var and auto-injects
+          # -mmacos-version-min=14.0 into every invocation. When cc-rs also
+          # injects -mios-simulator-version-min=<sdk-version> for iOS sim
+          # targets, both flags land in the same clang call and conflict:
+          #   "invalid argument '-mmacos-version-min=14.0' not allowed with
+          #    '-mios-simulator-version-min=26.4'"
+          # Additionally, /usr/bin/clang on macOS is a stub; when DEVELOPER_DIR
+          # points at the Nix SDK (not a real Xcode install) the stub can't find
+          # its toolchain and falls back through PATH, picking up the Nix
+          # cc-wrapper (which also injects -mmacos-version-min). Explicitly
+          # setting DEVELOPER_DIR=Xcode and unsetting MACOSX_DEPLOYMENT_TARGET
+          # fixes both issues without affecting macOS builds (Nix's cc-wrapper
+          # bakes the version min flag directly into its wrapper script).
+          clangIosWrapper = pkgs.writeShellScriptBin "clang-ios-wrapper" ''
+            # /usr/bin/clang is a macOS stub that resolves to the actual clang
+            # binary via DEVELOPER_DIR. When DEVELOPER_DIR points at the Nix
+            # SDK store path (not a real Xcode install), the stub fails to find
+            # the toolchain and falls back through PATH, where it picks up the
+            # Nix cc-wrapper instead of real clang. That wrapper then injects
+            # -mmacos-version-min=14.0, which conflicts with cc-rs's injected
+            # -mios-simulator-version-min=<sdk-ver> for iOS sim targets.
+            #
+            # Setting DEVELOPER_DIR=Xcode lets the stub find the real clang.
+            # Unsetting MACOSX_DEPLOYMENT_TARGET prevents real clang from
+            # auto-injecting -mmacos-version-min for macOS deployment.
+            exec env -u MACOSX_DEPLOYMENT_TARGET \
+              DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" \
+              /usr/bin/clang "$@"
+          '';
           nativeBuildInputs =
             with pkgs;
             [
@@ -166,7 +249,11 @@
               diesel-cli-ext
               jdk21_headless
             ]
-            ++ lib.optionals pkgs.stdenv.isDarwin [ darwin.sigtool ];
+            ++ lib.optionals pkgs.stdenv.isDarwin [
+              darwin.sigtool
+              xcrunShim
+              clangIosWrapper
+            ];
           buildInputs = with pkgs; [
             openssl
             libiconv
@@ -176,7 +263,7 @@
           cargoLock = {
             lockFile = ./Cargo.lock;
             outputHashes = {
-              "dioxus-attributes-0.1.0" = "sha256-P0YhW08wlLwugWaWW28Vuwy5abAeS1o4vXd74QHSq2c=";
+              "dioxus-attributes-0.1.0" = "sha256-tI26vv7fvNR18KsUJvBTXZ0c7Wc/63Qq88NAWuWMoHs=";
             };
           };
           desktopDir = if pkgs.stdenv.isDarwin then "macos" else "linux";
@@ -303,6 +390,52 @@
               inherit nativeBuildInputs buildInputs;
               doCheck = false;
               buildPhase = ''
+                # HOME=/var/empty (read-only) in macOS Nix builds; NIX_BUILD_TOP
+                # is the writable build scratch directory. dx's AndroidTools and
+                # Gradle both need a writable home for caches and downloads.
+                # Java resolves user.home via getpwuid(), not $HOME, so setting
+                # GRADLE_USER_HOME explicitly is required to redirect Gradle's
+                # wrapper/distribution downloads.
+                export HOME="$NIX_BUILD_TOP"
+                export GRADLE_USER_HOME="$NIX_BUILD_TOP/.gradle"
+                mkdir -p "$GRADLE_USER_HOME"
+
+                #### For work machine that has corperate CA
+                # The Nix Zulu JDK's bundled cacerts lack the corporate SSL inspection
+                # proxy root CA (RQProxyCA), which is deployed via MDM to the user's
+                # login keychain but is inaccessible to the nixbld build user.
+                # Without it, Gradle's Maven Central HTTPS connections are intercepted
+                # by the proxy and fail with "Received fatal alert: internal_error"
+                # (proxy can't complete TLS 1.3 handshake) or "PKIX path building
+                # failed" (proxy cert not trusted).
+                #
+                # Fix: copy the Zulu cacerts to a writable JKS and import the proxy CA
+                # cert (checked into the repo at certs/rqproxy-ca.pem). Then point
+                # JAVA_TOOL_OPTIONS at the augmented store. Force TLS 1.2 globally
+                # because the corporate proxy only supports TLS 1.2 (not TLS 1.3).
+                #
+                # JAVA_TOOL_OPTIONS is applied to ALL JVM processes including the
+                # Gradle Wrapper download. That's fine because services.gradle.org
+                # is not behind the proxy, and its cert is trusted by the Zulu roots
+                # that are included in our custom JKS (copied from the original).
+                # _CACERTS="$NIX_BUILD_TOP/cacerts.jks"
+                # _CACERTS_SRC="$JAVA_HOME/lib/security/cacerts"
+                # cp "$_CACERTS_SRC" "$_CACERTS"
+                # chmod 644 "$_CACERTS"
+                # keytool -importcert -noprompt -trustcacerts \
+                #   -keystore "$_CACERTS" -storepass "changeit" \
+                #   -alias "rqproxy-ca" -file "${./certs/rqproxy-ca.pem}"
+                # Also override user.home: the Android Gradle Plugin looks up
+                # ~/.android/ via Java's user.home (set from getpwuid(), not $HOME),
+                # which is /var/empty for nixbld — a read-only filesystem.
+                # export JAVA_TOOL_OPTIONS="-Duser.home=$NIX_BUILD_TOP -Djavax.net.ssl.trustStore=$_CACERTS -Djavax.net.ssl.trustStorePassword=changeit -Djdk.tls.client.protocols=TLSv1.2"
+
+                # JAVA_TOOL_OPTIONS is applied to ALL JVM processes including the
+                # Gradle Wrapper download. Override user.home: the Android Gradle 
+                # Plugin looks up ~/.android/ via Java's user.home (set from getpwuid(),
+                # not $HOME),
+                export JAVA_TOOL_OPTIONS="-Duser.home=$NIX_BUILD_TOP"
+
                 dx build --package dioxus_music_mobile --platform android --release --verbose --trace
               '';
               installPhase = ''
@@ -322,6 +455,7 @@
               inherit nativeBuildInputs buildInputs;
               doCheck = false;
               buildPhase = ''
+                ${iosEnvSetup}
                 dx build --package dioxus_music_mobile --platform ios --release --verbose --trace
               '';
               installPhase = ''
@@ -344,29 +478,24 @@
               export BINARYEN_CORES=1
             ''
             + lib.optionalString pkgs.stdenv.isDarwin ''
-              # Unset SDKROOT so xcrun can discover Xcode's iOS/tvOS/watchOS SDKs.
-              # Nix sets this to its own macOS-only SDK which breaks iOS cross-compilation.
-              # Requires Xcode to be installed on the host for iOS/Android builds.
-              unset SDKROOT
+              # Do NOT touch DEVELOPER_DIR or SDKROOT here.
+              #
+              # Nix's stdenv already sets DEVELOPER_DIR to the Nix SDK store
+              # path (e.g. /nix/store/...-apple-sdk-14.4). Leaving it there
+              # means Nix's cc-wrapper will use its own SDK (which has arm64
+              # TBDs) rather than calling xcrun and landing on Xcode 26's
+              # arm64e-only TBDs. On macOS 26 (Tahoe), using Xcode's macOS SDK
+              # causes Nix's ld 1010.6 to fail with undefined symbol errors for
+              # every arm64 binary (web, desktop, server).
+              #
+              # iOS SDK discovery (iphoneos / iphonesimulator) is handled by the
+              # xcrunShim derivation in nativeBuildInputs: it intercepts xcrun
+              # calls that mention an iOS/watchOS/tvOS SDK and re-execs
+              # /usr/bin/xcrun with DEVELOPER_DIR=Xcode.app, while all other
+              # xcrun calls (including --sdk macosx) pass through unchanged so
+              # Nix's cc-wrapper continues to use its own SDK for macOS targets.
 
-              # Point xcrun at Xcode.app for iOS SDK discovery (even if xcode-select
-              # points at CommandLineTools, which lack iOS SDKs).
-              if [ -d "/Applications/Xcode.app/Contents/Developer" ]; then
-                export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
-              fi
-
-              # Use system clang for iOS cross-compilation targets.
-              # The Nix-wrapped clang injects -mmacos-version-min and links Nix's
-              # macOS-only dylibs (e.g. libiconv), both of which break iOS builds.
-              export CC_aarch64_apple_ios="/usr/bin/clang"
-              export CXX_aarch64_apple_ios="/usr/bin/clang++"
-              export CC_aarch64_apple_ios_sim="/usr/bin/clang"
-              export CXX_aarch64_apple_ios_sim="/usr/bin/clang++"
-
-              # Tell rustc to use the system linker for iOS targets (avoids Nix's
-              # cc-wrapper which injects macOS library paths into iOS link lines).
-              export CARGO_TARGET_AARCH64_APPLE_IOS_LINKER="/usr/bin/cc"
-              export CARGO_TARGET_AARCH64_APPLE_IOS_SIM_LINKER="/usr/bin/cc"
+              ${iosEnvSetup}
             '';
             inherit nativeBuildInputs;
           };

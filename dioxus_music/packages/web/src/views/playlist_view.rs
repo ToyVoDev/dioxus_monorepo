@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-use dioxus_music_ui::{api_client::use_api_client, TrackList};
+use dioxus_music_ui::{TrackList, api_client::use_api_client};
 use uuid::Uuid;
 
 #[component]

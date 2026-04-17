@@ -24,10 +24,16 @@ use crate::{
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/Audio/{item_id}/stream", get(stream_audio))
-        .route("/Audio/{item_id}/stream.{container}", get(stream_audio_with_container))
+        .route(
+            "/Audio/{item_id}/stream.{container}",
+            get(stream_audio_with_container),
+        )
         .route("/Audio/{item_id}/universal", get(stream_audio))
         .route("/Audio/{item_id}/Lyrics", get(get_lyrics))
-        .route("/Items/{item_id}/PlaybackInfo", get(get_playback_info).post(get_playback_info))
+        .route(
+            "/Items/{item_id}/PlaybackInfo",
+            get(get_playback_info).post(get_playback_info),
+        )
 }
 
 #[derive(Debug, Deserialize)]
@@ -52,7 +58,11 @@ fn container_to_mime(container: &str) -> &'static str {
 }
 
 async fn stream_track_file(state: &AppState, item_id: Uuid) -> Result<Response, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let track: Track = tracks::table
         .filter(tracks::id.eq(item_id))
         .first(&mut conn)
@@ -64,7 +74,10 @@ async fn stream_track_file(state: &AppState, item_id: Uuid) -> Result<Response, 
         .await
         .map_err(|e| ApiError::Internal(format!("File open error: {e}")))?;
 
-    let metadata = file.metadata().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let metadata = file
+        .metadata()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let content_length = metadata.len();
 
     let stream = ReaderStream::new(file);
@@ -116,7 +129,11 @@ async fn get_playback_info(
     State(state): State<AppState>,
     Path(item_id): Path<Uuid>,
 ) -> Result<Json<PlaybackInfoResponse>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let track: Track = tracks::table
         .filter(tracks::id.eq(item_id))
         .first(&mut conn)
@@ -124,7 +141,9 @@ async fn get_playback_info(
         .optional()?
         .ok_or_else(|| ApiError::NotFound("Track not found".to_string()))?;
 
-    let file_size = std::fs::metadata(&track.file_path).ok().map(|m| m.len() as i64);
+    let file_size = std::fs::metadata(&track.file_path)
+        .ok()
+        .map(|m| m.len() as i64);
 
     let source = MediaSourceInfo {
         id: item_id.to_string(),

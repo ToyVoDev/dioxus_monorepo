@@ -63,6 +63,7 @@ Without Nix, install these manually (see README.md).
 # Rust Toolchain
 
 Uses Rust nightly as specified in `rust-toolchain.toml`. Target platforms include:
+
 - `wasm32-unknown-unknown` (web)
 - `aarch64-linux-android`, `armv7-linux-androideabi`, `i686-linux-android`, `x86_64-linux-android` (Android)
 - `aarch64-apple-ios`, `aarch64-apple-ios-sim` (iOS)

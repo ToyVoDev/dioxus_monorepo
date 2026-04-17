@@ -1,14 +1,14 @@
-use axum::{Json, Router, extract::State, http::StatusCode, routing::{get, post}};
+use axum::{
+    Json, Router,
+    extract::State,
+    http::StatusCode,
+    routing::{get, post},
+};
 use chrono::{DateTime, Utc};
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 
-use crate::{
-    auth::middleware::AuthUser,
-    db::schema::tracks,
-    error::ApiError,
-    state::AppState,
-};
+use crate::{auth::middleware::AuthUser, db::schema::tracks, error::ApiError, state::AppState};
 
 pub fn router() -> Router<AppState> {
     Router::new()
@@ -18,10 +18,7 @@ pub fn router() -> Router<AppState> {
 }
 
 /// POST /custom/library/rescan — trigger full rescan in background
-async fn rescan_library(
-    _auth: AuthUser,
-    State(state): State<AppState>,
-) -> StatusCode {
+async fn rescan_library(_auth: AuthUser, State(state): State<AppState>) -> StatusCode {
     tokio::spawn(crate::scanner::full_scan(state));
     StatusCode::ACCEPTED
 }
@@ -31,7 +28,11 @@ async fn library_version(
     _auth: AuthUser,
     State(state): State<AppState>,
 ) -> Result<Json<serde_json::Value>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let version: Option<DateTime<Utc>> = tracks::table
         .select(diesel::dsl::max(tracks::updated_at))
         .first(&mut conn)

@@ -1,4 +1,8 @@
-use axum::{Json, Router, extract::{Query, State}, routing::get};
+use axum::{
+    Json, Router,
+    extract::{Query, State},
+    routing::get,
+};
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 use serde::Deserialize;
@@ -6,7 +10,10 @@ use uuid::Uuid;
 
 use crate::{
     auth::middleware::AuthUser,
-    db::{models::{Album, Artist, Track}, schema::{albums, artists, tracks}},
+    db::{
+        models::{Album, Artist, Track},
+        schema::{albums, artists, tracks},
+    },
     error::ApiError,
     state::AppState,
     types::{SearchHint, SearchHintsResult},
@@ -30,11 +37,16 @@ async fn search_hints(
     State(state): State<AppState>,
     Query(params): Query<SearchQuery>,
 ) -> Result<Json<SearchHintsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let limit = params.limit.unwrap_or(20).min(100);
     let pattern = format!("%{}%", params.search_term.trim());
 
-    let types: Vec<&str> = params.include_item_types
+    let types: Vec<&str> = params
+        .include_item_types
         .as_deref()
         .map(|s| s.split(',').map(str::trim).collect())
         .unwrap_or_else(|| vec!["Audio", "MusicAlbum", "MusicArtist"]);
@@ -46,10 +58,15 @@ async fn search_hints(
             .inner_join(artists::table.on(tracks::artist_id.eq(artists::id)))
             .left_join(albums::table.on(tracks::album_id.eq(albums::id.nullable())))
             .filter(
-                tracks::title.ilike(&pattern)
+                tracks::title
+                    .ilike(&pattern)
                     .or(artists::name.ilike(&pattern)),
             )
-            .select((Track::as_select(), Artist::as_select(), Option::<Album>::as_select()))
+            .select((
+                Track::as_select(),
+                Artist::as_select(),
+                Option::<Album>::as_select(),
+            ))
             .limit(limit)
             .load(&mut conn)
             .await?;
@@ -110,5 +127,8 @@ async fn search_hints(
     }
 
     let total = hints.len() as i64;
-    Ok(Json(SearchHintsResult { search_hints: hints, total_record_count: total }))
+    Ok(Json(SearchHintsResult {
+        search_hints: hints,
+        total_record_count: total,
+    }))
 }

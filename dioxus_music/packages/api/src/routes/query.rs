@@ -23,8 +23,7 @@ pub fn track_to_dto(
         m
     });
 
-    let album_primary_image_tag = album
-        .and_then(|_| image.map(|img| img.tag.clone()));
+    let album_primary_image_tag = album.and_then(|_| image.map(|img| img.tag.clone()));
 
     BaseItemDto {
         id: track.id,
@@ -37,7 +36,10 @@ pub fn track_to_dto(
         album_primary_image_tag,
         album_artist: album_artist.map(|a| a.name.clone()),
         album_artists: album_artist.map(|a| {
-            vec![NameGuidPair { name: a.name.clone(), id: a.id }]
+            vec![NameGuidPair {
+                name: a.name.clone(),
+                id: a.id,
+            }]
         }),
         artists: Some(vec![artist.name.clone()]),
         artist_items: Some(vec![NameGuidPair {

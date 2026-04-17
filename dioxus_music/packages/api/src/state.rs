@@ -1,6 +1,6 @@
+use crate::db::DbPool;
 use std::path::PathBuf;
 use uuid::Uuid;
-use crate::db::DbPool;
 
 #[derive(Clone)]
 pub struct AppState {

@@ -150,8 +150,7 @@ impl PlayerState {
 
             if self.queue.len() > 1 && self.queue_index < self.queue.len() {
                 // Keep current track at current position, shuffle the rest after it
-                let mut remaining: Vec<BaseItemDto> =
-                    self.queue[self.queue_index + 1..].to_vec();
+                let mut remaining: Vec<BaseItemDto> = self.queue[self.queue_index + 1..].to_vec();
                 // Fisher-Yates shuffle on remaining
                 for i in (1..remaining.len()).rev() {
                     let j = fastrand::usize(..=i);

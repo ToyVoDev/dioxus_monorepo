@@ -4,16 +4,19 @@ pub mod genres;
 pub mod images;
 pub mod metadata;
 
-use std::path::Path;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
+use std::path::Path;
 use uuid::Uuid;
 use walkdir::WalkDir;
 
 use crate::{
     db::{
         models::{NewImage, NewTrack},
-        schema::{albums, artists, genres as genres_table, images as images_table, playlist_items, playlists, tracks, user_data},
+        schema::{
+            albums, artists, genres as genres_table, images as images_table, playlist_items,
+            playlists, tracks, user_data,
+        },
     },
     state::AppState,
 };
@@ -34,8 +37,7 @@ pub async fn quick_scan(state: AppState) {
         .load(&mut conn)
         .await
         .unwrap_or_default();
-    let existing_set: std::collections::HashSet<String> =
-        existing_paths.into_iter().collect();
+    let existing_set: std::collections::HashSet<String> = existing_paths.into_iter().collect();
 
     // New files not yet in DB.
     let new_paths: Vec<_> = paths
@@ -49,10 +51,7 @@ pub async fn quick_scan(state: AppState) {
         .iter()
         .filter_map(|p| p.to_str().map(String::from))
         .collect();
-    let stale: Vec<String> = existing_set
-        .difference(&disk_set)
-        .cloned()
-        .collect();
+    let stale: Vec<String> = existing_set.difference(&disk_set).cloned().collect();
 
     if !stale.is_empty() {
         tracing::info!("Removing {} stale tracks", stale.len());
@@ -71,7 +70,9 @@ pub async fn quick_scan(state: AppState) {
     tracing::info!("Quick scan: processing {} new files", new_paths.len());
     ingest_files(&state, &new_paths).await;
 
-    let Ok(mut conn) = state.pool.get().await else { return };
+    let Ok(mut conn) = state.pool.get().await else {
+        return;
+    };
     genres::refresh(&mut conn).await.ok();
     tracing::info!("Quick scan complete");
 }
@@ -90,16 +91,34 @@ pub async fn full_scan(state: AppState) {
         std::fs::remove_dir_all(&state.image_cache_dir).ok();
     }
     if let Err(e) = std::fs::create_dir_all(&state.image_cache_dir) {
-        tracing::error!("full_scan: failed to create image cache dir {:?}: {e}", state.image_cache_dir);
+        tracing::error!(
+            "full_scan: failed to create image cache dir {:?}: {e}",
+            state.image_cache_dir
+        );
         return;
     }
 
     // Truncate tables in dependency order.
-    diesel::delete(user_data::table).execute(&mut conn).await.ok();
-    diesel::delete(playlist_items::table).execute(&mut conn).await.ok();
-    diesel::delete(playlists::table).execute(&mut conn).await.ok();
-    diesel::delete(images_table::table).execute(&mut conn).await.ok();
-    diesel::delete(genres_table::table).execute(&mut conn).await.ok();
+    diesel::delete(user_data::table)
+        .execute(&mut conn)
+        .await
+        .ok();
+    diesel::delete(playlist_items::table)
+        .execute(&mut conn)
+        .await
+        .ok();
+    diesel::delete(playlists::table)
+        .execute(&mut conn)
+        .await
+        .ok();
+    diesel::delete(images_table::table)
+        .execute(&mut conn)
+        .await
+        .ok();
+    diesel::delete(genres_table::table)
+        .execute(&mut conn)
+        .await
+        .ok();
     diesel::delete(tracks::table).execute(&mut conn).await.ok();
     diesel::delete(albums::table).execute(&mut conn).await.ok();
     diesel::delete(artists::table).execute(&mut conn).await.ok();
@@ -110,7 +129,9 @@ pub async fn full_scan(state: AppState) {
     tracing::info!("Full scan: processing {} files", paths.len());
     ingest_files(&state, &paths).await;
 
-    let Ok(mut conn) = state.pool.get().await else { return };
+    let Ok(mut conn) = state.pool.get().await else {
+        return;
+    };
     genres::refresh(&mut conn).await.ok();
     tracing::info!("Full scan complete");
 }
@@ -122,7 +143,10 @@ async fn ingest_files(state: &AppState, paths: &[std::path::PathBuf]) {
         std::collections::HashMap::new();
     for path in paths {
         if let Some(dir) = path.parent() {
-            by_dir.entry(dir.to_path_buf()).or_default().push(path.clone());
+            by_dir
+                .entry(dir.to_path_buf())
+                .or_default()
+                .push(path.clone());
         }
     }
 
@@ -132,11 +156,7 @@ async fn ingest_files(state: &AppState, paths: &[std::path::PathBuf]) {
 }
 
 /// Process all files in one directory (one album's worth of tracks).
-async fn process_directory(
-    state: &AppState,
-    dir: &Path,
-    paths: &[std::path::PathBuf],
-) {
+async fn process_directory(state: &AppState, dir: &Path, paths: &[std::path::PathBuf]) {
     // Track which albums have had cover extraction attempted (per-album, not per-directory,
     // so compilation folders each get a cover attempt for each distinct album they contain).
     let mut covers_extracted: std::collections::HashSet<Uuid> = std::collections::HashSet::new();
@@ -156,7 +176,9 @@ async fn process_directory(
             continue;
         };
 
-        let Ok(mut conn) = state.pool.get().await else { continue };
+        let Ok(mut conn) = state.pool.get().await else {
+            continue;
+        };
 
         // Resolve track artist — skip track if DB is unreachable.
         let track_artist_id = match artist::find_or_create(&mut conn, &meta.artist).await {
@@ -171,7 +193,10 @@ async fn process_directory(
             match artist::find_or_create(&mut conn, &meta.album_artist).await {
                 Ok(id) => id,
                 Err(e) => {
-                    tracing::warn!("Failed to resolve album artist for {:?}, falling back to track artist: {e}", path);
+                    tracing::warn!(
+                        "Failed to resolve album artist for {:?}, falling back to track artist: {e}",
+                        path
+                    );
                     track_artist_id
                 }
             }
@@ -180,13 +205,14 @@ async fn process_directory(
         };
 
         // Resolve album per-track so compilation folders assign each track to its correct album.
-        let the_album_id = match album::find_or_create(&mut conn, &meta.album, album_artist_id, meta.year).await {
-            Ok(id) => id,
-            Err(e) => {
-                tracing::error!("Failed to resolve album for {:?}: {e}", path);
-                continue;
-            }
-        };
+        let the_album_id =
+            match album::find_or_create(&mut conn, &meta.album, album_artist_id, meta.year).await {
+                Ok(id) => id,
+                Err(e) => {
+                    tracing::error!("Failed to resolve album for {:?}: {e}", path);
+                    continue;
+                }
+            };
         last_album_id = Some(the_album_id);
 
         let new_track = NewTrack {
@@ -241,17 +267,18 @@ async fn try_extract_album_cover(
     album_id: Uuid,
     meta: &metadata::TrackMetadata,
 ) {
-    let Ok(mut conn) = state.pool.get().await else { return };
+    let Ok(mut conn) = state.pool.get().await else {
+        return;
+    };
 
     // Skip if album already has an image.
-    let existing: Option<crate::db::models::Image> =
-        images_table::table
-            .filter(images_table::item_id.eq(album_id))
-            .filter(images_table::image_type.eq("Primary"))
-            .first(&mut conn)
-            .await
-            .optional()
-            .unwrap_or(None);
+    let existing: Option<crate::db::models::Image> = images_table::table
+        .filter(images_table::item_id.eq(album_id))
+        .filter(images_table::image_type.eq("Primary"))
+        .first(&mut conn)
+        .await
+        .optional()
+        .unwrap_or(None);
 
     if existing.is_some() {
         return;
@@ -331,10 +358,7 @@ async fn try_extract_album_cover(
 
     diesel::insert_into(images_table::table)
         .values(&new_image)
-        .on_conflict((
-            images_table::item_id,
-            images_table::image_type,
-        ))
+        .on_conflict((images_table::item_id, images_table::image_type))
         .do_nothing()
         .execute(&mut conn)
         .await

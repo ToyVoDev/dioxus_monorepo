@@ -1,7 +1,7 @@
 use crate::state::{AppState, TopBarNav};
 use dioxus::prelude::*;
-use dioxus_free_icons::icons::md_action_icons::{MdAccountCircle, MdSettings};
 use dioxus_free_icons::Icon;
+use dioxus_free_icons::icons::md_action_icons::{MdAccountCircle, MdSettings};
 use kinetic_ui::{
     IconButton, KSelect, KSelectList, KSelectOption, KSelectTrigger, KSelectValue, SearchInput,
 };

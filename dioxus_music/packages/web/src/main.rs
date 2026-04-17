@@ -41,15 +41,14 @@ fn main() {
         dioxus_logger::initialize_default();
         dotenvy::dotenv().ok();
 
-        let database_url = std::env::var("DATABASE_URL")
-            .expect("DATABASE_URL must be set in .env or environment");
+        let database_url =
+            std::env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env or environment");
 
         let music_dir = std::env::var("MUSIC_DIR")
             .map(std::path::PathBuf::from)
             .unwrap_or_else(|_| {
-                dirs::audio_dir().unwrap_or_else(|| {
-                    dirs::home_dir().expect("home dir must exist").join("Music")
-                })
+                dirs::audio_dir()
+                    .unwrap_or_else(|| dirs::home_dir().expect("home dir must exist").join("Music"))
             });
 
         let image_cache_dir = std::env::var("IMAGE_CACHE_DIR")
@@ -57,7 +56,9 @@ fn main() {
             .unwrap_or_else(|_| {
                 dirs::data_local_dir()
                     .unwrap_or_else(|| {
-                        dirs::home_dir().expect("home dir must exist").join(".local/share")
+                        dirs::home_dir()
+                            .expect("home dir must exist")
+                            .join(".local/share")
                     })
                     .join("dioxus_music/images")
             });

@@ -13,7 +13,10 @@ use uuid::Uuid;
 
 use crate::{
     auth::middleware::AuthUser,
-    db::{models::Image, schema::{artists, images, tracks}},
+    db::{
+        models::Image,
+        schema::{artists, images, tracks},
+    },
     error::ApiError,
     state::AppState,
 };
@@ -22,8 +25,14 @@ pub fn router() -> Router<AppState> {
     Router::new()
         .route("/Items/{item_id}/Images", get(list_item_images))
         .route("/Items/{item_id}/Images/{image_type}", get(get_item_image))
-        .route("/Artists/{name}/Images/{image_type}/{index}", get(get_artist_image))
-        .route("/MusicGenres/{name}/Images/{image_type}/{index}", get(get_genre_image))
+        .route(
+            "/Artists/{name}/Images/{image_type}/{index}",
+            get(get_artist_image),
+        )
+        .route(
+            "/MusicGenres/{name}/Images/{image_type}/{index}",
+            get(get_genre_image),
+        )
 }
 
 #[derive(Debug, Deserialize)]
@@ -64,19 +73,26 @@ async fn list_item_images(
     State(state): State<AppState>,
     Path(item_id): Path<Uuid>,
 ) -> Result<axum::Json<serde_json::Value>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let imgs: Vec<Image> = images::table
         .filter(images::item_id.eq(item_id))
         .load(&mut conn)
         .await?;
-    let list: Vec<serde_json::Value> = imgs.iter().map(|i| {
-        serde_json::json!({
-            "ImageType": i.image_type,
-            "ImageTag": i.tag,
-            "Width": i.width,
-            "Height": i.height,
+    let list: Vec<serde_json::Value> = imgs
+        .iter()
+        .map(|i| {
+            serde_json::json!({
+                "ImageType": i.image_type,
+                "ImageTag": i.tag,
+                "Width": i.width,
+                "Height": i.height,
+            })
         })
-    }).collect();
+        .collect();
     Ok(axum::Json(serde_json::json!(list)))
 }
 
@@ -87,7 +103,11 @@ async fn get_item_image(
     Path((item_id, image_type)): Path<(Uuid, String)>,
     Query(_params): Query<ImageQuery>,
 ) -> Result<Response, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
 
     // Try direct image lookup.
     let img: Option<Image> = images::table
@@ -131,7 +151,11 @@ async fn get_artist_image(
     State(state): State<AppState>,
     Path((name, image_type, _index)): Path<(String, String, u32)>,
 ) -> Result<Response, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let artist_id: Option<Uuid> = artists::table
         .filter(artists::name.eq(&name))
         .select(artists::id)

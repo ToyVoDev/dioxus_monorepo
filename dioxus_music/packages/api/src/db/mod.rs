@@ -8,9 +8,10 @@ use diesel_async::pooled_connection::bb8;
 pub type DbPool = bb8::Pool<AsyncPgConnection>;
 
 pub async fn create_pool(database_url: &str) -> DbPool {
-    let config = diesel_async::pooled_connection::AsyncDieselConnectionManager::<
-        AsyncPgConnection,
-    >::new(database_url);
+    let config =
+        diesel_async::pooled_connection::AsyncDieselConnectionManager::<AsyncPgConnection>::new(
+            database_url,
+        );
     bb8::Pool::builder()
         .build(config)
         .await

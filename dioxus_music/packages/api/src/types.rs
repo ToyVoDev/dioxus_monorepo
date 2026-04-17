@@ -29,7 +29,7 @@ pub struct BaseItemDto {
     pub genres: Option<Vec<String>>,
     pub run_time_ticks: Option<i64>,
     pub track_number: Option<i32>,
-    pub index_number: Option<i32>,      // same as track_number, Jellyfin alias
+    pub index_number: Option<i32>, // same as track_number, Jellyfin alias
     pub parent_index_number: Option<i32>, // disc number
     pub container: Option<String>,
     pub media_type: Option<String>,
@@ -146,8 +146,14 @@ impl SmartPlaylistRules {
     /// Check if a track's genre matches these rules.
     pub fn matches(&self, genre: &str) -> bool {
         let included = self.include_genres.is_empty()
-            || self.include_genres.iter().any(|g| g.eq_ignore_ascii_case(genre));
-        let excluded = self.exclude_genres.iter().any(|g| g.eq_ignore_ascii_case(genre));
+            || self
+                .include_genres
+                .iter()
+                .any(|g| g.eq_ignore_ascii_case(genre));
+        let excluded = self
+            .exclude_genres
+            .iter()
+            .any(|g| g.eq_ignore_ascii_case(genre));
         included && !excluded
     }
 }

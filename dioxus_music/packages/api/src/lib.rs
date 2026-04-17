@@ -9,32 +9,31 @@ pub mod error;
 #[cfg(feature = "server")]
 pub mod routes;
 #[cfg(feature = "server")]
-pub mod state;
-#[cfg(feature = "server")]
 pub mod scanner;
+#[cfg(feature = "server")]
+pub mod state;
 
 #[cfg(feature = "server")]
 pub use db::{create_pool, run_migrations};
 #[cfg(feature = "server")]
 pub use routes::create_router;
 #[cfg(feature = "server")]
-pub use state::AppState;
-#[cfg(feature = "server")]
 pub use scanner::{full_scan, quick_scan};
+#[cfg(feature = "server")]
+pub use state::AppState;
 
 /// Create default admin user if the users table is empty (first-run bootstrap).
 #[cfg(feature = "server")]
 pub async fn bootstrap(state: &AppState) {
     use auth::password;
-    use db::{
-        models::NewUser,
-        schema::users,
-    };
+    use db::{models::NewUser, schema::users};
     use diesel::prelude::*;
     use diesel_async::RunQueryDsl;
     use uuid::Uuid;
 
-    let Ok(mut conn) = state.pool.get().await else { return };
+    let Ok(mut conn) = state.pool.get().await else {
+        return;
+    };
 
     let count: i64 = users::table
         .count()
@@ -46,10 +45,10 @@ pub async fn bootstrap(state: &AppState) {
         return;
     }
 
-    let admin_user = std::env::var("DIOXUS_MUSIC_ADMIN_USER")
-        .unwrap_or_else(|_| "admin".to_string());
-    let admin_pass = std::env::var("DIOXUS_MUSIC_ADMIN_PASSWORD")
-        .unwrap_or_else(|_| "changeme".to_string());
+    let admin_user =
+        std::env::var("DIOXUS_MUSIC_ADMIN_USER").unwrap_or_else(|_| "admin".to_string());
+    let admin_pass =
+        std::env::var("DIOXUS_MUSIC_ADMIN_PASSWORD").unwrap_or_else(|_| "changeme".to_string());
 
     let hash = match password::hash_password(&admin_pass) {
         Ok(h) => h,

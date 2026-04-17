@@ -113,7 +113,11 @@ async fn mark_favorite(
     Query(params): Query<UserQuery>,
 ) -> Result<Json<UserItemDataDto>, ApiError> {
     let user_id = params.user_id.unwrap_or(auth.user.id);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let ud = upsert_user_data(&mut conn, user_id, item_id, "Audio", |d| {
         d.is_favorite = true;
     })
@@ -129,7 +133,11 @@ async fn unmark_favorite(
     Query(params): Query<UserQuery>,
 ) -> Result<Json<UserItemDataDto>, ApiError> {
     let user_id = params.user_id.unwrap_or(auth.user.id);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let ud = upsert_user_data(&mut conn, user_id, item_id, "Audio", |d| {
         d.is_favorite = false;
     })
@@ -145,7 +153,11 @@ async fn rate_item(
     Query(params): Query<RatingQuery>,
 ) -> Result<Json<UserItemDataDto>, ApiError> {
     let user_id = params.user_id.unwrap_or(auth.user.id);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let ud = upsert_user_data(&mut conn, user_id, item_id, "Audio", |d| {
         d.likes = params.likes; // None = clear rating
     })
@@ -161,7 +173,11 @@ async fn mark_played(
     Query(params): Query<UserQuery>,
 ) -> Result<Json<UserItemDataDto>, ApiError> {
     let user_id = params.user_id.unwrap_or(auth.user.id);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let ud = upsert_user_data(&mut conn, user_id, item_id, "Audio", |d| {
         d.played = true;
         d.play_count += 1;
@@ -179,7 +195,11 @@ async fn mark_unplayed(
     Query(params): Query<UserQuery>,
 ) -> Result<Json<UserItemDataDto>, ApiError> {
     let user_id = params.user_id.unwrap_or(auth.user.id);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let ud = upsert_user_data(&mut conn, user_id, item_id, "Audio", |d| {
         d.played = false;
     })

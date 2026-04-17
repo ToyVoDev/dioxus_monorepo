@@ -2,9 +2,9 @@ use axum::{
     extract::{FromRequestParts, Query},
     http::{StatusCode, request::Parts},
 };
-use serde::Deserialize;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
+use serde::Deserialize;
 
 use crate::{
     db::{
@@ -72,12 +72,10 @@ impl FromRequestParts<AppState> for AuthUser {
         let (_, user) = result.ok_or(StatusCode::UNAUTHORIZED)?;
 
         // Update last_seen_at (best-effort, don't fail the request if this errors).
-        let _ = diesel::update(
-            access_tokens::table.filter(access_tokens::token.eq(&token)),
-        )
-        .set(access_tokens::last_seen_at.eq(chrono::Utc::now()))
-        .execute(&mut conn)
-        .await;
+        let _ = diesel::update(access_tokens::table.filter(access_tokens::token.eq(&token)))
+            .set(access_tokens::last_seen_at.eq(chrono::Utc::now()))
+            .execute(&mut conn)
+            .await;
 
         Ok(AuthUser { user, token })
     }
@@ -120,10 +118,7 @@ pub fn parse_auth_header(header: &str) -> std::collections::HashMap<String, Stri
         .split(',')
         .filter_map(|part| {
             let (k, v) = part.trim().split_once('=')?;
-            Some((
-                k.trim().to_string(),
-                v.trim().trim_matches('"').to_string(),
-            ))
+            Some((k.trim().to_string(), v.trim().trim_matches('"').to_string()))
         })
         .collect()
 }

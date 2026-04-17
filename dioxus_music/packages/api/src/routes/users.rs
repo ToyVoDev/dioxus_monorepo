@@ -73,7 +73,11 @@ async fn authenticate_by_name(
     headers: HeaderMap,
     Json(body): Json<AuthenticateByNameRequest>,
 ) -> Result<Json<AuthenticationResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
 
     let user: Option<User> = users::table
         .filter(users::name.eq(&body.username))
@@ -119,9 +123,16 @@ async fn list_users(
     AdminUser(_): AdminUser,
     State(state): State<AppState>,
 ) -> Result<Json<Vec<UserDto>>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let all: Vec<User> = users::table.load(&mut conn).await?;
-    let dtos: Vec<UserDto> = all.iter().map(|u| user_to_dto(u, state.server_id)).collect();
+    let dtos: Vec<UserDto> = all
+        .iter()
+        .map(|u| user_to_dto(u, state.server_id))
+        .collect();
     Ok(Json(dtos))
 }
 
@@ -135,7 +146,11 @@ async fn get_user(
     if auth.user.id != user_id && !auth.user.is_admin {
         return Err(ApiError::Forbidden);
     }
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let user: User = users::table
         .filter(users::id.eq(user_id))
         .first(&mut conn)
@@ -155,7 +170,11 @@ async fn change_password(
     if auth.user.id != user_id && !auth.user.is_admin {
         return Err(ApiError::Forbidden);
     }
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let user: User = users::table
         .filter(users::id.eq(user_id))
         .first(&mut conn)
@@ -184,7 +203,11 @@ async fn delete_user(
     State(state): State<AppState>,
     Path(user_id): Path<Uuid>,
 ) -> Result<StatusCode, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     diesel::delete(users::table.filter(users::id.eq(user_id)))
         .execute(&mut conn)
         .await?;
@@ -192,11 +215,12 @@ async fn delete_user(
 }
 
 /// DELETE /Sessions/Logout
-async fn logout(
-    auth: AuthUser,
-    State(state): State<AppState>,
-) -> Result<StatusCode, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+async fn logout(auth: AuthUser, State(state): State<AppState>) -> Result<StatusCode, ApiError> {
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     diesel::delete(access_tokens::table.filter(access_tokens::token.eq(&auth.token)))
         .execute(&mut conn)
         .await?;
@@ -208,7 +232,11 @@ async fn list_api_keys(
     AdminUser(auth): AdminUser,
     State(state): State<AppState>,
 ) -> Result<Json<serde_json::Value>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let tokens: Vec<crate::db::models::AccessToken> = access_tokens::table
         .filter(access_tokens::user_id.eq(auth.user.id))
         .load(&mut conn)
@@ -225,7 +253,9 @@ async fn list_api_keys(
         })
         .collect();
     let count = items.len();
-    Ok(Json(serde_json::json!({ "Items": items, "TotalRecordCount": count })))
+    Ok(Json(
+        serde_json::json!({ "Items": items, "TotalRecordCount": count }),
+    ))
 }
 
 /// POST /Auth/Keys — admin only (creates a new static token for the admin user)
@@ -233,7 +263,11 @@ async fn create_api_key(
     AdminUser(auth): AdminUser,
     State(state): State<AppState>,
 ) -> Result<Json<serde_json::Value>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let new_token = NewAccessToken {
         token: token::generate(),
         user_id: auth.user.id,
@@ -254,7 +288,11 @@ async fn delete_api_key(
     State(state): State<AppState>,
     Path(key): Path<String>,
 ) -> Result<StatusCode, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     diesel::delete(access_tokens::table.filter(access_tokens::token.eq(key)))
         .execute(&mut conn)
         .await?;

@@ -16,8 +16,8 @@ pub struct TrackMetadata {
     pub year: Option<i32>,
     pub track_number: Option<i32>,
     pub disc_number: i32,
-    pub duration_ticks: i64, // 100-nanosecond ticks
-    pub container: String,   // mp3 | flac | ogg | opus
+    pub duration_ticks: i64,   // 100-nanosecond ticks
+    pub container: String,     // mp3 | flac | ogg | opus
     pub bit_rate: Option<i32>, // kbps
     pub sample_rate: Option<i32>,
     pub channels: Option<i32>,
@@ -42,17 +42,15 @@ pub fn read_metadata(path: &Path) -> Option<TrackMetadata> {
         .map(|e| e.to_ascii_lowercase())
         .unwrap_or_else(|| "unknown".to_string());
 
-    let tag = tagged_file.primary_tag().or_else(|| tagged_file.first_tag());
+    let tag = tagged_file
+        .primary_tag()
+        .or_else(|| tagged_file.first_tag());
     // pictures() returns &[Picture], use .is_empty() to check
     let has_embedded_art = tag.map(|t| !t.pictures().is_empty()).unwrap_or(false);
 
     let title = tag
         .and_then(|t| t.title().map(|s| s.into_owned()))
-        .or_else(|| {
-            path.file_stem()
-                .and_then(|s| s.to_str())
-                .map(String::from)
-        })
+        .or_else(|| path.file_stem().and_then(|s| s.to_str()).map(String::from))
         .unwrap_or_default();
 
     let artist = tag
@@ -110,7 +108,9 @@ pub fn read_metadata(path: &Path) -> Option<TrackMetadata> {
 pub fn read_embedded_art(path: &Path) -> Option<(Vec<u8>, String)> {
     let tagged_file = Probe::open(path).ok()?.read().ok()?;
 
-    let tag = tagged_file.primary_tag().or_else(|| tagged_file.first_tag())?;
+    let tag = tagged_file
+        .primary_tag()
+        .or_else(|| tagged_file.first_tag())?;
     // pictures() returns &[Picture]; use .first() to get the first element
     let pic = tag.pictures().first()?;
     // mime_type() returns Option<&MimeType>; MimeType implements Display via .to_string()

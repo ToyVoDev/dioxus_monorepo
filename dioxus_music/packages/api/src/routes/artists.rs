@@ -1,4 +1,8 @@
-use axum::{Json, Router, extract::{Path, Query, State}, routing::get};
+use axum::{
+    Json, Router,
+    extract::{Path, Query, State},
+    routing::get,
+};
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
 use serde::Deserialize;
@@ -6,7 +10,10 @@ use uuid::Uuid;
 
 use crate::{
     auth::middleware::AuthUser,
-    db::{models::{Artist, Image, Track}, schema::{albums, artists, images, tracks}},
+    db::{
+        models::{Artist, Image, Track},
+        schema::{albums, artists, images, tracks},
+    },
     error::ApiError,
     routes::query,
     state::AppState,
@@ -19,7 +26,10 @@ pub fn router() -> Router<AppState> {
         .route("/Artists/AlbumArtists", get(list_album_artists))
         .route("/Artists/{name}", get(get_artist_by_name))
         .route("/Artists/{item_id}/Similar", get(similar_artists))
-        .route("/Artists/{item_id}/InstantMix", get(instant_mix_from_artist))
+        .route(
+            "/Artists/{item_id}/InstantMix",
+            get(instant_mix_from_artist),
+        )
 }
 
 #[derive(Debug, Deserialize)]
@@ -37,7 +47,11 @@ async fn list_artists(
     State(state): State<AppState>,
     Query(params): Query<ArtistQuery>,
 ) -> Result<Json<ItemsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let limit = params.limit.unwrap_or(50).min(500);
     let start = params.start_index.unwrap_or(0);
 
@@ -63,9 +77,18 @@ async fn list_artists(
             .first(&mut conn)
             .await
             .optional()?;
-        items.push(query::artist_to_dto(artist, image.as_ref(), None, state.server_id));
+        items.push(query::artist_to_dto(
+            artist,
+            image.as_ref(),
+            None,
+            state.server_id,
+        ));
     }
-    Ok(Json(ItemsResult { items, total_record_count: total, start_index: start as i32 }))
+    Ok(Json(ItemsResult {
+        items,
+        total_record_count: total,
+        start_index: start as i32,
+    }))
 }
 
 async fn list_album_artists(
@@ -73,7 +96,11 @@ async fn list_album_artists(
     State(state): State<AppState>,
     Query(params): Query<ArtistQuery>,
 ) -> Result<Json<ItemsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let limit = params.limit.unwrap_or(50).min(500);
     let start = params.start_index.unwrap_or(0);
 
@@ -101,9 +128,18 @@ async fn list_album_artists(
             .first(&mut conn)
             .await
             .optional()?;
-        items.push(query::artist_to_dto(artist, image.as_ref(), None, state.server_id));
+        items.push(query::artist_to_dto(
+            artist,
+            image.as_ref(),
+            None,
+            state.server_id,
+        ));
     }
-    Ok(Json(ItemsResult { items, total_record_count: total, start_index: start as i32 }))
+    Ok(Json(ItemsResult {
+        items,
+        total_record_count: total,
+        start_index: start as i32,
+    }))
 }
 
 async fn get_artist_by_name(
@@ -111,7 +147,11 @@ async fn get_artist_by_name(
     State(state): State<AppState>,
     Path(name): Path<String>,
 ) -> Result<Json<BaseItemDto>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let artist: Artist = artists::table
         .filter(artists::name.eq(&name))
         .first(&mut conn)
@@ -124,7 +164,12 @@ async fn get_artist_by_name(
         .first(&mut conn)
         .await
         .optional()?;
-    Ok(Json(query::artist_to_dto(&artist, image.as_ref(), None, state.server_id)))
+    Ok(Json(query::artist_to_dto(
+        &artist,
+        image.as_ref(),
+        None,
+        state.server_id,
+    )))
 }
 
 async fn similar_artists(
@@ -132,7 +177,11 @@ async fn similar_artists(
     State(state): State<AppState>,
     Path(item_id): Path<Uuid>,
 ) -> Result<Json<ItemsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
 
     // Find genres of this artist's tracks.
     let genres: Vec<String> = tracks::table
@@ -144,7 +193,11 @@ async fn similar_artists(
         .await?;
 
     if genres.is_empty() {
-        return Ok(Json(ItemsResult { items: vec![], total_record_count: 0, start_index: 0 }));
+        return Ok(Json(ItemsResult {
+            items: vec![],
+            total_record_count: 0,
+            start_index: 0,
+        }));
     }
 
     // Artists who share those genres (excluding the source artist).
@@ -171,9 +224,18 @@ async fn similar_artists(
             .first(&mut conn)
             .await
             .optional()?;
-        items.push(query::artist_to_dto(artist, image.as_ref(), None, state.server_id));
+        items.push(query::artist_to_dto(
+            artist,
+            image.as_ref(),
+            None,
+            state.server_id,
+        ));
     }
-    Ok(Json(ItemsResult { items, total_record_count: total, start_index: 0 }))
+    Ok(Json(ItemsResult {
+        items,
+        total_record_count: total,
+        start_index: 0,
+    }))
 }
 
 async fn instant_mix_from_artist(
@@ -182,7 +244,11 @@ async fn instant_mix_from_artist(
     Path(item_id): Path<Uuid>,
     Query(params): Query<ArtistQuery>,
 ) -> Result<Json<ItemsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let limit = params.limit.unwrap_or(50).min(200);
 
     let genres: Vec<String> = tracks::table
@@ -193,19 +259,22 @@ async fn instant_mix_from_artist(
         .load(&mut conn)
         .await?;
 
-    let rows: Vec<(crate::db::models::Track, Artist, Option<crate::db::models::Album>)> =
-        tracks::table
-            .inner_join(artists::table.on(tracks::artist_id.eq(artists::id)))
-            .left_join(albums::table.on(tracks::album_id.eq(albums::id.nullable())))
-            .filter(tracks::genre.eq_any(&genres))
-            .select((
-                crate::db::models::Track::as_select(),
-                Artist::as_select(),
-                Option::<crate::db::models::Album>::as_select(),
-            ))
-            .limit(limit)
-            .load(&mut conn)
-            .await?;
+    let rows: Vec<(
+        crate::db::models::Track,
+        Artist,
+        Option<crate::db::models::Album>,
+    )> = tracks::table
+        .inner_join(artists::table.on(tracks::artist_id.eq(artists::id)))
+        .left_join(albums::table.on(tracks::album_id.eq(albums::id.nullable())))
+        .filter(tracks::genre.eq_any(&genres))
+        .select((
+            crate::db::models::Track::as_select(),
+            Artist::as_select(),
+            Option::<crate::db::models::Album>::as_select(),
+        ))
+        .limit(limit)
+        .load(&mut conn)
+        .await?;
 
     let total = rows.len() as i64;
     let mut items = Vec::with_capacity(rows.len());
@@ -216,7 +285,19 @@ async fn instant_mix_from_artist(
             .first(&mut conn)
             .await
             .optional()?;
-        items.push(query::track_to_dto(track, artist, album.as_ref(), album.as_ref().map(|_| artist), image.as_ref(), None, state.server_id));
+        items.push(query::track_to_dto(
+            track,
+            artist,
+            album.as_ref(),
+            album.as_ref().map(|_| artist),
+            image.as_ref(),
+            None,
+            state.server_id,
+        ));
     }
-    Ok(Json(ItemsResult { items, total_record_count: total, start_index: 0 }))
+    Ok(Json(ItemsResult {
+        items,
+        total_record_count: total,
+        start_index: 0,
+    }))
 }

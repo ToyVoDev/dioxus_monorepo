@@ -5,11 +5,7 @@ use crate::api_client::ApiClient;
 const LOGIN_CSS: Asset = asset!("/assets/styling/login.css");
 
 #[component]
-pub fn LoginView(
-    app_name: String,
-    #[props(default = String::new())]
-    subtitle: String,
-) -> Element {
+pub fn LoginView(app_name: String, #[props(default = String::new())] subtitle: String) -> Element {
     let mut client_signal = use_context::<Signal<ApiClient>>();
     let mut username = use_signal(String::new);
     let mut password = use_signal(String::new);

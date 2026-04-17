@@ -47,7 +47,11 @@ pub fn group_tracks_into_albums(tracks: &[BaseItemDto]) -> Vec<AlbumSummary> {
             let track_count = album_tracks.len();
             let total_duration_secs: i32 = album_tracks
                 .iter()
-                .map(|t| t.run_time_ticks.map(|ticks| (ticks / 10_000_000) as i32).unwrap_or(0))
+                .map(|t| {
+                    t.run_time_ticks
+                        .map(|ticks| (ticks / 10_000_000) as i32)
+                        .unwrap_or(0)
+                })
                 .sum();
 
             AlbumSummary {

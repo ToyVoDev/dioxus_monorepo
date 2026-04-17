@@ -33,7 +33,8 @@ pub fn Artists() -> Element {
 #[component]
 fn ArtistRow(artist: BaseItemDto) -> Element {
     let client = use_api_client();
-    let image_url = artist.image_tags
+    let image_url = artist
+        .image_tags
         .as_ref()
         .and_then(|t| t.get("Primary"))
         .map(|_| client.image_url(artist.id, "Primary"));

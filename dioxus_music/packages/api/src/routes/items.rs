@@ -32,11 +32,11 @@ pub fn router() -> Router<AppState> {
 pub struct ItemsQuery {
     pub include_item_types: Option<String>, // "Audio", "MusicAlbum", "MusicArtist"
     pub parent_id: Option<Uuid>,
-    pub genres: Option<String>,             // comma or pipe delimited
+    pub genres: Option<String>, // comma or pipe delimited
     pub is_favorite: Option<bool>,
     pub search_term: Option<String>,
-    pub sort_by: Option<String>,            // "SortName", "Album", "DateCreated", etc.
-    pub sort_order: Option<String>,         // "Ascending" | "Descending"
+    pub sort_by: Option<String>, // "SortName", "Album", "DateCreated", etc.
+    pub sort_order: Option<String>, // "Ascending" | "Descending"
     pub start_index: Option<i64>,
     pub limit: Option<i64>,
     pub user_id: Option<Uuid>,
@@ -49,7 +49,11 @@ async fn list_items(
     State(state): State<AppState>,
     Query(params): Query<ItemsQuery>,
 ) -> Result<Json<ItemsResult>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let limit = params.limit.unwrap_or(50).min(500);
     let start = params.start_index.unwrap_or(0);
 
@@ -82,13 +86,18 @@ async fn list_items(
         if let Some(ref term) = params.search_term {
             let pattern = format!("%{}%", term);
             q = q.filter(
-                tracks::title.ilike(pattern.clone())
+                tracks::title
+                    .ilike(pattern.clone())
                     .or(artists::name.ilike(pattern)),
             );
         }
 
         let rows: Vec<(Track, Artist, Option<Album>)> = q
-            .select((Track::as_select(), Artist::as_select(), Option::<Album>::as_select()))
+            .select((
+                Track::as_select(),
+                Artist::as_select(),
+                Option::<Album>::as_select(),
+            ))
             .offset(start)
             .limit(limit)
             .load(&mut conn)
@@ -96,9 +105,7 @@ async fn list_items(
 
         for (track, artist, album) in &rows {
             let image: Option<Image> = images::table
-                .filter(images::item_id.eq(
-                    album.as_ref().map(|a| a.id).unwrap_or(track.id),
-                ))
+                .filter(images::item_id.eq(album.as_ref().map(|a| a.id).unwrap_or(track.id)))
                 .filter(images::image_type.eq("Primary"))
                 .first(&mut conn)
                 .await
@@ -151,7 +158,14 @@ async fn list_items(
                 .await
                 .unwrap_or(0);
 
-            items.push(query::album_to_dto(album, artist, image.as_ref(), track_count, None, state.server_id));
+            items.push(query::album_to_dto(
+                album,
+                artist,
+                image.as_ref(),
+                track_count,
+                None,
+                state.server_id,
+            ));
         }
     }
 
@@ -162,11 +176,7 @@ async fn list_items(
             q = q.filter(artists::name.ilike(pattern));
         }
 
-        let all_artists: Vec<Artist> = q
-            .offset(start)
-            .limit(limit)
-            .load(&mut conn)
-            .await?;
+        let all_artists: Vec<Artist> = q.offset(start).limit(limit).load(&mut conn).await?;
 
         for artist in &all_artists {
             let image: Option<Image> = images::table
@@ -175,7 +185,12 @@ async fn list_items(
                 .first(&mut conn)
                 .await
                 .optional()?;
-            items.push(query::artist_to_dto(artist, image.as_ref(), None, state.server_id));
+            items.push(query::artist_to_dto(
+                artist,
+                image.as_ref(),
+                None,
+                state.server_id,
+            ));
         }
     }
 
@@ -193,14 +208,22 @@ async fn get_item(
     State(state): State<AppState>,
     Path(item_id): Path<Uuid>,
 ) -> Result<Json<BaseItemDto>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
 
     // Try track first.
     let track: Option<(Track, Artist, Option<Album>)> = tracks::table
         .inner_join(artists::table.on(tracks::artist_id.eq(artists::id)))
         .left_join(albums::table.on(tracks::album_id.eq(albums::id.nullable())))
         .filter(tracks::id.eq(item_id))
-        .select((Track::as_select(), Artist::as_select(), Option::<Album>::as_select()))
+        .select((
+            Track::as_select(),
+            Artist::as_select(),
+            Option::<Album>::as_select(),
+        ))
         .first(&mut conn)
         .await
         .optional()?;
@@ -245,7 +268,14 @@ async fn get_item(
             .get_result::<i64>(&mut conn)
             .await
             .unwrap_or(0);
-        return Ok(Json(query::album_to_dto(&album, &artist, image.as_ref(), count, None, state.server_id)));
+        return Ok(Json(query::album_to_dto(
+            &album,
+            &artist,
+            image.as_ref(),
+            count,
+            None,
+            state.server_id,
+        )));
     }
 
     // Try artist.
@@ -262,7 +292,12 @@ async fn get_item(
             .first(&mut conn)
             .await
             .optional()?;
-        return Ok(Json(query::artist_to_dto(&artist, image.as_ref(), None, state.server_id)));
+        return Ok(Json(query::artist_to_dto(
+            &artist,
+            image.as_ref(),
+            None,
+            state.server_id,
+        )));
     }
 
     Err(ApiError::NotFound("Item not found".to_string()))
@@ -273,7 +308,11 @@ async fn get_filters(
     _auth: AuthUser,
     State(state): State<AppState>,
 ) -> Result<Json<serde_json::Value>, ApiError> {
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     let genre_names: Vec<String> = tracks::table
         .select(tracks::genre)
         .filter(tracks::genre.ne(""))

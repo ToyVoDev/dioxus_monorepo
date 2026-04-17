@@ -1,9 +1,4 @@
-use axum::{
-    Json, Router,
-    extract::State,
-    http::StatusCode,
-    routing::post,
-};
+use axum::{Json, Router, extract::State, http::StatusCode, routing::post};
 use chrono::Utc;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
@@ -85,7 +80,11 @@ async fn report_playback_start(
         return Ok(StatusCode::NO_CONTENT);
     };
     let ticks = body.position_ticks.unwrap_or(0);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     ensure_user_data_row(&mut conn, auth.user.id, item_id).await?;
     diesel::update(
         user_data::table
@@ -108,7 +107,11 @@ async fn report_playback_progress(
         return Ok(StatusCode::NO_CONTENT);
     };
     let ticks = params.position_ticks.unwrap_or(0);
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     ensure_user_data_row(&mut conn, auth.user.id, item_id).await?;
     diesel::update(
         user_data::table
@@ -130,7 +133,11 @@ async fn report_playback_stopped(
     let Some(item_id) = body.item_id else {
         return Ok(StatusCode::NO_CONTENT);
     };
-    let mut conn = state.pool.get().await.map_err(|e| ApiError::Internal(e.to_string()))?;
+    let mut conn = state
+        .pool
+        .get()
+        .await
+        .map_err(|e| ApiError::Internal(e.to_string()))?;
     ensure_user_data_row(&mut conn, auth.user.id, item_id).await?;
     diesel::update(
         user_data::table

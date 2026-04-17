@@ -2,12 +2,12 @@
 //! Works on both native (reqwest with hyper) and WASM (reqwest with fetch).
 
 use dioxus::prelude::*;
-use reqwest::Client;
-use uuid::Uuid;
 use dioxus_music_api::types::{
     AuthenticationResult, BaseItemDto, CreatePlaylistRequest, CreateSmartPlaylistRequest,
     ItemsResult, SearchHintsResult, SmartPlaylistRules, UpdatePlaylistRequest, UserItemDataDto,
 };
+use reqwest::Client;
+use uuid::Uuid;
 
 /// Shared API client. Holds the base URL and current auth token.
 #[derive(Clone, Debug, Default)]
@@ -65,9 +65,8 @@ impl ApiClient {
     // ── Library ───────────────────────────────────────────────────────────
 
     pub async fn get_albums(&self, parent_id: Option<Uuid>) -> Result<ItemsResult, reqwest::Error> {
-        let mut url = self.url(
-            "/Items?IncludeItemTypes=MusicAlbum&SortBy=SortName&SortOrder=Ascending",
-        );
+        let mut url =
+            self.url("/Items?IncludeItemTypes=MusicAlbum&SortBy=SortName&SortOrder=Ascending");
         if let Some(id) = parent_id {
             url.push_str(&format!("&ParentId={id}"));
         }
@@ -225,11 +224,18 @@ impl ApiClient {
             .await
     }
 
-    pub async fn update_playlist(&self, id: Uuid, name: Option<String>) -> Result<(), reqwest::Error> {
+    pub async fn update_playlist(
+        &self,
+        id: Uuid,
+        name: Option<String>,
+    ) -> Result<(), reqwest::Error> {
         self.client
             .post(self.url(&format!("/Playlists/{id}")))
             .header("Authorization", self.auth_header())
-            .json(&UpdatePlaylistRequest { name, overview: None })
+            .json(&UpdatePlaylistRequest {
+                name,
+                overview: None,
+            })
             .send()
             .await?
             .error_for_status()?;
