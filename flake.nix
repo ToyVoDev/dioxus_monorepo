@@ -254,11 +254,30 @@
               xcrunShim
               clangIosWrapper
             ];
+          linuxDesktopDeps = with pkgs; lib.optionals pkgs.stdenv.isLinux [
+            gtk3
+            webkitgtk_4_1
+            glib
+            atk
+            cairo
+            gdk-pixbuf
+            pango
+            libsoup_3
+            libxkbcommon
+            libGL
+            fontconfig
+            freetype
+            libxml2
+            libxslt
+            icu
+            sqlite
+            xdotool
+          ];
           buildInputs = with pkgs; [
             openssl
             libiconv
             pkg-config
-          ];
+          ] ++ linuxDesktopDeps;
           rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
           cargoLock = {
             lockFile = ./Cargo.lock;
@@ -424,7 +443,7 @@
                 # chmod 644 "$_CACERTS"
                 # keytool -importcert -noprompt -trustcacerts \
                 #   -keystore "$_CACERTS" -storepass "changeit" \
-                #   -alias "rqproxy-ca" -file "${./certs/rqproxy-ca.pem}"
+                #   -alias "rqproxy-ca" -file "''${./certs/rqproxy-ca.pem}"
                 # Also override user.home: the Android Gradle Plugin looks up
                 # ~/.android/ via Java's user.home (set from getpwuid(), not $HOME),
                 # which is /var/empty for nixbld — a read-only filesystem.
@@ -497,7 +516,7 @@
 
               ${iosEnvSetup}
             '';
-            inherit nativeBuildInputs;
+            inherit nativeBuildInputs buildInputs;
           };
         };
     };

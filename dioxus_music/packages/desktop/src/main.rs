@@ -46,6 +46,7 @@ fn main() {
     );
     dioxus::fullstack::set_server_url(server_url);
 
+    #[allow(unused_mut)]
     let mut wb = WindowBuilder::new().with_title(env!("CARGO_PKG_NAME"));
 
     #[cfg(target_os = "macos")]
