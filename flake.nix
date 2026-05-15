@@ -325,27 +325,9 @@
                 mkdir -p $out
                 cp -r target/dx/$pname/release/web $out/bin
               '';
-              meta.mainProgram = pname;
+              meta.mainProgram = "server";
               # Single-threaded wasm-opt avoids SIGABRT from multithreading
               # race conditions in binaryen (github.com/WebAssembly/binaryen/issues/3006)
-              BINARYEN_CORES = 1;
-              inherit cargoLock;
-            };
-            game_manager = pkgs.rustPlatform.buildRustPackage rec {
-              pname = "game_manager";
-              version = "${(builtins.fromTOML (builtins.readFile ./game_manager/Cargo.toml)).package.version}-${rev}";
-              src = ./.;
-              strictDeps = true;
-              inherit nativeBuildInputs buildInputs;
-              doCheck = false;
-              buildPhase = ''
-                dx build --package game_manager --release --verbose --trace
-              '';
-              installPhase = ''
-                mkdir -p $out
-                cp -r target/dx/$pname/release/web $out/bin
-              '';
-              meta.mainProgram = pname;
               BINARYEN_CORES = 1;
               inherit cargoLock;
             };
@@ -397,7 +379,7 @@
                 mkdir -p $out
                 cp -r target/dx/$pname/release/web $out/bin
               '';
-              meta.mainProgram = pname;
+              meta.mainProgram = "server";
               BINARYEN_CORES = 1;
               inherit cargoLock;
             };
